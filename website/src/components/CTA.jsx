@@ -17,19 +17,23 @@ export default function CTA() {
 
       <div className="cta-inner container">
         <h2 className="cta-title">
-          Start Your Financial Journey&nbsp;Today
+          Want to help us make a&nbsp;difference?
         </h2>
         <p className="cta-subtitle">
-          No credit card required. Jump in with free courses and join a
-          community of people taking control of their money.
+          Join our mission to equip people with the financial knowledge they
+          deserve. By volunteering in your local schools, libraries, and
+          community spaces, you can help break down barriers and build lasting
+          confidence around money.
         </p>
         <Button
           variant="primary"
           icon={ArrowRight}
-          href="#"
+          href="https://docs.google.com/forms/d/e/1FAIpQLScgWDzXExB0Xe86eI70V7-96cIr-A_0bcAXC41dGyyRl8JdXA/viewform?usp=dialog"
+          target="_blank"
+          rel="noopener noreferrer"
           className="cta-btn"
         >
-          Create Free Account
+          Volunteer Today
         </Button>
       </div>
     </section>

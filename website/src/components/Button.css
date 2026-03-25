@@ -17,6 +17,11 @@
     background-color var(--transition-base);
 }
 
+/* When an icon badge is present, tighten the right padding so the pill stays symmetrical */
+.btn:has(.btn-icon-badge) {
+  padding-right: 14px;
+}
+
 /* Primary — "Candy Button" */
 .btn-primary {
   background-color: var(--accent);
