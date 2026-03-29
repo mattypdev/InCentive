@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Instagram, Mail } from 'lucide-react'
 import './Footer.css'
 
@@ -10,9 +11,9 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-inner container">
-        <a href="/" className="footer-logo" aria-label="incentive home">
+        <Link to="/" className="footer-logo" aria-label="incentive home">
           in<span className="brand-highlight">cent</span>ive
-        </a>
+        </Link>
         <p className="footer-tagline">
           Making financial literacy accessible, engaging, and fun for everyone.
         </p>

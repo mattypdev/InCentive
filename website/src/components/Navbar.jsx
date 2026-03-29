@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Menu, X, ArrowRight } from 'lucide-react'
 import Button from './Button'
 import './Navbar.css'
 
 const links = [
-  { label: 'About', href: '#about' },
-  { label: 'Resources', href: '#resources' },
+  { label: 'About', href: '/#about' },
+  { label: 'Resources', href: '/resources' },
 ]
 
 export default function Navbar() {
@@ -14,20 +15,24 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <nav className="navbar-inner container">
-        <a href="/" className="navbar-brand" aria-label="incentive home">
+        <Link to="/" className="navbar-brand" aria-label="incentive home">
           in<span className="brand-highlight">cent</span>ive
-        </a>
+        </Link>
 
         <ul className={`navbar-links ${open ? 'navbar-links--open' : ''}`}>
           {links.map(({ label, href }) => (
             <li key={href}>
-              <a href={href} onClick={() => setOpen(false)}>{label}</a>
+              {href.startsWith('/') && !href.includes('#') ? (
+                <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+              ) : (
+                <a href={href} onClick={() => setOpen(false)}>{label}</a>
+              )}
             </li>
           ))}
         </ul>
 
         <div className="navbar-actions">
-          <Button variant="primary" icon={ArrowRight} href="#cta">
+          <Button variant="primary" icon={ArrowRight} href="/#cta">
             Get Started
           </Button>
         </div>
@@ -47,11 +52,15 @@ export default function Navbar() {
           <ul>
             {links.map(({ label, href }) => (
               <li key={href}>
-                <a href={href} onClick={() => setOpen(false)}>{label}</a>
+                {href.startsWith('/') && !href.includes('#') ? (
+                  <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+                ) : (
+                  <a href={href} onClick={() => setOpen(false)}>{label}</a>
+                )}
               </li>
             ))}
           </ul>
-          <Button variant="primary" icon={ArrowRight} href="#cta" onClick={() => setOpen(false)}>
+          <Button variant="primary" icon={ArrowRight} href="/#cta" onClick={() => setOpen(false)}>
             Get Started
           </Button>
         </div>
