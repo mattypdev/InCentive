@@ -7,6 +7,7 @@ import './Navbar.css'
 const links = [
   { label: 'About', href: '/#about' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Presentations', href: '/presentations' },
 ]
 
 export default function Navbar() {

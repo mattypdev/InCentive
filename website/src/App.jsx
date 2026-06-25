@@ -5,6 +5,8 @@ import ResourcesPage from './pages/Resources'
 import CompoundInterest from './pages/CompoundInterest'
 import LoanCalculator from './pages/LoanCalculator'
 import RetirementCalculator from './pages/RetirementCalculator'
+import PresentationsPage from './pages/Presentations'
+import PresentationViewer from './pages/PresentationViewer'
 import './App.css'
 
 export default function App() {
@@ -17,6 +19,8 @@ export default function App() {
           <Route path="compound-interest" element={<CompoundInterest />} />
           <Route path="loan-calculator" element={<LoanCalculator />} />
           <Route path="retirement-calculator" element={<RetirementCalculator />} />
+          <Route path="presentations" element={<PresentationsPage />} />
+          <Route path="presentations/:code" element={<PresentationViewer />} />
         </Route>
       </Routes>
     </BrowserRouter>
