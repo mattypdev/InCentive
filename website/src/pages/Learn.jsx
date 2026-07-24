@@ -79,16 +79,14 @@ function NodeConnector({ p1, p2, done, color }) {
   const y2 = p2.y - NODE_R
   const h  = y2 - y1
   if (h <= 0) return null
-  const minX = Math.min(p1.x, p2.x) - 8
-  const maxX = Math.max(p1.x, p2.x) + 8
-  const w  = Math.max(maxX - minX, 16)
+  const minX = Math.min(p1.x, p2.x) - 14
+  const maxX = Math.max(p1.x, p2.x) + 14
+  const w  = Math.max(maxX - minX, 28)
+  const d  = `M ${p1.x - minX} 0 C ${p1.x - minX} ${h*0.45} ${p2.x - minX} ${h*0.55} ${p2.x - minX} ${h}`
   return (
     <svg style={{ position:'absolute', left:minX, top:y1, pointerEvents:'none', overflow:'visible' }} width={w} height={h}>
-      <path
-        d={`M ${p1.x - minX} 0 C ${p1.x - minX} ${h*0.45} ${p2.x - minX} ${h*0.55} ${p2.x - minX} ${h}`}
-        fill="none" stroke={done ? color : 'rgba(0,0,0,0.11)'}
-        strokeWidth="3.5" strokeDasharray={done ? 'none' : '8 6'} strokeLinecap="round"
-      />
+      <path d={d} fill="none" stroke="rgba(0,0,0,0.10)" strokeWidth="14" strokeLinecap="round" />
+      {done && <path d={d} fill="none" stroke={color} strokeWidth="14" strokeLinecap="round" />}
     </svg>
   )
 }
