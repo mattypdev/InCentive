@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { allUnits } from '../data/levels'
 import { fetchQuestionsMap } from '../lib/questionsApi'
 import { getStoredProgress, storeProgress } from '../lib/guestProgress'
-import { ChevronLeft, ChevronRight, ArrowLeft, LogIn, Lock, Check, Star, Trophy, RefreshCw } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ArrowLeft, LogIn, Lock, Check, Star, Trophy, RefreshCw, Map as MapIcon } from 'lucide-react'
 import { triggerCoinFly, triggerXPFly } from '../components/CoinFlyLayer'
 import CoinBadge from '../components/CoinBadge'
 import './Learn.css'
@@ -42,18 +42,21 @@ const SECTION_PATHS = {
   cap: { zigzag: [0],                                    interval: 180 }, // single node, centered
 }
 
-// Flat ordered node IDs including chapter tests and capstone (used for locking)
-const ALL_NODE_IDS = (() => {
-  const ids = []
-  SECTIONS.forEach(s => {
-    if (!s.isCapstone) {
-      s.unitIds.forEach(id => ids.push(id))
-      ids.push(`${s.id}-test`)
-    }
-  })
-  ids.push('capstone')
-  return ids
-})()
+// Ordered node IDs *within* each section. Sections themselves are freely
+// enterable — you only have to work in order once you're on an island.
+const SECTION_NODE_IDS = SECTIONS.reduce((acc, s) => {
+  acc[s.id] = s.isCapstone ? ['capstone'] : [...s.unitIds, `${s.id}-test`]
+  return acc
+}, {})
+
+// Every non-capstone node, used to decide when the capstone island opens
+const ALL_SECTION_NODE_IDS = SECTIONS
+  .filter(s => !s.isCapstone)
+  .flatMap(s => SECTION_NODE_IDS[s.id])
+
+function sectionIdForNode(nodeId) {
+  return SECTIONS.find(s => SECTION_NODE_IDS[s.id].includes(nodeId))?.id ?? null
+}
 
 const CAPSTONE_NODE = {
   id: 'capstone', title: 'Capstone Challenge',
@@ -154,8 +157,11 @@ export default function Learn() {
   const [centsEarned,   setCentsEarned]   = useState(0)
   const [finalScore,    setFinalScore]    = useState({ correct:0, total:0 })
   const [sectionIndex,  setSectionIndex]  = useState(() => location.state?.sectionIndex ?? 0)
+  // 'map' = island world view, 'path' = the node trail for one island
+  const [view,          setView]          = useState(() => location.state?.sectionIndex != null ? 'path' : 'map')
   const [sparklingId,   setSparklingId]   = useState(null)
   const [qData,         setQData]         = useState(null)
+  const touchStartX = useRef(null)
 
   const ALL_SPRITES = [
     '/sprites/coin-0-0.png', '/sprites/coin-0-1.png', '/sprites/coin-0-2.png',
@@ -210,12 +216,27 @@ export default function Learn() {
     return () => window.removeEventListener('keydown', onKey)
   }, [activeUnit, lessonDone, showFeedback, qIndex, shuffledQs])
 
+  // Islands are open in any order; nodes inside an island stay sequential.
+  // The capstone only opens once every section is finished.
   function isUnlocked(nodeId) {
     if (!currentUser) return true
-    const pos = ALL_NODE_IDS.indexOf(nodeId)
+    if (nodeId === 'capstone') return ALL_SECTION_NODE_IDS.every(id => completedIds.has(id))
+    const secId = sectionIdForNode(nodeId)
+    if (!secId) return true
+    const order = SECTION_NODE_IDS[secId]
+    const pos = order.indexOf(nodeId)
     if (pos <= 0) return true
-    return ALL_NODE_IDS.slice(0, pos).every(id => completedIds.has(id))
+    return order.slice(0, pos).every(id => completedIds.has(id))
   }
+
+  // Per-island progress for the map view
+  const mapStats = SECTIONS.map(s => {
+    const ids = SECTION_NODE_IDS[s.id]
+    return { done: ids.filter(id => completedIds.has(id)).length, total: ids.length }
+  })
+  const capstoneUnlocked = !currentUser || ALL_SECTION_NODE_IDS.every(id => completedIds.has(id))
+  const overallDone  = mapStats.reduce((n, s) => n + s.done, 0)
+  const overallTotal = mapStats.reduce((n, s) => n + s.total, 0)
 
   async function finishLesson(correct, total) {
     const unit   = activeUnit
@@ -423,6 +444,87 @@ export default function Learn() {
     )
   }
 
+  /* ── ISLAND CAROUSEL ── */
+  if (view === 'map') {
+    const sec  = SECTIONS[sectionIndex]
+    const st   = mapStats[sectionIndex]
+    const pct  = st.total ? Math.round((st.done / st.total) * 100) : 0
+    const dim  = sec.isCapstone && !capstoneUnlocked
+    const slug = sec.isCapstone ? 'cap' : String(sectionIndex)
+
+    return (
+      <main className="learn-page">
+        <div className="island-carousel">
+
+          <div
+            className="carousel-stage"
+            onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+            onTouchEnd={e => {
+              if (touchStartX.current === null) return
+              const diff = touchStartX.current - e.changedTouches[0].clientX
+              if (Math.abs(diff) > 44) {
+                if (diff > 0) setSectionIndex(i => Math.min(SECTIONS.length - 1, i + 1))
+                else setSectionIndex(i => Math.max(0, i - 1))
+              }
+              touchStartX.current = null
+            }}
+          >
+            <button
+              className="carousel-arrow"
+              onClick={() => setSectionIndex(i => Math.max(0, i - 1))}
+              disabled={sectionIndex === 0}
+              aria-label="Previous island"
+            >
+              <ChevronLeft size={28} strokeWidth={2.5}/>
+            </button>
+
+            <button
+              className={`carousel-island${dim ? ' is-dim' : ''}`}
+              onClick={() => !dim && setView('path')}
+              disabled={dim}
+              aria-label={`${sec.label}${dim ? ' — locked' : ' — click to enter'}`}
+            >
+              <img src={`/islands/island-${slug}.png`} alt={sec.label} className={`carousel-island-img${sectionIndex === 0 ? ' carousel-island-img--basics' : ''}`}/>
+              {dim && (
+                <div className="carousel-lock">
+                  <Lock size={32} strokeWidth={2.5}/>
+                </div>
+              )}
+            </button>
+
+            <button
+              className="carousel-arrow"
+              onClick={() => setSectionIndex(i => Math.min(SECTIONS.length - 1, i + 1))}
+              disabled={sectionIndex === SECTIONS.length - 1}
+              aria-label="Next island"
+            >
+              <ChevronRight size={28} strokeWidth={2.5}/>
+            </button>
+          </div>
+
+          <h1 className={`carousel-section-title${sec.label.length > 14 ? ' carousel-section-title--long' : ''}`} style={{ color: sec.color }}>{sec.label}</h1>
+
+          <div className="carousel-dots">
+            {SECTIONS.map((s, i) => (
+              <button
+                key={i}
+                className={`carousel-dot${i === sectionIndex ? ' carousel-dot--active' : ''}`}
+                onClick={() => setSectionIndex(i)}
+                aria-label={`Go to ${s.label}`}
+                style={i === sectionIndex ? { background: sec.color, borderColor: 'transparent' } : {}}
+              />
+            ))}
+          </div>
+
+          <p className="carousel-swipe-hint">
+            <ChevronLeft size={13}/> swipe to explore <ChevronRight size={13}/>
+          </p>
+
+        </div>
+      </main>
+    )
+  }
+
   /* ── PATH MAP ── */
   const section      = SECTIONS[sectionIndex]
   const pathCfg      = SECTION_PATHS[section.id] ?? SECTION_PATHS.s1
@@ -449,13 +551,13 @@ export default function Learn() {
           {/* Section banner */}
           <div className="section-banner" style={{background: bannerColor}}>
             <div className="banner-nav">
-              <button className="banner-arrow" onClick={()=>setSectionIndex(i=>Math.max(0,i-1))} disabled={sectionIndex===0} aria-label="Previous">
-                <ChevronLeft size={20} strokeWidth={2.5}/>
+              <button className="banner-arrow" onClick={()=>setView('map')} aria-label="Back to map">
+                <MapIcon size={18} strokeWidth={2.5}/>
               </button>
               <span className="banner-eyebrow">
-                {section.isCapstone ? 'Final Challenge' : `Section ${sectionIndex+1} of ${SECTIONS.length-1}`}
+                {section.isCapstone ? 'Final Challenge' : `Island ${sectionIndex+1} of ${SECTIONS.length-1}`}
               </span>
-              <button className="banner-arrow" onClick={()=>setSectionIndex(i=>Math.min(SECTIONS.length-1,i+1))} disabled={sectionIndex===SECTIONS.length-1} aria-label="Next">
+              <button className="banner-arrow" onClick={()=>setSectionIndex(i=>Math.min(SECTIONS.length-1,i+1))} disabled={sectionIndex===SECTIONS.length-1} aria-label="Next island">
                 <ChevronRight size={20} strokeWidth={2.5}/>
               </button>
             </div>
