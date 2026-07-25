@@ -161,7 +161,6 @@ export default function Learn() {
   const [view,          setView]          = useState(() => location.state?.sectionIndex != null ? 'path' : 'map')
   const [sparklingId,   setSparklingId]   = useState(null)
   const [qData,         setQData]         = useState(null)
-  const [navDir,        setNavDir]        = useState(null) // 'next' | 'prev'
   const touchStartX  = useRef(null)
   const islandBtnRef = useRef(null)
 
@@ -449,8 +448,21 @@ export default function Learn() {
   function navigate(delta) {
     const next = Math.max(0, Math.min(SECTIONS.length - 1, sectionIndex + delta))
     if (next === sectionIndex) return
-    setNavDir(delta > 0 ? 'next' : 'prev')
+    const dir = delta > 0 ? 'next' : 'prev'
+    const el = islandBtnRef.current
+    if (el) { el.style.transform = ''; el.style.transition = '' }
     setSectionIndex(next)
+    // Double-RAF ensures React has committed the new island before animating
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const node = islandBtnRef.current
+      if (!node) return
+      node.classList.add(`carousel-island--${dir}`)
+      const cleanup = () => {
+        node.classList.remove(`carousel-island--${dir}`)
+        node.removeEventListener('animationend', cleanup)
+      }
+      node.addEventListener('animationend', cleanup)
+    }))
   }
 
   /* ── ISLAND CAROUSEL ── */
@@ -505,11 +517,9 @@ export default function Learn() {
 
             <button
               ref={islandBtnRef}
-              key={sectionIndex}
-              className={`carousel-island${dim ? ' is-dim' : ''}${navDir ? ` carousel-island--${navDir}` : ''}`}
+              className={`carousel-island${dim ? ' is-dim' : ''}`}
               onClick={() => !dim && setView('path')}
               disabled={dim}
-              onAnimationEnd={() => setNavDir(null)}
               aria-label={`${sec.label}${dim ? ' — locked' : ' — click to enter'}`}
             >
               <img src={`/islands/island-${slug}.png`} alt={sec.label} className={`carousel-island-img${sectionIndex === 0 ? ' carousel-island-img--basics' : ''}`}/>
@@ -541,7 +551,7 @@ export default function Learn() {
               <button
                 key={i}
                 className={`carousel-dot${i === sectionIndex ? ' carousel-dot--active' : ''}`}
-                onClick={() => { setNavDir(i > sectionIndex ? 'next' : 'prev'); setSectionIndex(i) }}
+                onClick={() => navigate(i - sectionIndex)}
                 aria-label={`Go to ${s.label}`}
                 style={i === sectionIndex ? { background: sec.color, borderColor: 'transparent' } : {}}
               />

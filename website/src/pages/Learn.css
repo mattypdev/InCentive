@@ -460,22 +460,22 @@
 .carousel-island.is-dim:hover { transform: none; }
 
 /* slide-in animations when navigating */
-.carousel-island--next { animation: island-enter-next 0.34s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-.carousel-island--prev { animation: island-enter-prev 0.34s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+.carousel-island--next { animation: island-enter-next 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+.carousel-island--prev { animation: island-enter-prev 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
 @keyframes island-enter-next {
-  from { transform: translateX(72px); opacity: 0; }
-  to   { transform: translateX(0);    opacity: 1; }
+  from { transform: translateX(180px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
 }
 @keyframes island-enter-prev {
-  from { transform: translateX(-72px); opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
+  from { transform: translateX(-180px); opacity: 0; }
+  to   { transform: translateX(0);      opacity: 1; }
 }
 
 /* title cross-fade on island change */
-.carousel-title-fade { animation: title-fade 0.28s ease both; }
+.carousel-title-fade { animation: title-fade 0.32s ease both; }
 @keyframes title-fade {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
