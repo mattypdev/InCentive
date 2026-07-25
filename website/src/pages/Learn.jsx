@@ -161,7 +161,9 @@ export default function Learn() {
   const [view,          setView]          = useState(() => location.state?.sectionIndex != null ? 'path' : 'map')
   const [sparklingId,   setSparklingId]   = useState(null)
   const [qData,         setQData]         = useState(null)
-  const touchStartX = useRef(null)
+  const [navDir,        setNavDir]        = useState(null) // 'next' | 'prev'
+  const touchStartX  = useRef(null)
+  const islandBtnRef = useRef(null)
 
   const ALL_SPRITES = [
     '/sprites/coin-0-0.png', '/sprites/coin-0-1.png', '/sprites/coin-0-2.png',
@@ -444,6 +446,13 @@ export default function Learn() {
     )
   }
 
+  function navigate(delta) {
+    const next = Math.max(0, Math.min(SECTIONS.length - 1, sectionIndex + delta))
+    if (next === sectionIndex) return
+    setNavDir(delta > 0 ? 'next' : 'prev')
+    setSectionIndex(next)
+  }
+
   /* ── ISLAND CAROUSEL ── */
   if (view === 'map') {
     const sec  = SECTIONS[sectionIndex]
@@ -458,20 +467,36 @@ export default function Learn() {
 
           <div
             className="carousel-stage"
-            onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+            onTouchStart={e => {
+              touchStartX.current = e.touches[0].clientX
+              if (islandBtnRef.current) islandBtnRef.current.style.transition = 'none'
+            }}
+            onTouchMove={e => {
+              if (touchStartX.current === null || !islandBtnRef.current) return
+              const dx = e.touches[0].clientX - touchStartX.current
+              islandBtnRef.current.style.transform = `translateX(${dx}px)`
+            }}
             onTouchEnd={e => {
               if (touchStartX.current === null) return
-              const diff = touchStartX.current - e.changedTouches[0].clientX
-              if (Math.abs(diff) > 44) {
-                if (diff > 0) setSectionIndex(i => Math.min(SECTIONS.length - 1, i + 1))
-                else setSectionIndex(i => Math.max(0, i - 1))
+              const dx = touchStartX.current - e.changedTouches[0].clientX
+              const el = islandBtnRef.current
+              if (Math.abs(dx) > 50) {
+                const dir = dx > 0 ? 1 : -1
+                if (el) {
+                  el.style.transition = 'transform 160ms ease-in'
+                  el.style.transform = `translateX(${dx > 0 ? '-110%' : '110%'})`
+                }
+                setTimeout(() => navigate(dir), 140)
+              } else if (el) {
+                el.style.transition = 'transform 320ms cubic-bezier(0.25,0.46,0.45,0.94)'
+                el.style.transform = 'translateX(0)'
               }
               touchStartX.current = null
             }}
           >
             <button
               className="carousel-arrow"
-              onClick={() => setSectionIndex(i => Math.max(0, i - 1))}
+              onClick={() => navigate(-1)}
               disabled={sectionIndex === 0}
               aria-label="Previous island"
             >
@@ -479,9 +504,12 @@ export default function Learn() {
             </button>
 
             <button
-              className={`carousel-island${dim ? ' is-dim' : ''}`}
+              ref={islandBtnRef}
+              key={sectionIndex}
+              className={`carousel-island${dim ? ' is-dim' : ''}${navDir ? ` carousel-island--${navDir}` : ''}`}
               onClick={() => !dim && setView('path')}
               disabled={dim}
+              onAnimationEnd={() => setNavDir(null)}
               aria-label={`${sec.label}${dim ? ' — locked' : ' — click to enter'}`}
             >
               <img src={`/islands/island-${slug}.png`} alt={sec.label} className={`carousel-island-img${sectionIndex === 0 ? ' carousel-island-img--basics' : ''}`}/>
@@ -494,7 +522,7 @@ export default function Learn() {
 
             <button
               className="carousel-arrow"
-              onClick={() => setSectionIndex(i => Math.min(SECTIONS.length - 1, i + 1))}
+              onClick={() => navigate(1)}
               disabled={sectionIndex === SECTIONS.length - 1}
               aria-label="Next island"
             >
@@ -502,14 +530,18 @@ export default function Learn() {
             </button>
           </div>
 
-          <h1 className={`carousel-section-title${sec.label.length > 14 ? ' carousel-section-title--long' : ''}`} style={{ color: sec.color }}>{sec.label}</h1>
+          <h1
+            key={sectionIndex}
+            className={`carousel-section-title${sec.label.length > 14 ? ' carousel-section-title--long' : ''} carousel-title-fade`}
+            style={{ color: sec.color }}
+          >{sec.label}</h1>
 
           <div className="carousel-dots">
             {SECTIONS.map((s, i) => (
               <button
                 key={i}
                 className={`carousel-dot${i === sectionIndex ? ' carousel-dot--active' : ''}`}
-                onClick={() => setSectionIndex(i)}
+                onClick={() => { setNavDir(i > sectionIndex ? 'next' : 'prev'); setSectionIndex(i) }}
                 aria-label={`Go to ${s.label}`}
                 style={i === sectionIndex ? { background: sec.color, borderColor: 'transparent' } : {}}
               />
