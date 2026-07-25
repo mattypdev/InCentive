@@ -163,6 +163,7 @@ export default function Learn() {
   const [qData,         setQData]         = useState(null)
   const touchStartX  = useRef(null)
   const islandBtnRef = useRef(null)
+  const navDirRef    = useRef(null)
 
   const ALL_SPRITES = [
     '/sprites/coin-0-0.png', '/sprites/coin-0-1.png', '/sprites/coin-0-2.png',
@@ -205,6 +206,20 @@ export default function Learn() {
         storeProgress(supabaseIds)
       })
   }, [currentUser?.id])
+
+  // Runs after React paints the new island — safe moment to add animation class
+  useEffect(() => {
+    const dir = navDirRef.current
+    if (!dir || !islandBtnRef.current) return
+    navDirRef.current = null
+    const node = islandBtnRef.current
+    node.classList.add(`carousel-island--${dir}`)
+    const cleanup = () => {
+      node.classList.remove(`carousel-island--${dir}`)
+      node.removeEventListener('animationend', cleanup)
+    }
+    node.addEventListener('animationend', cleanup)
+  }, [sectionIndex])
 
   useEffect(() => {
     if (!activeUnit || lessonDone || showFeedback) return
@@ -448,21 +463,10 @@ export default function Learn() {
   function navigate(delta) {
     const next = Math.max(0, Math.min(SECTIONS.length - 1, sectionIndex + delta))
     if (next === sectionIndex) return
-    const dir = delta > 0 ? 'next' : 'prev'
     const el = islandBtnRef.current
     if (el) { el.style.transform = ''; el.style.transition = '' }
+    navDirRef.current = delta > 0 ? 'next' : 'prev'
     setSectionIndex(next)
-    // Double-RAF ensures React has committed the new island before animating
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      const node = islandBtnRef.current
-      if (!node) return
-      node.classList.add(`carousel-island--${dir}`)
-      const cleanup = () => {
-        node.classList.remove(`carousel-island--${dir}`)
-        node.removeEventListener('animationend', cleanup)
-      }
-      node.addEventListener('animationend', cleanup)
-    }))
   }
 
   /* ── ISLAND CAROUSEL ── */
