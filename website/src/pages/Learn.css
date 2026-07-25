@@ -445,32 +445,46 @@
 .carousel-arrow:hover:not(:disabled) { transform: translate(-2px,-2px); box-shadow: var(--shadow-pop); }
 .carousel-arrow:disabled { opacity: 0.28; cursor: default; box-shadow: none; }
 
-.carousel-island {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  background: none; border: none; cursor: pointer; padding: 0;
-  position: relative; border-radius: var(--radius-lg); outline: none;
+/* filmstrip window — clips the scrolling track */
+.carousel-window {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* filmstrip track — all islands side by side */
+.carousel-track {
+  display: flex;
+  height: 100%;
+  width: calc(7 * 100%);
+  transform: translateX(calc(var(--idx, 0) * (-100% / 7)));
+  transition: transform 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 }
-.carousel-island:hover:not(:disabled):not(.carousel-island--next):not(.carousel-island--prev) {
-  transform: translateY(-10px) scale(1.03);
+
+/* individual island slide */
+.carousel-slide {
+  width: calc(100% / 7);
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  outline: none;
   transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
-.carousel-island:focus-visible { outline: 3px solid var(--foreground); outline-offset: 4px; border-radius: var(--radius-lg); }
-.carousel-island.is-dim { cursor: not-allowed; opacity: 0.55; }
-.carousel-island.is-dim:hover { transform: none; }
-
-/* slide-in animations when navigating */
-.carousel-island--next { animation: island-enter-next 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-.carousel-island--prev { animation: island-enter-prev 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-
-@keyframes island-enter-next {
-  from { transform: translateX(180px); opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
+.carousel-slide:hover:not(:disabled) {
+  transform: scale(1.03);
 }
-@keyframes island-enter-prev {
-  from { transform: translateX(-180px); opacity: 0; }
-  to   { transform: translateX(0);      opacity: 1; }
-}
+.carousel-slide:focus-visible { outline: 3px solid var(--foreground); outline-offset: 4px; }
+.carousel-slide.is-dim { cursor: not-allowed; opacity: 0.55; }
+.carousel-slide.is-dim:hover { transform: none; }
 
 /* title cross-fade on island change */
 .carousel-title-fade { animation: title-fade 0.32s ease both; }
@@ -587,6 +601,7 @@
     gap: 8px;
   }
   .carousel-arrow { display: none; }
+  .carousel-window { width: 100%; }
   .carousel-island-img--basics { transform: none; }
   .carousel-section-title     { font-size: 2.2rem; }
   .carousel-section-title--long { font-size: 1.6rem; }

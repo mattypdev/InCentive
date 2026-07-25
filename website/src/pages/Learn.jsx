@@ -162,8 +162,7 @@ export default function Learn() {
   const [sparklingId,   setSparklingId]   = useState(null)
   const [qData,         setQData]         = useState(null)
   const touchStartX  = useRef(null)
-  const islandBtnRef = useRef(null)
-  const navDirRef    = useRef(null)
+  const trackRef     = useRef(null)
 
   const ALL_SPRITES = [
     '/sprites/coin-0-0.png', '/sprites/coin-0-1.png', '/sprites/coin-0-2.png',
@@ -206,20 +205,6 @@ export default function Learn() {
         storeProgress(supabaseIds)
       })
   }, [currentUser?.id])
-
-  // Runs after React paints the new island — safe moment to add animation class
-  useEffect(() => {
-    const dir = navDirRef.current
-    if (!dir || !islandBtnRef.current) return
-    navDirRef.current = null
-    const node = islandBtnRef.current
-    node.classList.add(`carousel-island--${dir}`)
-    const cleanup = () => {
-      node.classList.remove(`carousel-island--${dir}`)
-      node.removeEventListener('animationend', cleanup)
-    }
-    node.addEventListener('animationend', cleanup)
-  }, [sectionIndex])
 
   useEffect(() => {
     if (!activeUnit || lessonDone || showFeedback) return
@@ -463,53 +448,19 @@ export default function Learn() {
   function navigate(delta) {
     const next = Math.max(0, Math.min(SECTIONS.length - 1, sectionIndex + delta))
     if (next === sectionIndex) return
-    const el = islandBtnRef.current
-    if (el) { el.style.transform = ''; el.style.transition = '' }
-    navDirRef.current = delta > 0 ? 'next' : 'prev'
     setSectionIndex(next)
   }
 
   /* ── ISLAND CAROUSEL ── */
   if (view === 'map') {
-    const sec  = SECTIONS[sectionIndex]
-    const st   = mapStats[sectionIndex]
-    const pct  = st.total ? Math.round((st.done / st.total) * 100) : 0
-    const dim  = sec.isCapstone && !capstoneUnlocked
-    const slug = sec.isCapstone ? 'cap' : String(sectionIndex)
+    const N   = SECTIONS.length
+    const sec = SECTIONS[sectionIndex]
 
     return (
       <main className="learn-page">
         <div className="island-carousel">
 
-          <div
-            className="carousel-stage"
-            onTouchStart={e => {
-              touchStartX.current = e.touches[0].clientX
-              if (islandBtnRef.current) islandBtnRef.current.style.transition = 'none'
-            }}
-            onTouchMove={e => {
-              if (touchStartX.current === null || !islandBtnRef.current) return
-              const dx = e.touches[0].clientX - touchStartX.current
-              islandBtnRef.current.style.transform = `translateX(${dx}px)`
-            }}
-            onTouchEnd={e => {
-              if (touchStartX.current === null) return
-              const dx = touchStartX.current - e.changedTouches[0].clientX
-              const el = islandBtnRef.current
-              if (Math.abs(dx) > 50) {
-                const dir = dx > 0 ? 1 : -1
-                if (el) {
-                  el.style.transition = 'transform 160ms ease-in'
-                  el.style.transform = `translateX(${dx > 0 ? '-110%' : '110%'})`
-                }
-                setTimeout(() => navigate(dir), 140)
-              } else if (el) {
-                el.style.transition = 'transform 320ms cubic-bezier(0.25,0.46,0.45,0.94)'
-                el.style.transform = 'translateX(0)'
-              }
-              touchStartX.current = null
-            }}
-          >
+          <div className="carousel-stage">
             <button
               className="carousel-arrow"
               onClick={() => navigate(-1)}
@@ -519,25 +470,65 @@ export default function Learn() {
               <ChevronLeft size={28} strokeWidth={2.5}/>
             </button>
 
-            <button
-              ref={islandBtnRef}
-              className={`carousel-island${dim ? ' is-dim' : ''}`}
-              onClick={() => !dim && setView('path')}
-              disabled={dim}
-              aria-label={`${sec.label}${dim ? ' — locked' : ' — click to enter'}`}
+            <div
+              className="carousel-window"
+              onTouchStart={e => {
+                touchStartX.current = e.touches[0].clientX
+                if (trackRef.current) trackRef.current.style.transition = 'none'
+              }}
+              onTouchMove={e => {
+                if (touchStartX.current === null || !trackRef.current) return
+                const dx = e.touches[0].clientX - touchStartX.current
+                trackRef.current.style.transform = `translateX(calc(${sectionIndex} * (-100% / ${N}) + ${dx}px))`
+              }}
+              onTouchEnd={e => {
+                if (touchStartX.current === null) return
+                const dx = e.changedTouches[0].clientX - touchStartX.current
+                touchStartX.current = null
+                if (!trackRef.current) return
+                trackRef.current.style.transition = ''
+                trackRef.current.style.transform  = ''
+                if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1)
+              }}
             >
-              <img src={`/islands/island-${slug}.png`} alt={sec.label} className={`carousel-island-img${sectionIndex === 0 ? ' carousel-island-img--basics' : ''}`}/>
-              {dim && (
-                <div className="carousel-lock">
-                  <Lock size={32} strokeWidth={2.5}/>
-                </div>
-              )}
-            </button>
+              <div
+                ref={trackRef}
+                className="carousel-track"
+                style={{ '--idx': sectionIndex }}
+              >
+                {SECTIONS.map((s, i) => {
+                  const sl = s.isCapstone ? 'cap' : String(i)
+                  const d  = s.isCapstone && !capstoneUnlocked
+                  return (
+                    <button
+                      key={s.id}
+                      className={`carousel-slide${d ? ' is-dim' : ''}`}
+                      onClick={() => !d && sectionIndex === i && setView('path')}
+                      disabled={d && sectionIndex === i}
+                      tabIndex={sectionIndex === i ? 0 : -1}
+                      aria-label={`${s.label}${d ? ' — locked' : ' — click to enter'}`}
+                      aria-hidden={sectionIndex !== i}
+                    >
+                      <img
+                        src={`/islands/island-${sl}.png`}
+                        alt={s.label}
+                        className={`carousel-island-img${i === 0 ? ' carousel-island-img--basics' : ''}`}
+                      />
+                      {d && (
+                        <div className="carousel-lock">
+                          <Lock size={32} strokeWidth={2.5}/>
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
 
             <button
               className="carousel-arrow"
               onClick={() => navigate(1)}
-              disabled={sectionIndex === SECTIONS.length - 1}
+              disabled={sectionIndex === N - 1}
               aria-label="Next island"
             >
               <ChevronRight size={28} strokeWidth={2.5}/>
