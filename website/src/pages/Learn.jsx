@@ -445,7 +445,7 @@ export default function Learn() {
     )
   }
 
-  function navigate(delta) {
+  function goTo(delta) {
     const next = Math.max(0, Math.min(SECTIONS.length - 1, sectionIndex + delta))
     if (next === sectionIndex) return
     setSectionIndex(next)
@@ -456,14 +456,43 @@ export default function Learn() {
     const N   = SECTIONS.length
     const sec = SECTIONS[sectionIndex]
 
+    function trackPos(idx) {
+      return `translateX(calc(${idx} * (-100% / ${N})))`
+    }
+
+    function dragStart(clientX) {
+      touchStartX.current = clientX
+      if (trackRef.current) trackRef.current.style.transition = 'none'
+    }
+
+    function dragMove(clientX) {
+      if (touchStartX.current === null || !trackRef.current) return
+      const dx = clientX - touchStartX.current
+      trackRef.current.style.transform = `translateX(calc(${sectionIndex} * (-100% / ${N}) + ${dx}px))`
+    }
+
+    function dragEnd(clientX) {
+      if (touchStartX.current === null) return
+      const dx = clientX - touchStartX.current
+      touchStartX.current = null
+      const t = trackRef.current
+      if (!t) return
+      t.style.transition = ''
+      if (Math.abs(dx) > 50) {
+        goTo(dx < 0 ? 1 : -1)
+      } else {
+        t.style.transform = trackPos(sectionIndex)
+      }
+    }
+
     return (
       <main className="learn-page">
         <div className="island-carousel">
 
           <div className="carousel-stage">
             <button
-              className="carousel-arrow"
-              onClick={() => navigate(-1)}
+              className="carousel-arrow carousel-arrow--prev"
+              onClick={() => goTo(-1)}
               disabled={sectionIndex === 0}
               aria-label="Previous island"
             >
@@ -472,29 +501,18 @@ export default function Learn() {
 
             <div
               className="carousel-window"
-              onTouchStart={e => {
-                touchStartX.current = e.touches[0].clientX
-                if (trackRef.current) trackRef.current.style.transition = 'none'
-              }}
-              onTouchMove={e => {
-                if (touchStartX.current === null || !trackRef.current) return
-                const dx = e.touches[0].clientX - touchStartX.current
-                trackRef.current.style.transform = `translateX(calc(${sectionIndex} * (-100% / ${N}) + ${dx}px))`
-              }}
-              onTouchEnd={e => {
-                if (touchStartX.current === null) return
-                const dx = e.changedTouches[0].clientX - touchStartX.current
-                touchStartX.current = null
-                if (!trackRef.current) return
-                trackRef.current.style.transition = ''
-                trackRef.current.style.transform  = ''
-                if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1)
-              }}
+              onMouseDown={e => { e.preventDefault(); dragStart(e.clientX) }}
+              onMouseMove={e => dragMove(e.clientX)}
+              onMouseUp={e => dragEnd(e.clientX)}
+              onMouseLeave={e => dragEnd(e.clientX)}
+              onTouchStart={e => dragStart(e.touches[0].clientX)}
+              onTouchMove={e => dragMove(e.touches[0].clientX)}
+              onTouchEnd={e => dragEnd(e.changedTouches[0].clientX)}
             >
               <div
                 ref={trackRef}
                 className="carousel-track"
-                style={{ '--idx': sectionIndex }}
+                style={{ transform: trackPos(sectionIndex) }}
               >
                 {SECTIONS.map((s, i) => {
                   const sl = s.isCapstone ? 'cap' : String(i)
@@ -502,8 +520,12 @@ export default function Learn() {
                   return (
                     <button
                       key={s.id}
-                      className={`carousel-slide${d ? ' is-dim' : ''}`}
-                      onClick={() => !d && sectionIndex === i && setView('path')}
+                      className={`carousel-slide${d ? ' is-dim' : ''}${i === sectionIndex ? ' is-active' : ''}`}
+                      onClick={() => {
+                        if (d) return
+                        if (i === sectionIndex) setView('path')
+                        else goTo(i - sectionIndex)
+                      }}
                       disabled={d && sectionIndex === i}
                       tabIndex={sectionIndex === i ? 0 : -1}
                       aria-label={`${s.label}${d ? ' — locked' : ' — click to enter'}`}
@@ -526,8 +548,8 @@ export default function Learn() {
             </div>
 
             <button
-              className="carousel-arrow"
-              onClick={() => navigate(1)}
+              className="carousel-arrow carousel-arrow--next"
+              onClick={() => goTo(1)}
               disabled={sectionIndex === N - 1}
               aria-label="Next island"
             >
@@ -546,7 +568,7 @@ export default function Learn() {
               <button
                 key={i}
                 className={`carousel-dot${i === sectionIndex ? ' carousel-dot--active' : ''}`}
-                onClick={() => navigate(i - sectionIndex)}
+                onClick={() => goTo(i - sectionIndex)}
                 aria-label={`Go to ${s.label}`}
                 style={i === sectionIndex ? { background: sec.color, borderColor: 'transparent' } : {}}
               />
