@@ -1,0 +1,138 @@
+/* ===== ISLAND WORLD MAP ===== */
+
+.learn-map {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 16px 48px;
+}
+
+.learn-map-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* --- islands --- */
+.map-island {
+  cursor: pointer;
+  outline: none;
+}
+.map-island.is-dim {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.map-island-body {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.map-island.is-hover .map-island-body {
+  transform: translateY(-9px) scale(1.035);
+}
+.map-island.is-dim.is-hover .map-island-body {
+  transform: none;
+}
+
+.map-island:focus-visible .map-island-body {
+  transform: translateY(-9px) scale(1.035);
+}
+.map-island:focus-visible .map-plate rect {
+  stroke-width: 4.5;
+}
+
+/* --- name plates --- */
+.map-plate { pointer-events: none; }
+
+.map-plate-label {
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  fill: var(--foreground);
+  letter-spacing: -0.2px;
+}
+.map-plate-count {
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  fill: var(--foreground);
+  text-anchor: middle;
+}
+
+/* --- start / continue flag --- */
+.map-flag {
+  pointer-events: none;
+  animation: map-bob 2.4s ease-in-out infinite;
+}
+.map-flag-text {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-anchor: middle;
+}
+
+@keyframes map-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* --- header above the map --- */
+.map-header {
+  text-align: center;
+  max-width: 620px;
+  margin: 24px auto 4px;
+  padding: 0 20px;
+}
+.map-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin-bottom: 6px;
+}
+.map-header p {
+  color: var(--muted-foreground);
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.map-overall {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.map-overall-track {
+  width: 220px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  border: var(--border-width) solid var(--foreground);
+  overflow: hidden;
+}
+.map-overall-fill {
+  height: 100%;
+  background: var(--primary, #FF6F61);
+  transition: width 0.4s ease;
+}
+.map-overall-label {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 700px) {
+  .learn-map { padding: 4px 8px 32px; }
+  .map-header h1 { font-size: 1.55rem; }
+  .map-plate-label { font-size: 21px; }
+  .map-plate-count { font-size: 15px; }
+  .map-flag-text { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-island-body { transition: none; }
+  .map-flag { animation: none; }
+}
