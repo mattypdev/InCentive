@@ -398,27 +398,77 @@
     min-height: auto;
   }
 
+  /* Red panel moves to bottom half */
   .hero::after { inset: 50% 0 0 0; }
 
+  /* Clip to top/bottom halves instead of left/right */
   .hero-shape-layer--color { clip-path: inset(0 0 50% 0); }
   .hero-shape-layer--white { clip-path: inset(50% 0 0 0); }
 
+  /* Hide most shapes — mobile needs less clutter */
+  .hs--circle-xs,
+  .hs--pill-sm,
+  .hs--square,
+  .hs--square-sm,
+  .hs--triangle,
+  .hs--dots { display: none; }
+
+  /* Reposition remaining shapes for vertical split.
+     Shapes near top: 50% will straddle the boundary. */
+  .hs--circle-lg {
+    width: 280px; height: 280px;
+    top: calc(50% - 170px);
+    left: -50px;
+  }
+  .hs--circle-sm {
+    width: 120px; height: 120px;
+    top: auto; bottom: 8%;
+    left: auto; right: 6%;
+  }
+  .hs--pill {
+    top: calc(50% - 23px);
+    left: auto; right: 10%;
+  }
+  .hs--square {
+    top: 8%;
+    left: auto; right: 8%;
+  }
+  .hs--ring {
+    top: 62%;
+    left: 12%;
+  }
+
+  /* Left panel */
   .hero-left {
-    padding: 56px 40px;
+    padding: 56px 32px;
     justify-content: center;
-    text-align: center;
     min-height: 50dvh;
   }
-  .hero-left-inner { margin: 0 auto; }
+  .hero-left-inner {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 440px;
+    width: 100%;
+  }
   .hero-subtitle { margin-inline: auto; }
 
+  /* Right panel */
   .hero-right {
-    padding: 56px 40px;
+    padding: 48px 32px;
     min-height: 50dvh;
   }
+
+  .hero-login { margin: 0 auto; }
+  .hero-login-title { font-size: clamp(2rem, 7vw, 3rem); }
+  .hero-login-sub { font-size: var(--text-md); }
 }
 
-@media (max-width: 520px) {
-  .hero-left, .hero-right { padding: 40px 24px; }
-  .hs--dots { display: none; }
+@media (max-width: 480px) {
+  .hero-left { padding: 44px 20px; }
+  .hero-right { padding: 40px 20px; }
+  .hs--ring, .hs--circle-sm { display: none; }
+  .hero-login-title { font-size: var(--text-2xl); }
+  .hero-login { gap: 22px; }
+  .hero-login-input { padding: 13px 16px; }
+  .hero-login-submit { padding: 14px 16px; }
 }
