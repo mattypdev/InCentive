@@ -46,10 +46,8 @@ function LoginPanel() {
     return (
       <div className="hero-login">
         <div className="hero-login-header">
-          <p className="hero-login-title">
-            Welcome back{profile?.name ? `, ${profile.name.split(' ')[0]}` : ''}!
-          </p>
-          <p className="hero-login-sub">{currentUser.email}</p>
+          <p className="hero-login-title">Welcome back!</p>
+          <p className="hero-login-sub">{profile?.name || currentUser.email}</p>
         </div>
         <button className="hero-login-submit" onClick={() => navigate('/learn')}>
           Continue Learning <ArrowRight size={18} strokeWidth={2.5} />
