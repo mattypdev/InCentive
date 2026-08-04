@@ -17,6 +17,7 @@ import QuizTaker from './pages/QuizTaker'
 import QuizCreate from './pages/QuizCreate'
 import Login from './pages/Login'
 import Learn from './pages/Learn'
+import AuthCallback from './pages/AuthCallback'
 import Progress from './pages/Progress'
 import UnitPage from './pages/UnitPage'
 import Admin from './pages/Admin'
@@ -56,6 +57,7 @@ export default function App() {
             <Route path="quizzes/create" element={<QuizCreate />} />
             <Route path="quizzes/edit/:id" element={<QuizCreate />} />
             <Route path="quizzes/:code" element={<QuizTaker />} />
+            <Route path="auth/callback" element={<AuthCallback />} />
             <Route path="login" element={<Login />} />
             <Route path="learn" element={<Learn />} />
             <Route path="progress" element={<Progress />} />
