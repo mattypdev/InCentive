@@ -44,22 +44,29 @@ export function AuthProvider({ children }) {
     loadShopFromCloud(userId)
   }
 
+  async function ensureProfile(user) {
+    const { data: existing } = await supabase.from('profiles').select('id').eq('id', user.id).single()
+    if (!existing) {
+      const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || ''
+      await supabase.from('profiles').upsert({ id: user.id, name }, { onConflict: 'id' })
+    }
+  }
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setCurrentUser(session?.user ?? null)
-      if (session?.user) fetchProfile(session.user.id)
+      if (session?.user) {
+        await ensureProfile(session.user)
+        fetchProfile(session.user.id)
+      }
       setLoading(false)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setCurrentUser(session?.user ?? null)
       if (session?.user) {
-        if (_event === 'SIGNED_IN') {
-          const { data: existing } = await supabase.from('profiles').select('id').eq('id', session.user.id).single()
-          if (!existing) {
-            const name = session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || ''
-            await supabase.from('profiles').upsert({ id: session.user.id, name }, { onConflict: 'id' })
-          }
+        if (_event === 'SIGNED_IN' || _event === 'INITIAL_SESSION') {
+          await ensureProfile(session.user)
         }
         fetchProfile(session.user.id)
       } else { setProfile(null); clearStoredProgress(); clearShopData() }
