@@ -51,10 +51,18 @@ export function AuthProvider({ children }) {
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setCurrentUser(session?.user ?? null)
-      if (session?.user) fetchProfile(session.user.id)
-      else { setProfile(null); clearStoredProgress(); clearShopData() }
+      if (session?.user) {
+        if (_event === 'SIGNED_IN') {
+          const { data: existing } = await supabase.from('profiles').select('id').eq('id', session.user.id).single()
+          if (!existing) {
+            const name = session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || ''
+            await supabase.from('profiles').upsert({ id: session.user.id, name }, { onConflict: 'id' })
+          }
+        }
+        fetchProfile(session.user.id)
+      } else { setProfile(null); clearStoredProgress(); clearShopData() }
     })
 
     return () => subscription.unsubscribe()
@@ -81,6 +89,14 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function signInWithGoogle() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/learn` },
+    })
+    if (error) throw error
+  }
+
   async function logOut() {
     await supabase.auth.signOut()
   }
@@ -98,7 +114,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ currentUser, profile, loading, signUp, logIn, logOut, refreshProfile, bumpXP, setXP }}>
+    <AuthContext.Provider value={{ currentUser, profile, loading, signUp, logIn, logOut, signInWithGoogle, refreshProfile, bumpXP, setXP }}>
       {!loading && children}
     </AuthContext.Provider>
   )
