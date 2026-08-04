@@ -182,6 +182,9 @@ export default function AboutPage() {
                   <a href="https://www.instagram.com/eshayarram/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Esha Instagram">
                     <img src="/images/instagram-logo.svg" alt="Instagram" />
                   </a>
+                  <a href="https://www.linkedin.com/in/esha-yarram-713ab6379/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Esha LinkedIn">
+                    <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
+                  </a>
                 </div>
               </div>
             </div>
