@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, Mail } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import './Hero.css'
 
@@ -41,6 +41,7 @@ function LoginPanel() {
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
 
   if (currentUser) {
     return (
@@ -60,8 +61,13 @@ function LoginPanel() {
     e.preventDefault()
     setError(''); setLoading(true)
     try {
-      mode === 'signup' ? await signUp(name.trim(), email, password) : await logIn(email, password)
-      navigate('/learn')
+      if (mode === 'signup') {
+        await signUp(name.trim(), email, password)
+        setEmailSent(true)
+      } else {
+        await logIn(email, password)
+        navigate('/learn')
+      }
     } catch (err) {
       const m = err.message ?? ''
       setError(
@@ -70,6 +76,24 @@ function LoginPanel() {
         'Something went wrong.'
       )
     } finally { setLoading(false) }
+  }
+
+  if (emailSent) {
+    return (
+      <div className="hero-email-overlay" onClick={() => setEmailSent(false)}>
+        <div className="hero-email-popup" onClick={e => e.stopPropagation()}>
+          <div className="hero-email-icon"><Mail size={32} strokeWidth={2} /></div>
+          <h3 className="hero-email-title">Check your email</h3>
+          <p className="hero-email-body">
+            We sent a confirmation link to <strong>{email}</strong>.<br />
+            Click it to activate your account, then come back to log in.
+          </p>
+          <button className="hero-email-back" onClick={() => { setEmailSent(false); setMode('login') }}>
+            Back to log in
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
