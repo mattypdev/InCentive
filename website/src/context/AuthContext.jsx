@@ -67,6 +67,9 @@ export function AuthProvider({ children }) {
       if (session?.user) {
         if (_event === 'SIGNED_IN' || _event === 'INITIAL_SESSION') {
           await ensureProfile(session.user)
+          if (_event === 'SIGNED_IN' && session.user.app_metadata?.provider !== 'email') {
+            window.location.href = '/learn'
+          }
         }
         fetchProfile(session.user.id)
       } else { setProfile(null); clearStoredProgress(); clearShopData() }
@@ -99,7 +102,6 @@ export function AuthProvider({ children }) {
   async function signInWithGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
     })
     if (error) throw error
   }
