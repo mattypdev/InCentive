@@ -7,29 +7,33 @@ export default function AuthCallback() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const code  = params.get('code')
-    const errMsg = params.get('error_description') || params.get('error')
+    // With implicit flow, the session is in the URL hash.
+    // Supabase detects it automatically — just wait for the auth state.
+    const errParam = new URLSearchParams(window.location.search).get('error_description')
+      || new URLSearchParams(window.location.search).get('error')
+    if (errParam) { setError(errParam); return }
 
-    if (errMsg) {
-      setError(errMsg)
-      return
-    }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        subscription.unsubscribe()
+        navigate('/learn', { replace: true })
+      }
+    })
 
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code)
-        .then(({ data, error: err }) => {
-          if (err) { setError(err.message); return }
-          if (data?.session) navigate('/learn', { replace: true })
-          else setError('No session returned — check Supabase email confirmation settings.')
-        })
-    } else {
-      // No code in URL — fall back to checking existing session
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session) navigate('/learn', { replace: true })
-        else setError('No auth code in URL. Make sure the redirect URL in Supabase matches exactly: ' + window.location.origin + '/auth/callback')
-      })
-    }
+    // Also check if a session already exists (hash already processed)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        subscription.unsubscribe()
+        navigate('/learn', { replace: true })
+      }
+    })
+
+    const timeout = setTimeout(() => {
+      subscription.unsubscribe()
+      setError('Sign-in timed out. Make sure https://incentivefinance.org/auth/callback is in your Supabase redirect URL allowlist.')
+    }, 8000)
+
+    return () => { subscription.unsubscribe(); clearTimeout(timeout) }
   }, [navigate])
 
   return (
@@ -41,7 +45,7 @@ export default function AuthCallback() {
       {error ? (
         <>
           <p style={{ fontWeight: 800, fontSize: '1.2rem' }}>Sign-in failed</p>
-          <p style={{ color: 'var(--muted-foreground)', fontSize: '0.85rem', maxWidth: 400 }}>{error}</p>
+          <p style={{ color: 'var(--muted-foreground)', fontSize: '0.85rem', maxWidth: 420 }}>{error}</p>
           <a href="/" style={{ color: 'var(--accent)', fontWeight: 700 }}>Go home</a>
         </>
       ) : (
