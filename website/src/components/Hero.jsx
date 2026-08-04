@@ -33,7 +33,7 @@ function ShapeLayer({ className }) {
 }
 
 function LoginPanel() {
-  const { currentUser, logIn, signUp } = useAuth()
+  const { currentUser, profile, logIn, signUp } = useAuth()
   const navigate = useNavigate()
   const [mode, setMode]         = useState('login')
   const [name, setName]         = useState('')
@@ -45,8 +45,12 @@ function LoginPanel() {
   if (currentUser) {
     return (
       <div className="hero-login">
-        <p className="hero-login-title">Welcome back!</p>
-        <p className="hero-login-sub">{currentUser.email}</p>
+        <div className="hero-login-header">
+          <p className="hero-login-title">
+            Welcome back{profile?.name ? `, ${profile.name.split(' ')[0]}` : ''}!
+          </p>
+          <p className="hero-login-sub">{currentUser.email}</p>
+        </div>
         <button className="hero-login-submit" onClick={() => navigate('/learn')}>
           Continue Learning <ArrowRight size={18} strokeWidth={2.5} />
         </button>
