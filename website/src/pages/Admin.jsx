@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { levels } from '../data/levels'
 import { useAuth } from '../context/AuthContext'
 import {
@@ -8,7 +8,7 @@ import {
 } from '../lib/questionsApi'
 import { fetchArticles, createArticle, updateArticle, deleteArticle } from '../lib/articlesApi'
 import { supabase } from '../lib/supabase'
-import { LogOut, ChevronDown, ChevronRight, Trash2, Plus, Save, FileText, BookOpen, Maximize2, X } from 'lucide-react'
+import { LogOut, ChevronDown, ChevronRight, Trash2, Plus, Save, FileText, BookOpen, Maximize2, X, FileUp } from 'lucide-react'
 import RichTextEditor from '../components/RichTextEditor'
 import './Admin.css'
 
@@ -18,6 +18,67 @@ async function uploadArticleImage(file) {
   const { error } = await supabase.storage.from('article-images').upload(path, file)
   if (error) throw error
   return supabase.storage.from('article-images').getPublicUrl(path).data.publicUrl
+}
+
+async function pdfToHtml(file) {
+  const { getDocument, GlobalWorkerOptions } = await import('pdfjs-dist')
+  GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).href
+
+  const arrayBuffer = await file.arrayBuffer()
+  const pdf = await getDocument({ data: arrayBuffer }).promise
+
+  const pageHtmlParts = []
+
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const page = await pdf.getPage(p)
+    const content = await page.getTextContent()
+
+    // Find the most common font size to use as body baseline
+    const sizes = content.items.map(i => Math.round(i.transform[3]))
+    const sizeCount = {}
+    for (const s of sizes) sizeCount[s] = (sizeCount[s] ?? 0) + 1
+    const bodySize = Number(Object.entries(sizeCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 12)
+
+    // Group items into lines by Y position (rounded to nearest 2pt)
+    const lines = {}
+    for (const item of content.items) {
+      if (!item.str) continue
+      const y = Math.round(item.transform[5] / 2) * 2
+      if (!lines[y]) lines[y] = []
+      lines[y].push(item)
+    }
+
+    // Sort lines top-to-bottom (PDF Y is bottom-up)
+    const sortedYs = Object.keys(lines).map(Number).sort((a, b) => b - a)
+
+    const lineTexts = []
+    for (const y of sortedYs) {
+      const items = lines[y].sort((a, b) => a.transform[4] - b.transform[4])
+      const fontSize = Math.round(items[0].transform[3])
+      const text = items.map(i => i.str).join(' ').trim()
+      if (!text) continue
+      lineTexts.push({ text, fontSize })
+    }
+
+    // Merge consecutive body-size lines into paragraphs
+    const blocks = []
+    let currentParagraph = []
+    for (const line of lineTexts) {
+      if (line.fontSize > bodySize * 1.25) {
+        if (currentParagraph.length) { blocks.push({ type: 'p', text: currentParagraph.join(' ') }); currentParagraph = [] }
+        const tag = line.fontSize > bodySize * 1.7 ? 'h1' : line.fontSize > bodySize * 1.4 ? 'h2' : 'h3'
+        blocks.push({ type: tag, text: line.text })
+      } else {
+        currentParagraph.push(line.text)
+      }
+    }
+    if (currentParagraph.length) blocks.push({ type: 'p', text: currentParagraph.join(' ') })
+
+    const html = blocks.map(b => `<${b.type}>${b.text}</${b.type}>`).join('\n')
+    if (html.trim()) pageHtmlParts.push(html)
+  }
+
+  return pageHtmlParts.join('\n<hr>\n')
 }
 
 const BLANK_MC = { prompt: '', options: ['', '', '', ''], correct: 0, explanation: '' }
@@ -202,6 +263,26 @@ function FillBlankEditor({ unitId, title }) {
 const BLANK_ARTICLE = { title: '', author: '', cover_image_url: '', body: '' }
 
 function FullArticleEditor({ draft, onChange, onSave, onClose, saving }) {
+  const [pdfLoading, setPdfLoading] = useState(false)
+  const [pdfError, setPdfError] = useState('')
+  const pdfRef = useRef(null)
+
+  async function handlePdf(e) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setPdfLoading(true)
+    setPdfError('')
+    try {
+      const html = await pdfToHtml(file)
+      onChange({ ...draft, body: html, title: draft.title || file.name.replace(/\.pdf$/i, '') })
+    } catch (err) {
+      setPdfError(`PDF import failed: ${err.message}`)
+    } finally {
+      setPdfLoading(false)
+    }
+  }
+
   return (
     <div className="fae-overlay">
       <div className="fae-topbar">
@@ -229,6 +310,10 @@ function FullArticleEditor({ draft, onChange, onSave, onClose, saving }) {
           />
         </div>
         <div className="fae-topbar-actions">
+          <input ref={pdfRef} type="file" accept=".pdf" style={{ display: 'none' }} onChange={handlePdf} />
+          <button className="admin-btn" onClick={() => pdfRef.current?.click()} disabled={pdfLoading} title="Import PDF as article">
+            <FileUp size={15} /> {pdfLoading ? 'Importing…' : 'Import PDF'}
+          </button>
           <button className="admin-btn admin-btn--primary" onClick={onSave} disabled={saving}>
             <Save size={15} /> {saving ? 'Saving…' : 'Save'}
           </button>
@@ -237,6 +322,7 @@ function FullArticleEditor({ draft, onChange, onSave, onClose, saving }) {
           </button>
         </div>
       </div>
+      {pdfError && <div className="fae-pdf-error">{pdfError}</div>}
       <div className="fae-paper-wrap">
         <div className="fae-paper">
           <RichTextEditor

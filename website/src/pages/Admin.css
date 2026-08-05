@@ -357,6 +357,15 @@
   flex-shrink: 0;
 }
 
+.fae-pdf-error {
+  background: #fef2f2;
+  color: #DC2626;
+  font-size: var(--text-sm);
+  padding: 8px 20px;
+  border-bottom: 1px solid #fca5a5;
+  flex-shrink: 0;
+}
+
 .fae-paper-wrap {
   flex: 1;
   overflow-y: auto;
