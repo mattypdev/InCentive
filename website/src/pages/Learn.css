@@ -677,10 +677,7 @@
 @media (max-width: 900px) {
   .path-side   { display: none; }
   .path-center { width: 100%; }
-  /* Reduce horizontal padding and left-align the trail so right-side chips
-     (reward numbers) don't overflow the viewport edge on real phones. */
-  .path-page   { padding: 20px 8px 80px; }
-  .trail-wrap  { justify-content: flex-start; }
+  .path-page   { padding: 20px 20px 80px; }
 }
 @media (max-width: 768px) {
   /* path / lesson */
