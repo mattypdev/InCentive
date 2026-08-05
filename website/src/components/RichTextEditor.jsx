@@ -6,12 +6,12 @@ import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   Heading1, Heading2, Heading3, List, ListOrdered,
   Quote, Minus, AlignLeft, AlignCenter, AlignRight,
-  Image as ImageIcon, Link as LinkIcon, Unlink, Undo, Redo,
+  Image as ImageIcon, Upload, Link as LinkIcon, Unlink, Undo, Redo,
 } from 'lucide-react'
 import './RichTextEditor.css'
 
@@ -35,7 +35,9 @@ function Divider() {
   return <div className="rte-divider" />
 }
 
-export default function RichTextEditor({ value, onChange }) {
+export default function RichTextEditor({ value, onChange, onUploadImage, stickyToolbar, fullHeight }) {
+  const fileRef = useRef(null)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
@@ -54,16 +56,27 @@ export default function RichTextEditor({ value, onChange }) {
 
   useEffect(() => {
     if (!editor) return
-    const current = editor.getHTML()
-    if (current !== value) {
+    if (editor.getHTML() !== value) {
       editor.commands.setContent(value || '', false)
     }
   }, [value])
 
-  const insertImage = useCallback(() => {
+  const insertImageUrl = useCallback(() => {
     const url = window.prompt('Image URL:')
     if (url) editor.chain().focus().setImage({ src: url }).run()
   }, [editor])
+
+  const handleFileChange = useCallback(async (e) => {
+    const file = e.target.files?.[0]
+    if (!file || !onUploadImage) return
+    e.target.value = ''
+    try {
+      const url = await onUploadImage(file)
+      editor.chain().focus().setImage({ src: url }).run()
+    } catch (err) {
+      alert(`Image upload failed: ${err.message}`)
+    }
+  }, [editor, onUploadImage])
 
   const setLink = useCallback(() => {
     const prev = editor.getAttributes('link').href
@@ -80,9 +93,8 @@ export default function RichTextEditor({ value, onChange }) {
   if (!editor) return null
 
   return (
-    <div className="rte-wrap">
-      <div className="rte-toolbar">
-        {/* History */}
+    <div className={`rte-wrap${fullHeight ? ' rte-wrap--full' : ''}`}>
+      <div className={`rte-toolbar${stickyToolbar ? ' rte-toolbar--sticky' : ''}`}>
         <ToolbarBtn onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Undo">
           <Undo size={15} />
         </ToolbarBtn>
@@ -92,7 +104,6 @@ export default function RichTextEditor({ value, onChange }) {
 
         <Divider />
 
-        {/* Headings */}
         <ToolbarBtn onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive('heading', { level: 1 })} title="Heading 1">
           <Heading1 size={15} />
         </ToolbarBtn>
@@ -105,7 +116,6 @@ export default function RichTextEditor({ value, onChange }) {
 
         <Divider />
 
-        {/* Inline formatting */}
         <ToolbarBtn onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive('bold')} title="Bold">
           <Bold size={15} />
         </ToolbarBtn>
@@ -121,7 +131,6 @@ export default function RichTextEditor({ value, onChange }) {
 
         <Divider />
 
-        {/* Alignment */}
         <ToolbarBtn onClick={() => editor.chain().focus().setTextAlign('left').run()} active={editor.isActive({ textAlign: 'left' })} title="Align left">
           <AlignLeft size={15} />
         </ToolbarBtn>
@@ -134,7 +143,6 @@ export default function RichTextEditor({ value, onChange }) {
 
         <Divider />
 
-        {/* Lists */}
         <ToolbarBtn onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive('bulletList')} title="Bullet list">
           <List size={15} />
         </ToolbarBtn>
@@ -144,16 +152,29 @@ export default function RichTextEditor({ value, onChange }) {
         <ToolbarBtn onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive('blockquote')} title="Blockquote">
           <Quote size={15} />
         </ToolbarBtn>
-        <ToolbarBtn onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Divider">
+        <ToolbarBtn onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal rule">
           <Minus size={15} />
         </ToolbarBtn>
 
         <Divider />
 
-        {/* Media */}
-        <ToolbarBtn onClick={insertImage} title="Insert image">
+        <ToolbarBtn onClick={insertImageUrl} title="Insert image by URL">
           <ImageIcon size={15} />
         </ToolbarBtn>
+        {onUploadImage && (
+          <>
+            <ToolbarBtn onClick={() => fileRef.current?.click()} title="Upload image from computer">
+              <Upload size={15} />
+            </ToolbarBtn>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+          </>
+        )}
         <ToolbarBtn onClick={setLink} active={editor.isActive('link')} title="Insert link">
           <LinkIcon size={15} />
         </ToolbarBtn>
@@ -163,21 +184,15 @@ export default function RichTextEditor({ value, onChange }) {
 
         <Divider />
 
-        {/* Colors */}
         <div className="rte-colors">
           {COLORS.map(c => (
-            <button
-              key={c}
-              type="button"
+            <button key={c} type="button"
               className={`rte-color-dot${editor.isActive('textStyle', { color: c }) ? ' rte-color-dot--active' : ''}`}
-              style={{ background: c }}
-              title={c}
-              onClick={() => setColor(c)}
+              style={{ background: c }} title={c} onClick={() => setColor(c)}
             />
           ))}
           <button type="button" className="rte-color-dot rte-color-dot--reset" title="Reset color"
-            onClick={() => editor.chain().focus().unsetColor().run()}>
-            ×
+            onClick={() => editor.chain().focus().unsetColor().run()}>×
           </button>
         </div>
       </div>

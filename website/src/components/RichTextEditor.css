@@ -77,6 +77,35 @@
   justify-content: center;
 }
 
+/* Sticky toolbar (used in full-screen mode) */
+.rte-toolbar--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Full-height mode */
+.rte-wrap--full {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.rte-wrap--full .rte-toolbar {
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+.rte-wrap--full .rte-content {
+  flex: 1;
+  max-height: none;
+  overflow-y: auto;
+  border-radius: 0;
+}
+
 /* Editor content area */
 .rte-content {
   padding: 16px 20px;

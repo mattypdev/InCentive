@@ -7,9 +7,18 @@ import {
   upsertFillBlank, deleteFillBlank,
 } from '../lib/questionsApi'
 import { fetchArticles, createArticle, updateArticle, deleteArticle } from '../lib/articlesApi'
-import { LogOut, ChevronDown, ChevronRight, Trash2, Plus, Save, FileText, BookOpen } from 'lucide-react'
+import { supabase } from '../lib/supabase'
+import { LogOut, ChevronDown, ChevronRight, Trash2, Plus, Save, FileText, BookOpen, Maximize2, X } from 'lucide-react'
 import RichTextEditor from '../components/RichTextEditor'
 import './Admin.css'
+
+async function uploadArticleImage(file) {
+  const ext = file.name.split('.').pop().toLowerCase()
+  const path = `articles/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const { error } = await supabase.storage.from('article-images').upload(path, file)
+  if (error) throw error
+  return supabase.storage.from('article-images').getPublicUrl(path).data.publicUrl
+}
 
 const BLANK_MC = { prompt: '', options: ['', '', '', ''], correct: 0, explanation: '' }
 const BLANK_FB = { prompt: '', options: ['', '', '', ''], correct: 0, explanation: '' }
@@ -192,9 +201,61 @@ function FillBlankEditor({ unitId, title }) {
 
 const BLANK_ARTICLE = { title: '', author: '', cover_image_url: '', body: '' }
 
+function FullArticleEditor({ draft, onChange, onSave, onClose, saving }) {
+  return (
+    <div className="fae-overlay">
+      <div className="fae-topbar">
+        <div className="fae-topbar-fields">
+          <input
+            className="fae-title-input"
+            type="text"
+            placeholder="Article title…"
+            value={draft.title}
+            onChange={e => onChange({ ...draft, title: e.target.value })}
+          />
+          <input
+            className="fae-author-input"
+            type="text"
+            placeholder="Author (optional)"
+            value={draft.author ?? ''}
+            onChange={e => onChange({ ...draft, author: e.target.value })}
+          />
+          <input
+            className="fae-cover-input"
+            type="url"
+            placeholder="Cover image URL (optional)"
+            value={draft.cover_image_url ?? ''}
+            onChange={e => onChange({ ...draft, cover_image_url: e.target.value })}
+          />
+        </div>
+        <div className="fae-topbar-actions">
+          <button className="admin-btn admin-btn--primary" onClick={onSave} disabled={saving}>
+            <Save size={15} /> {saving ? 'Saving…' : 'Save'}
+          </button>
+          <button className="admin-btn" onClick={onClose} title="Close editor">
+            <X size={15} />
+          </button>
+        </div>
+      </div>
+      <div className="fae-paper-wrap">
+        <div className="fae-paper">
+          <RichTextEditor
+            value={draft.body}
+            onChange={html => onChange({ ...draft, body: html })}
+            onUploadImage={uploadArticleImage}
+            stickyToolbar
+            fullHeight
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ArticleCard({ article, onSave, onDelete }) {
   const [draft, setDraft] = useState(article)
   const [saving, setSaving] = useState(false)
+  const [fullEditor, setFullEditor] = useState(false)
   const dirty = JSON.stringify(draft) !== JSON.stringify(article)
 
   useEffect(() => { setDraft(article) }, [article])
@@ -205,37 +266,47 @@ function ArticleCard({ article, onSave, onDelete }) {
   }
 
   return (
-    <div className="admin-article-card">
-      <div className="admin-article-meta-row">
-        <label className="admin-field" style={{ flex: 2 }}>
-          <span>Title</span>
-          <input type="text" value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} />
-        </label>
-        <label className="admin-field" style={{ flex: 1 }}>
-          <span>Author</span>
-          <input type="text" value={draft.author ?? ''} placeholder="incentive team" onChange={e => setDraft({ ...draft, author: e.target.value })} />
-        </label>
-      </div>
-      <label className="admin-field">
-        <span>Cover image URL <span className="admin-field-hint">(optional)</span></span>
-        <input type="url" value={draft.cover_image_url ?? ''} placeholder="https://..." onChange={e => setDraft({ ...draft, cover_image_url: e.target.value })} />
-      </label>
-      {draft.cover_image_url && (
-        <img src={draft.cover_image_url} alt="Cover preview" className="admin-cover-preview" />
+    <>
+      {fullEditor && (
+        <FullArticleEditor
+          draft={draft}
+          onChange={setDraft}
+          onSave={async () => { await handleSave(); setFullEditor(false) }}
+          onClose={() => setFullEditor(false)}
+          saving={saving}
+        />
       )}
-      <div className="admin-field">
-        <span>Body</span>
-        <RichTextEditor value={draft.body} onChange={html => setDraft({ ...draft, body: html })} />
+      <div className="admin-article-card">
+        <div className="admin-article-meta-row">
+          <label className="admin-field" style={{ flex: 2 }}>
+            <span>Title</span>
+            <input type="text" value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} />
+          </label>
+          <label className="admin-field" style={{ flex: 1 }}>
+            <span>Author</span>
+            <input type="text" value={draft.author ?? ''} placeholder="incentive team" onChange={e => setDraft({ ...draft, author: e.target.value })} />
+          </label>
+        </div>
+        <label className="admin-field">
+          <span>Cover image URL <span className="admin-field-hint">(optional)</span></span>
+          <input type="url" value={draft.cover_image_url ?? ''} placeholder="https://..." onChange={e => setDraft({ ...draft, cover_image_url: e.target.value })} />
+        </label>
+        {draft.cover_image_url && (
+          <img src={draft.cover_image_url} alt="Cover preview" className="admin-cover-preview" />
+        )}
+        <div className="admin-qcard-actions">
+          <button className="admin-btn admin-btn--danger" onClick={() => onDelete(article)}>
+            <Trash2 size={15} /> Delete
+          </button>
+          <button className="admin-btn" onClick={() => setFullEditor(true)} title="Open full-screen editor">
+            <Maximize2 size={15} /> Open editor
+          </button>
+          <button className="admin-btn admin-btn--primary" onClick={handleSave} disabled={!dirty || saving}>
+            <Save size={15} /> {saving ? 'Saving…' : 'Save'}
+          </button>
+        </div>
       </div>
-      <div className="admin-qcard-actions">
-        <button className="admin-btn admin-btn--danger" onClick={() => onDelete(article)}>
-          <Trash2 size={15} /> Delete
-        </button>
-        <button className="admin-btn admin-btn--primary" onClick={handleSave} disabled={!dirty || saving}>
-          <Save size={15} /> {saving ? 'Saving…' : 'Save'}
-        </button>
-      </div>
-    </div>
+    </>
   )
 }
 
