@@ -1,13 +1,6 @@
 /* ===== UNIT PAGE ===== */
 
-/* Unit hero — node-island.png at top, same treatment as main path */
-.unit-island-hero {
-  width: 800px !important;
-  margin: 0 auto -24px !important;
-  display: block !important;
-}
-
-/* Smaller node variant for lesson trail (legacy, kept for other sections) */
+/* Smaller node variant for lesson trail */
 .path-node--sm {
   width: 60px;
   height: 60px;

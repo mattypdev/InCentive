@@ -361,14 +361,18 @@ export default function UnitPage() {
   return (
     <main className="learn-page">
       <div className="path-page">
-        <div className="path-center">
 
-          {/* Unit island header */}
-          <div className="path-island-header">
-            <div className="path-header-nav">
-              <button className="banner-arrow"
-                onClick={() => navigate('/learn', { state: { sectionIndex: SECTIONS.findIndex(s => s.unitIds.includes(unitId)) } })}
-                aria-label="Back to path">
+        <div className="path-side path-side--left" aria-hidden="true">
+          <div className="side-shape side-shape--pill"   style={{ top:'12%',  left:'25%' }}/>
+          <div className="side-shape side-shape--tri"    style={{ top:'38%', left:'40%' }}/>
+          <div className="side-shape side-shape--square" style={{ top:'65%', left:'15%' }}/>
+        </div>
+
+        <div className="path-center">
+          {/* Unit banner */}
+          <div className="section-banner" style={{ background: color }}>
+            <div className="banner-nav">
+              <button className="banner-arrow" onClick={() => navigate('/learn', { state: { sectionIndex: SECTIONS.findIndex(s => s.unitIds.includes(unitId)) } })} aria-label="Back to path">
                 <ArrowLeft size={18} strokeWidth={2.5}/>
               </button>
               <span className="banner-eyebrow">
@@ -378,8 +382,17 @@ export default function UnitPage() {
               </span>
               <div style={{ width: 30 }} />
             </div>
-            <img src="/islands/node-island.png" alt={unit.title} className="path-island-hero unit-island-hero" />
-            <h2 className="path-island-title">{unit.title}</h2>
+            <h2 className="banner-title">{unit.title}</h2>
+            <p className="banner-desc">{completedCount} of {lessons.length} lessons completed</p>
+            {currentUser && (
+              <div className="banner-progress">
+                <div className="banner-progress-track">
+                  <div className="banner-progress-fill"
+                    style={{ width: `${lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0}%` }}/>
+                </div>
+                <span className="banner-progress-label">{completedCount} / {lessons.length}</span>
+              </div>
+            )}
           </div>
 
           {/* Lesson trail */}
@@ -407,22 +420,19 @@ export default function UnitPage() {
                       </div>
                     )}
                     <button
-                      className={`path-node-isle ${sparkling ? 'node-sparkling' : done ? 'node-done' : unlocked ? 'node-available' : 'node-locked'}`}
-                      style={{ '--node-color': color, width: 168, height: 152 }}
+                      className={`path-node path-node--sm ${sparkling ? 'node-sparkling' : done ? 'node-done' : unlocked ? 'node-available' : 'node-locked'}`}
+                      style={{ '--node-color': color }}
                       onClick={() => handleNodeClick(lesson)}
                       disabled={!unlocked || !!sparklingId}
                       aria-label={lesson.title}
                     >
                       {sparkling && <SparkleEffect color={color}/>}
-                      <img src="/islands/lesson-island.png" alt="" className="node-isle-img"/>
-                      <div className="node-isle-badge">
-                        {done ? <Check size={10} strokeWidth={3}/>
-                          : !unlocked ? <Lock size={10}/>
-                          : <span className="node-num-sm">{i+1}</span>}
-                      </div>
+                      {done
+                        ? <Check size={22} strokeWidth={3}/>
+                        : !unlocked ? <Lock size={18}/>
+                        : <span className="node-num">{i+1}</span>}
                     </button>
-                    <div className={`node-chip node-chip--sm node-chip--${chipRight ? 'right' : 'left'}`}
-                      style={{'--chip-color': color}}>
+                    <div className={`node-chip node-chip--sm node-chip--${chipRight ? 'right' : 'left'}`} style={{'--chip-color': color}}>
                       <span className="node-chip-name">{lesson.title}</span>
                       <CoinBadge size={20} drop="1px 1px 0" />
                       <span className="node-chip-cents">{lesson.centsReward}</span>
@@ -432,8 +442,14 @@ export default function UnitPage() {
               })}
             </div>
           </div>
-
         </div>
+
+        <div className="path-side path-side--right" aria-hidden="true">
+          <div className="side-shape side-shape--tri"    style={{ top:'10%', left:'32%' }}/>
+          <div className="side-shape side-shape--square" style={{ top:'42%', left:'50%' }}/>
+          <div className="side-shape side-shape--pill"   style={{ top:'70%', left:'20%' }}/>
+        </div>
+
       </div>
     </main>
   )
