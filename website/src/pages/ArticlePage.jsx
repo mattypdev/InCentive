@@ -61,7 +61,13 @@ export default function ArticlePage() {
               {formatDate(article.published_at)}
             </span>
           </div>
-          <div className="article-body">{article.body}</div>
+          {article.cover_image_url && (
+            <img src={article.cover_image_url} alt="" className="article-cover" />
+          )}
+          <div
+            className="article-body article-body--html"
+            dangerouslySetInnerHTML={{ __html: article.body }}
+          />
         </div>
       </section>
     </main>

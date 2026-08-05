@@ -8,6 +8,7 @@ import {
 } from '../lib/questionsApi'
 import { fetchArticles, createArticle, updateArticle, deleteArticle } from '../lib/articlesApi'
 import { LogOut, ChevronDown, ChevronRight, Trash2, Plus, Save, FileText, BookOpen } from 'lucide-react'
+import RichTextEditor from '../components/RichTextEditor'
 import './Admin.css'
 
 const BLANK_MC = { prompt: '', options: ['', '', '', ''], correct: 0, explanation: '' }
@@ -189,7 +190,7 @@ function FillBlankEditor({ unitId, title }) {
   )
 }
 
-const BLANK_ARTICLE = { title: '', author: '', body: '' }
+const BLANK_ARTICLE = { title: '', author: '', cover_image_url: '', body: '' }
 
 function ArticleCard({ article, onSave, onDelete }) {
   const [draft, setDraft] = useState(article)
@@ -204,19 +205,28 @@ function ArticleCard({ article, onSave, onDelete }) {
   }
 
   return (
-    <div className="admin-qcard">
+    <div className="admin-article-card">
+      <div className="admin-article-meta-row">
+        <label className="admin-field" style={{ flex: 2 }}>
+          <span>Title</span>
+          <input type="text" value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} />
+        </label>
+        <label className="admin-field" style={{ flex: 1 }}>
+          <span>Author</span>
+          <input type="text" value={draft.author ?? ''} placeholder="incentive team" onChange={e => setDraft({ ...draft, author: e.target.value })} />
+        </label>
+      </div>
       <label className="admin-field">
-        <span>Title</span>
-        <input type="text" value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} />
+        <span>Cover image URL <span className="admin-field-hint">(optional)</span></span>
+        <input type="url" value={draft.cover_image_url ?? ''} placeholder="https://..." onChange={e => setDraft({ ...draft, cover_image_url: e.target.value })} />
       </label>
-      <label className="admin-field">
-        <span>Author</span>
-        <input type="text" value={draft.author ?? ''} placeholder="incentive team" onChange={e => setDraft({ ...draft, author: e.target.value })} />
-      </label>
-      <label className="admin-field">
+      {draft.cover_image_url && (
+        <img src={draft.cover_image_url} alt="Cover preview" className="admin-cover-preview" />
+      )}
+      <div className="admin-field">
         <span>Body</span>
-        <textarea value={draft.body} onChange={e => setDraft({ ...draft, body: e.target.value })} rows={10} />
-      </label>
+        <RichTextEditor value={draft.body} onChange={html => setDraft({ ...draft, body: html })} />
+      </div>
       <div className="admin-qcard-actions">
         <button className="admin-btn admin-btn--danger" onClick={() => onDelete(article)}>
           <Trash2 size={15} /> Delete
@@ -241,11 +251,12 @@ function ArticlesEditor() {
 
   async function handleSave(draft) {
     setError('')
+    const patch = { title: draft.title, author: draft.author, body: draft.body, cover_image_url: draft.cover_image_url ?? null }
     try {
       if (draft.id) {
-        await updateArticle(draft.id, { title: draft.title, author: draft.author, body: draft.body })
+        await updateArticle(draft.id, patch)
       } else {
-        await createArticle({ title: draft.title, author: draft.author, body: draft.body })
+        await createArticle(patch)
       }
       load()
     } catch (e) { setError(e.message) }

@@ -19,10 +19,10 @@ export async function fetchArticle(id) {
   return data
 }
 
-export async function createArticle({ title, body, author }) {
+export async function createArticle({ title, body, author, cover_image_url }) {
   const { data, error } = await supabase
     .from('articles')
-    .insert({ title, body, author, published_at: new Date().toISOString() })
+    .insert({ title, body, author, cover_image_url, published_at: new Date().toISOString() })
     .select()
     .single()
   if (error) throw error

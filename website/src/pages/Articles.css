@@ -113,11 +113,73 @@
   border-bottom: var(--border-width) solid var(--foreground);
 }
 
+.article-cover {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 32px;
+  border: var(--border-width) solid var(--border);
+}
+
 .article-body {
   font-size: var(--text-lg);
   line-height: 1.85;
   white-space: pre-wrap;
   color: var(--foreground);
+}
+
+/* Rich-text HTML body — produced by the admin editor */
+.article-body--html {
+  white-space: normal;
+}
+.article-body--html > * + * { margin-top: 1em; }
+.article-body--html h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.2; margin-top: 1.4em; }
+.article-body--html h2 { font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 700; line-height: 1.3; margin-top: 1.2em; }
+.article-body--html h3 { font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 700; line-height: 1.4; margin-top: 1em; }
+.article-body--html p { margin: 0; }
+.article-body--html strong { font-weight: 700; }
+.article-body--html em { font-style: italic; }
+.article-body--html u { text-decoration: underline; }
+.article-body--html s { text-decoration: line-through; }
+.article-body--html a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.article-body--html a:hover { opacity: 0.8; }
+.article-body--html ul { list-style: disc; padding-left: 1.5em; }
+.article-body--html ol { list-style: decimal; padding-left: 1.5em; }
+.article-body--html li { margin: 0.3em 0; }
+.article-body--html blockquote {
+  border-left: 4px solid var(--accent);
+  padding: 6px 0 6px 20px;
+  color: var(--muted-foreground);
+  font-style: italic;
+  margin: 0;
+}
+.article-body--html hr {
+  border: none;
+  border-top: var(--border-width) solid var(--border);
+  margin: 1.6em 0;
+}
+.article-body--html img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  display: block;
+  margin: 0.5em 0;
+}
+.article-body--html code {
+  background: var(--muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: monospace;
+}
+.article-body--html pre {
+  background: var(--foreground);
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-size: 0.85em;
 }
 
 @media (max-width: 768px) {
