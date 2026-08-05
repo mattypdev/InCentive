@@ -149,11 +149,16 @@
 .article-body--html li { margin: 0.3em 0; }
 .article-body--html blockquote {
   border-left: 4px solid var(--accent);
-  padding: 6px 0 6px 20px;
+  padding: 14px 20px 14px 24px;
   color: var(--muted-foreground);
   font-style: italic;
+  font-size: 1.05em;
+  line-height: 1.75;
   margin: 0;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
+.article-body--html blockquote p { margin: 0; }
 .article-body--html hr {
   border: none;
   border-top: var(--border-width) solid var(--border);
