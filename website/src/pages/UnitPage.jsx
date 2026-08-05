@@ -343,17 +343,12 @@ export default function UnitPage() {
               <div className={`lesson-feedback ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`}>
                 <p className="feedback-label">{isCorrect ? 'Correct' : 'Not quite'}</p>
                 <p className="feedback-explain">{q?.explanation}</p>
-                <div className="feedback-actions">
-                  <button className="btn btn-secondary feedback-back-btn" onClick={exitLesson} aria-label="Back to lessons">
-                    <ArrowLeft size={18} strokeWidth={2.5}/>
-                  </button>
-                  <button className="btn btn-primary" onClick={handleNext}>
-                    <span className="btn-label">{qIndex+1 < shuffledQs.length ? 'Next' : 'Finish'}</span>
-                    <span className="btn-icon-badge">
-                      <ArrowLeft size={18} strokeWidth={2.5} style={{ transform:'rotate(180deg)' }}/>
-                    </span>
-                  </button>
-                </div>
+                <button className="btn btn-primary" onClick={handleNext}>
+                  <span className="btn-label">{qIndex+1 < shuffledQs.length ? 'Next' : 'Finish'}</span>
+                  <span className="btn-icon-badge">
+                    <ArrowLeft size={18} strokeWidth={2.5} style={{ transform:'rotate(180deg)' }}/>
+                  </span>
+                </button>
               </div>
             )}
           </div>

@@ -47,20 +47,6 @@
   padding: 3px 10px;
 }
 
-/* Feedback button row: back icon on left, Next/Finish fills the rest */
-.feedback-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.feedback-actions .btn-primary {
-  flex: 1;
-}
-.feedback-back-btn {
-  padding: 14px !important;
-  flex-shrink: 0;
-}
-
 /* Unit not found fallback */
 .unit-not-found {
   max-width: 400px;
