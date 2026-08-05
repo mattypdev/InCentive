@@ -1,6 +1,13 @@
 /* ===== UNIT PAGE ===== */
 
-/* Smaller node variant for lesson trail */
+/* Unit hero — node-island.png at top, same treatment as main path */
+.unit-island-hero {
+  width: 800px !important;
+  margin: 0 auto -24px !important;
+  display: block !important;
+}
+
+/* Smaller node variant for lesson trail (legacy, kept for other sections) */
 .path-node--sm {
   width: 60px;
   height: 60px;
@@ -38,6 +45,20 @@
   background: var(--badge-color, var(--accent));
   border-radius: var(--radius-full);
   padding: 3px 10px;
+}
+
+/* Feedback button row: back icon on left, Next/Finish fills the rest */
+.feedback-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.feedback-actions .btn-primary {
+  flex: 1;
+}
+.feedback-back-btn {
+  padding: 14px !important;
+  flex-shrink: 0;
 }
 
 /* Unit not found fallback */
