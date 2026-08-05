@@ -515,83 +515,93 @@
 
 /* ===== RESPONSIVE ===== */
 
+/* Wide desktop — breathe a little more */
+@media (min-width: 1280px) {
+  .hero-left  { padding: 80px 100px; }
+  .hero-right { padding: 80px 96px; }
+  .hero-left-inner { max-width: 560px; }
+}
+
+/* Stack layout — tablet landscape and below (960px) */
 @media (max-width: 960px) {
   .hero {
     grid-template-columns: 1fr;
-    min-height: auto;
+    min-height: unset;
   }
 
-  /* Red panel moves to bottom half */
-  .hero::after { inset: 50% 0 0 0; }
+  /* Drop the ::after pseudo-element trick — panels get direct backgrounds
+     so the red section always matches the panel height exactly. */
+  .hero::after { display: none; }
 
-  /* Clip to top/bottom halves instead of left/right */
-  .hero-shape-layer--color { clip-path: inset(0 0 50% 0); }
-  .hero-shape-layer--white { clip-path: inset(50% 0 0 0); }
+  /* Hide all shapes — they were positioned for the side-by-side layout
+     and look broken on the stacked mobile layout. */
+  .hero-shape-layer { display: none; }
 
-  /* Hide most shapes — mobile needs less clutter */
-  .hs--circle-xs,
-  .hs--pill-sm,
-  .hs--square,
-  .hs--square-sm,
-  .hs--triangle,
-  .hs--dots { display: none; }
-
-  /* Reposition remaining shapes for vertical split.
-     Shapes near top: 50% will straddle the boundary. */
-  .hs--circle-lg {
-    width: 280px; height: 280px;
-    top: calc(50% - 170px);
-    left: -50px;
-  }
-  .hs--circle-sm {
-    width: 120px; height: 120px;
-    top: auto; bottom: 8%;
-    left: auto; right: 6%;
-  }
-  .hs--pill {
-    top: calc(50% - 23px);
-    left: auto; right: 10%;
-  }
-  .hs--square {
-    top: 8%;
-    left: auto; right: 8%;
-  }
-  .hs--ring {
-    top: 62%;
-    left: 12%;
-  }
-
-  /* Left panel */
+  /* Left panel — white (page default) */
   .hero-left {
-    padding: 56px 32px;
+    padding: 60px 44px 44px;
     justify-content: center;
-    min-height: 50dvh;
+    align-items: center;
+    min-height: 44dvh;
   }
   .hero-left-inner {
     text-align: center;
     margin: 0 auto;
-    max-width: 440px;
+    max-width: 480px;
     width: 100%;
   }
   .hero-subtitle { margin-inline: auto; }
 
-  /* Right panel */
+  /* Right panel — red background applied directly */
   .hero-right {
-    padding: 48px 32px;
-    min-height: 50dvh;
+    background: #FF6F61;
+    padding: 44px 44px 64px;
+    align-items: flex-start;
+    min-height: 56dvh;
   }
 
-  .hero-login { margin: 0 auto; }
-  .hero-login-title { font-size: clamp(2rem, 7vw, 3rem); }
+  .hero-login { margin: 0 auto; gap: 24px; }
+  .hero-login-title { font-size: clamp(1.9rem, 6vw, 2.8rem); }
   .hero-login-sub { font-size: var(--text-md); }
 }
 
+/* Tablet portrait (768px) */
+@media (max-width: 768px) {
+  .hero-left  { padding: 52px 36px 40px; }
+  .hero-right { padding: 40px 36px 60px; }
+  .hero-login { gap: 20px; }
+}
+
+/* Large mobile (600px) */
+@media (max-width: 600px) {
+  .hero-left  { padding: 48px 28px 36px; }
+  .hero-right { padding: 36px 28px 56px; }
+  .hero-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); }
+  .hero-login { gap: 18px; }
+  .hero-login-title { font-size: clamp(1.7rem, 7.5vw, 2.4rem); }
+}
+
+/* Standard mobile (480px) */
 @media (max-width: 480px) {
-  .hero-left { padding: 44px 20px; }
-  .hero-right { padding: 40px 20px; }
-  .hs--ring, .hs--circle-sm { display: none; }
-  .hero-login-title { font-size: var(--text-2xl); }
-  .hero-login { gap: 22px; }
-  .hero-login-input { padding: 13px 16px; }
+  .hero-left  { padding: 44px 20px 32px; }
+  .hero-right { padding: 32px 20px 52px; }
+  .hero-title { font-size: clamp(1.8rem, 9vw, 2.4rem); }
+  .hero-login { gap: 16px; }
+  .hero-login-title { font-size: clamp(1.6rem, 8.5vw, 2.2rem); }
+  .hero-login-sub  { font-size: var(--text-base); }
+  .hero-login-input  { padding: 13px 16px; }
   .hero-login-submit { padding: 14px 16px; }
+  .hero-login-perks  { gap: 8px 12px; }
+}
+
+/* Small mobile — iPhone SE, Galaxy A series, etc. (<375px) */
+@media (max-width: 374px) {
+  .hero-left  { padding: 36px 16px 28px; }
+  .hero-right { padding: 28px 16px 44px; }
+  .hero-title { font-size: clamp(1.6rem, 9vw, 2rem); }
+  .hero-login { gap: 14px; }
+  .hero-login-title  { font-size: 1.5rem; }
+  .hero-login-input  { padding: 11px 14px; font-size: 0.875rem; }
+  .hero-login-submit { padding: 12px 14px; font-size: 0.875rem; }
+  .hero-google-btn   { padding: 11px 14px; font-size: 0.875rem; }
 }
