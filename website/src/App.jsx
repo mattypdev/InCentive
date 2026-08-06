@@ -19,6 +19,7 @@ import Login from './pages/Login'
 import Learn from './pages/Learn'
 import AuthCallback from './pages/AuthCallback'
 import Progress from './pages/Progress'
+import Leaderboard from './pages/Leaderboard'
 import UnitPage from './pages/UnitPage'
 import Admin from './pages/Admin'
 import AdminRoute from './components/AdminRoute'
@@ -61,6 +62,7 @@ export default function App() {
             <Route path="login" element={<Login />} />
             <Route path="learn" element={<Learn />} />
             <Route path="progress" element={<Progress />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="learn/unit/:unitId" element={<UnitPage />} />
             <Route path="admin" element={<AdminRoute><Admin /></AdminRoute>} />
           </Route>

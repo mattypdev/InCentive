@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, LogIn, LogOut } from 'lucide-react'
+import { Menu, X, LogIn, LogOut, ChevronDown } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import CoinBadge from './CoinBadge'
 import { getSpent } from '../lib/shop'
@@ -8,18 +8,34 @@ import './Navbar.css'
 
 const links = [
   { label: 'Learn', href: '/learn' },
-  { label: 'Progress', href: '/progress' },
   { label: 'Resources', href: '/resources' },
   { label: 'Articles', href: '/articles' },
   { label: 'Quizzes', href: '/quizzes' },
   { label: 'About', href: '/about' },
 ]
 
+const CHECK_IN_LINKS = [
+  { label: 'Progress', href: '/progress' },
+  { label: 'Leaderboard', href: '/leaderboard' },
+]
+
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [checkinOpen, setCheckinOpen] = useState(false)
   const [spent, setSpent] = useState(getSpent)
   const { currentUser, profile, logOut } = useAuth()
   const navigate = useNavigate()
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setCheckinOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   useEffect(() => {
     const refresh = () => setSpent(getSpent())
@@ -50,6 +66,24 @@ export default function Navbar() {
               <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
             </li>
           ))}
+          <li className="navbar-dropdown-wrap" ref={dropdownRef}>
+            <button
+              className={`navbar-dropdown-trigger${checkinOpen ? ' navbar-dropdown-trigger--open' : ''}`}
+              onClick={() => setCheckinOpen(v => !v)}
+              aria-expanded={checkinOpen}
+            >
+              Check-in <ChevronDown size={13} strokeWidth={2.5} className={`navbar-chevron${checkinOpen ? ' navbar-chevron--open' : ''}`} />
+            </button>
+            {checkinOpen && (
+              <div className="navbar-dropdown">
+                {CHECK_IN_LINKS.map(({ label, href }) => (
+                  <Link key={href} to={href} className="navbar-dropdown-item" onClick={() => { setCheckinOpen(false); setOpen(false) }}>
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </li>
         </ul>
 
         <div className="navbar-actions">
@@ -111,6 +145,12 @@ export default function Navbar() {
           <ul>
             {links.map(({ label, href }) => (
               <li key={href}>
+                <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+              </li>
+            ))}
+            <li className="navbar-mobile-group-label">Check-in</li>
+            {CHECK_IN_LINKS.map(({ label, href }) => (
+              <li key={href} className="navbar-mobile-subitem">
                 <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
               </li>
             ))}
