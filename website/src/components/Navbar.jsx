@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, LogIn, LogOut, ChevronDown } from 'lucide-react'
+import { Menu, X, LogIn, LogOut } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import CoinBadge from './CoinBadge'
 import { getSpent } from '../lib/shop'
@@ -69,7 +69,7 @@ export default function Navbar() {
               onClick={() => setCheckinOpen(v => !v)}
               aria-expanded={checkinOpen}
             >
-              Check-in <ChevronDown size={13} strokeWidth={2.5} className={`navbar-chevron${checkinOpen ? ' navbar-chevron--open' : ''}`} />
+              Check-in
             </button>
             {checkinOpen && (
               <div className="navbar-dropdown">
