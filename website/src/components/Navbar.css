@@ -38,7 +38,13 @@
 /* Desktop links */
 .navbar-links {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.navbar-links > li {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-links a {
