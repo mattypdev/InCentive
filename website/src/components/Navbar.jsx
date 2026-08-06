@@ -7,7 +7,6 @@ import { getSpent } from '../lib/shop'
 import './Navbar.css'
 
 const links = [
-  { label: 'Learn', href: '/learn' },
   { label: 'Resources', href: '/resources' },
   { label: 'Articles', href: '/articles' },
   { label: 'Quizzes', href: '/quizzes' },
@@ -61,11 +60,9 @@ export default function Navbar() {
         </Link>
 
         <ul className={`navbar-links ${open ? 'navbar-links--open' : ''}`}>
-          {links.map(({ label, href }) => (
-            <li key={href}>
-              <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
-            </li>
-          ))}
+          <li key="/learn">
+            <Link to="/learn" onClick={() => setOpen(false)}>Learn</Link>
+          </li>
           <li className="navbar-dropdown-wrap" ref={dropdownRef}>
             <button
               className={`navbar-dropdown-trigger${checkinOpen ? ' navbar-dropdown-trigger--open' : ''}`}
@@ -84,6 +81,11 @@ export default function Navbar() {
               </div>
             )}
           </li>
+          {links.map(({ label, href }) => (
+            <li key={href}>
+              <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+            </li>
+          ))}
         </ul>
 
         <div className="navbar-actions">
@@ -143,14 +145,17 @@ export default function Navbar() {
       {open && (
         <div className="navbar-mobile">
           <ul>
-            {links.map(({ label, href }) => (
-              <li key={href}>
-                <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
-              </li>
-            ))}
+            <li key="/learn">
+              <Link to="/learn" onClick={() => setOpen(false)}>Learn</Link>
+            </li>
             <li className="navbar-mobile-group-label">Check-in</li>
             {CHECK_IN_LINKS.map(({ label, href }) => (
               <li key={href} className="navbar-mobile-subitem">
+                <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+              </li>
+            ))}
+            {links.map(({ label, href }) => (
+              <li key={href}>
                 <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
               </li>
             ))}
