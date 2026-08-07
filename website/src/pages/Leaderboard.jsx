@@ -2,9 +2,26 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { allUnits } from '../data/levels'
 import { Trophy, Medal } from 'lucide-react'
 import './Leaderboard.css'
 
+const rewardMap = {}
+allUnits.forEach(u => {
+  rewardMap[u.id] = u.centsReward ?? 0
+  if (u.lessons) u.lessons.forEach(l => { rewardMap[l.id] = l.centsReward ?? 0 })
+})
+
+function computeXP(rows) {
+  let total = 0
+  rows.forEach(r => {
+    const pct = (r.score ?? 0) / 100
+    if (rewardMap[r.lesson_id] !== undefined) total += Math.round(rewardMap[r.lesson_id] * pct)
+    else if (r.lesson_id === 'capstone') total += Math.round(200 * pct)
+    else if (r.lesson_id?.endsWith('-test')) total += Math.round(100 * pct)
+  })
+  return total * 2
+}
 
 async function fetchLeaderboard() {
   // Production path: SECURITY DEFINER function (run scripts/leaderboard_function.sql first)
@@ -17,8 +34,8 @@ async function fetchLeaderboard() {
 
   const svc = createClient(import.meta.env.VITE_SUPABASE_URL, serviceKey)
   const [{ data: profiles, error: pe }, { data: progress, error: le }] = await Promise.all([
-    svc.from('profiles').select('id, name, xp'),
-    svc.from('lesson_progress').select('user_id, lesson_id').eq('completed', true),
+    svc.from('profiles').select('id, name'),
+    svc.from('lesson_progress').select('user_id, lesson_id, score').eq('completed', true),
   ])
   if (pe || le) throw new Error((pe || le).message)
 
@@ -30,7 +47,7 @@ async function fetchLeaderboard() {
 
   const entries = (profiles ?? []).map(p => {
     const userRows = byUser[p.id] ?? []
-    const xp = (p.xp ?? 0) * 2
+    const xp = computeXP(userRows)
     const lessons = userRows.filter(r => !r.lesson_id?.endsWith('-test') && r.lesson_id !== 'capstone').length
     const tests = userRows.filter(r => r.lesson_id?.endsWith('-test')).length
     return { id: p.id, name: p.name || 'Unnamed', xp, lessons, tests }
