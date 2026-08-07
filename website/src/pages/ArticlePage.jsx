@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { fetchArticle } from '../lib/articlesApi'
 import { ArrowLeft, Calendar, User } from 'lucide-react'
 import './Articles.css'
 
+const SITE = 'https://incentivefinance.org'
+
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+function stripHtml(html) {
+  return html?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? ''
 }
 
 export default function ArticlePage() {
@@ -41,8 +48,37 @@ export default function ArticlePage() {
     </main>
   )
 
+  const description = stripHtml(article.body).slice(0, 155)
+  const canonical   = `${SITE}/articles/${id}`
+
   return (
     <main>
+      <Helmet>
+        <title>{article.title} — Incentive</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:type"        content="article" />
+        <meta property="og:title"       content={article.title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url"         content={canonical} />
+        {article.cover_image_url && <meta property="og:image" content={article.cover_image_url} />}
+        <meta property="og:site_name"   content="Incentive" />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content={article.title} />
+        <meta name="twitter:description" content={description} />
+        {article.cover_image_url && <meta name="twitter:image" content={article.cover_image_url} />}
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: article.title,
+          description,
+          datePublished: article.published_at,
+          author: article.author ? { '@type': 'Person', name: article.author } : undefined,
+          image: article.cover_image_url || undefined,
+          publisher: { '@type': 'Organization', name: 'Incentive', url: SITE },
+          url: canonical,
+        })}</script>
+      </Helmet>
       <section className="section">
         <div className="container article-page">
           <Link to="/articles" className="article-back">

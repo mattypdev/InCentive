@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { fetchArticles } from '../lib/articlesApi'
 import { Calendar, User } from 'lucide-react'
 import './Articles.css'
@@ -27,6 +28,15 @@ export default function ArticlesPage() {
 
   return (
     <main>
+      <Helmet>
+        <title>Articles — Incentive</title>
+        <meta name="description" content="Personal finance articles on budgeting, investing, taxes, and more. Learn how to manage and grow your money." />
+        <link rel="canonical" href="https://incentivefinance.org/articles" />
+        <meta property="og:title"       content="Articles — Incentive" />
+        <meta property="og:description" content="Personal finance articles on budgeting, investing, taxes, and more." />
+        <meta property="og:url"         content="https://incentivefinance.org/articles" />
+        <meta property="og:type"        content="website" />
+      </Helmet>
       <section className="articles-hero section">
         <div className="container">
           <h1 className="articles-title">
