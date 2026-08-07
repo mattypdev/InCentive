@@ -7,6 +7,7 @@ import CoinBadge from '../components/CoinBadge'
 import { supabase } from '../lib/supabase'
 import { getStoredProgress, storeProgress } from '../lib/guestProgress'
 import { allUnits } from '../data/levels'
+import { lessonIntros } from '../data/lessonIntros'
 import { fetchQuestionsMap } from '../lib/questionsApi'
 import './Learn.css'
 import './UnitPage.css'
@@ -135,6 +136,7 @@ export default function UnitPage() {
   const [centsEarned,   setCentsEarned]   = useState(0)
   const [finalScore,    setFinalScore]    = useState({ correct: 0, total: 0 })
   const [sparklingId,   setSparklingId]   = useState(null)
+  const [slideIndex,    setSlideIndex]    = useState(null)
 
   useEffect(() => {
     if (!currentUser) { setCompletedIds(new Set()); return }
@@ -193,12 +195,14 @@ export default function UnitPage() {
   }
 
   function startLesson(lesson) {
+    const intros = lessonIntros[lesson.id]
     const qs = shuffleOptions([...lesson.questions])
     setActiveLesson(lesson)
     setShuffledQs(qs)
     setQIndex(0); setSelected(null); setShowFeedback(false)
     setSessionOK(0); setLessonDone(false); setCentsEarned(0)
     setFinalScore({ correct: 0, total: 0 })
+    setSlideIndex(intros?.length ? 0 : null)
   }
 
   function handleNodeClick(lesson) {
@@ -254,7 +258,7 @@ export default function UnitPage() {
     setLessonDone(true)
   }
 
-  function exitLesson() { setActiveLesson(null); setLessonDone(false) }
+  function exitLesson() { setActiveLesson(null); setLessonDone(false); setSlideIndex(null) }
 
   const completedCount = lessons.filter(l => completedIds.has(l.id)).length
   const nextUpIndex    = lessons.findIndex(l => !completedIds.has(l.id) && isUnlocked(l.id))
@@ -293,6 +297,51 @@ export default function UnitPage() {
               <span className="btn-label">Back to lessons</span>
               <span className="btn-icon-badge"><ArrowLeft size={16} strokeWidth={2.5}/></span>
             </button>
+          </div>
+        </div></section>
+      </main>
+    )
+  }
+
+  /* ── INTRO SLIDES ── */
+  if (activeLesson && slideIndex !== null) {
+    const slides = lessonIntros[activeLesson.id] ?? []
+    const slide  = slides[slideIndex]
+    const isLast = slideIndex === slides.length - 1
+    return (
+      <main className="learn-page">
+        <section className="section"><div className="container">
+          <div className="lesson-shell">
+            <div className="lesson-top">
+              <button className="lesson-exit" onClick={exitLesson}>
+                <ArrowLeft size={20} strokeWidth={2.5}/><span>Exit</span>
+              </button>
+              <div className="lesson-progress-track" />
+              <button className="slide-skip" onClick={() => setSlideIndex(null)}>
+                Skip to quiz
+              </button>
+            </div>
+            <div className="slide-card">
+              <p className="slide-eyebrow">Before you start</p>
+              <h2 className="slide-title">{slide.title}</h2>
+              <p className="slide-body">{slide.body}</p>
+              {slides.length > 1 && (
+                <div className="slide-dots">
+                  {slides.map((_, i) => (
+                    <span key={i} className={`slide-dot${i === slideIndex ? ' slide-dot--active' : ''}`} />
+                  ))}
+                </div>
+              )}
+              <button
+                className="btn btn-primary slide-cta"
+                onClick={() => isLast ? setSlideIndex(null) : setSlideIndex(i => i + 1)}
+              >
+                <span className="btn-label">{isLast ? 'Got it, start quiz' : 'Next'}</span>
+                <span className="btn-icon-badge">
+                  <ArrowLeft size={18} strokeWidth={2.5} style={{ transform: 'rotate(180deg)' }}/>
+                </span>
+              </button>
+            </div>
           </div>
         </div></section>
       </main>
