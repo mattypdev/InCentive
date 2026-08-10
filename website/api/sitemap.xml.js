@@ -20,20 +20,18 @@ function urlEntry({ loc, lastmod, changefreq, priority }) {
   ].filter(Boolean).join('\n')
 }
 
-export default async function handler(req, res) {
-  const supabaseUrl = process.env.VITE_SUPABASE_URL
-  const anonKey     = process.env.VITE_SUPABASE_ANON_KEY
+const SUPABASE_URL = 'https://vecwhxowbtmbnyjvwjpn.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_yx-D2323BzpcDlkDvqdD3w_Da6Pl1wx'
 
+export default async function handler(req, res) {
   let articles = []
-  if (supabaseUrl && anonKey) {
-    try {
-      const r = await fetch(
-        `${supabaseUrl}/rest/v1/articles?select=id,published_at&order=published_at.desc`,
-        { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } },
-      )
-      if (r.ok) articles = await r.json()
-    } catch {}
-  }
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/articles?select=id,title,published_at&order=published_at.desc`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } },
+    )
+    if (r.ok) articles = await r.json()
+  } catch {}
 
   const today = new Date().toISOString().slice(0, 10)
 
