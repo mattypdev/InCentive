@@ -586,37 +586,37 @@ export default function Learn() {
   const trailH       = positions.length > 0 ? positions[positions.length-1].y + NODE_R + 90 : 200
   const nextUpIndex  = sectionNodes.findIndex(n => !completedIds.has(n.id) && isUnlocked(n.id))
   const bannerColor  = section.color
-  const isBasics     = section.id === 's1'
-
 
   return (
     <main className="learn-page">
       <div className="path-page">
 
+        <div className="path-side path-side--left" aria-hidden="true">
+          <img className="coin-sprite" src={coinSprites[0]} style={{top: section.isCapstone ? '35%' : '15%', right:'0%'}} alt="" />
+          {!section.isCapstone && <img className="coin-sprite" src={coinSprites[1]} style={{top:'58%', right:'0%'}} alt="" />}
+        </div>
 
         <div className="path-center">
-          {/* Section header */}
-          <div className="path-island-header">
-            <div className="path-header-nav">
+          <div className="section-banner" style={{background: bannerColor}}>
+            <div className="banner-nav">
               <button className="banner-arrow" onClick={()=>setView('map')} aria-label="Back to map">
                 <MapIcon size={18} strokeWidth={2.5}/>
               </button>
               <span className="banner-eyebrow">
                 {section.isCapstone ? 'Final Challenge' : `Island ${sectionIndex+1} of ${SECTIONS.length-1}`}
               </span>
-              <button className="banner-arrow" onClick={()=>setSectionIndex(i=>Math.max(0,i-1))} disabled={sectionIndex===0} aria-label="Previous island">
-                <ChevronLeft size={20} strokeWidth={2.5}/>
-              </button>
               <button className="banner-arrow" onClick={()=>setSectionIndex(i=>Math.min(SECTIONS.length-1,i+1))} disabled={sectionIndex===SECTIONS.length-1} aria-label="Next island">
                 <ChevronRight size={20} strokeWidth={2.5}/>
               </button>
             </div>
-            <img
-              src={`/islands/island-${section.isCapstone ? 'cap' : String(sectionIndex)}.png`}
-              alt={section.label}
-              className="path-island-hero"
-            />
-            {isBasics && <h2 className="path-island-title">The Basics</h2>}
+            <h2 className="banner-title">{section.label}</h2>
+            <p className="banner-desc">{section.desc}</p>
+            {currentUser && (
+              <div className="banner-progress">
+                <div className="banner-progress-track"><div className="banner-progress-fill" style={{width:`${sectionPct}%`}}/></div>
+                <span className="banner-progress-label">{sectionDone} / {sectionNodes.length}</span>
+              </div>
+            )}
           </div>
 
           <div className="trail-wrap">
@@ -644,42 +644,21 @@ export default function Learn() {
                         {sectionDone===0 ? 'START' : 'CONTINUE'}
                       </div>
                     )}
-                    {isBasics ? (
-                      <button
-                        className={`path-node-isle${isTest?' node-test':''} ${sparkling?'node-sparkling':done?'node-done':unlocked?'node-available':'node-locked'}`}
-                        style={{'--node-color': nodeColor}}
-                        onClick={()=>handleNodeClick(node)}
-                        disabled={!unlocked||!!sparklingId}
-                        aria-label={node.title}
-                      >
-                        {sparkling && <SparkleEffect color={nodeColor}/>}
-                        <img src="/islands/node-island.png" alt="" className="node-isle-img"/>
-                        <div className="node-isle-badge">
-                          {done ? <Check size={13} strokeWidth={3}/>
-                            : inProgress ? <RefreshCw size={12}/>
-                            : !unlocked ? <Lock size={12}/>
-                            : node.isCapstone ? <Trophy size={13}/>
-                            : node.isChapterTest ? <Star size={13}/>
-                            : <span className="node-num-sm">{i+1}</span>}
-                        </div>
-                      </button>
-                    ) : (
-                      <button
-                        className={`path-node${isTest?' node-test':''} ${sparkling?'node-sparkling':done?'node-done':unlocked?'node-available':'node-locked'}`}
-                        style={{'--node-color': nodeColor}}
-                        onClick={()=>handleNodeClick(node)}
-                        disabled={!unlocked||!!sparklingId}
-                        aria-label={node.title}
-                      >
-                        {sparkling && <SparkleEffect color={nodeColor}/>}
-                        {done ? <Check size={28} strokeWidth={3}/>
-                          : inProgress ? <RefreshCw size={26} strokeWidth={3}/>
-                          : !unlocked ? <Lock size={22}/>
-                          : node.isCapstone ? <Trophy size={24}/>
-                          : node.isChapterTest ? <Star size={24}/>
-                          : <span className="node-num">{i+1}</span>}
-                      </button>
-                    )}
+                    <button
+                      className={`path-node${isTest?' node-test':''} ${sparkling?'node-sparkling':done?'node-done':unlocked?'node-available':'node-locked'}`}
+                      style={{'--node-color': nodeColor}}
+                      onClick={()=>handleNodeClick(node)}
+                      disabled={!unlocked||!!sparklingId}
+                      aria-label={node.title}
+                    >
+                      {sparkling && <SparkleEffect color={nodeColor}/>}
+                      {done ? <Check size={28} strokeWidth={3}/>
+                        : inProgress ? <RefreshCw size={26} strokeWidth={3}/>
+                        : !unlocked ? <Lock size={22}/>
+                        : node.isCapstone ? <Trophy size={24}/>
+                        : node.isChapterTest ? <Star size={24}/>
+                        : <span className="node-num">{i+1}</span>}
+                    </button>
                     <div className="node-chip" style={{'--chip-color': nodeColor}}>
                       <span className="node-chip-name">{node.title}</span>
                       <CoinBadge size={20} drop="1px 1px 0" />
@@ -703,6 +682,10 @@ export default function Learn() {
           )}
         </div>
 
+        <div className="path-side path-side--right" aria-hidden="true">
+          <img className="coin-sprite" src={coinSprites[2]} style={{top: section.isCapstone ? '35%' : '35%', left:'0%'}} alt="" />
+          {!section.isCapstone && <img className="coin-sprite" src={coinSprites[3]} style={{top:'72%', left:'0%'}} alt="" />}
+        </div>
 
       </div>
     </main>
