@@ -6,6 +6,7 @@ import { Zap, Plus, Trash2, Copy, Check, Pencil } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { fetchMyQuizzes, deleteQuiz } from '@/lib/quizzesApi'
 import Button from '@/components/Button'
+import '@/app/(pages)/Presentations.css'
 import '@/app/(pages)/Quizzes.css'
 
 export default function QuizzesPage() {
