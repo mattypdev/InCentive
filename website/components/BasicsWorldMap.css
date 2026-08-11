@@ -1,0 +1,27 @@
+.basics-world-map {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.basics-world-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* island hover lift — applied to the <g> wrapping the image */
+.bwm-isle-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1),
+              filter 0.22s ease;
+}
+.bwm-isle-body.is-hov {
+  transform: translateY(-7px) scale(1.06);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bwm-isle-body { transition: none; }
+}
