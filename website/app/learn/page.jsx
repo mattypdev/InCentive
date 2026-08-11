@@ -296,8 +296,9 @@ export default function Learn() {
       })
       questions = shuffleOptions(fisherYates(pool)).slice(0, 40)
     } else {
-      const base = [...node.questions]
-      if (qData?.fillBlanks[node.id]) { const at = Math.floor(Math.random()*(base.length+1)); base.splice(at,0,qData.fillBlanks[node.id]) }
+      const hasFill = !!qData?.fillBlanks[node.id]
+      const base    = fisherYates([...node.questions]).slice(0, hasFill ? 5 : 6)
+      if (hasFill) { const at = Math.floor(Math.random()*(base.length+1)); base.splice(at,0,qData.fillBlanks[node.id]) }
       questions = shuffleOptions(base)
     }
     setActiveUnit(node); setShuffledQs(questions)
