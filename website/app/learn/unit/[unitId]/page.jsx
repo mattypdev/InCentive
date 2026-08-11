@@ -234,31 +234,30 @@ export default function UnitPage() {
     }
   }
 
-  async function finishLesson(correct, total) {
+  function finishLesson(correct, total) {
     const supabase = createClient()
     const lesson      = activeLesson
     const score       = Math.round((correct / total) * 100)
     const earned      = Math.round((lesson.centsReward ?? 0) * (correct / total))
     const newCompleted = new Set([...completedIds, lesson.id])
-
     const allDone = lessons.every(l => newCompleted.has(l.id))
     if (allDone) newCompleted.add(unit.id)
 
+    triggerCoinFly(earned)
+    triggerXPFly(earned * 2)
+
     if (currentUser) {
       storeProgress(newCompleted)
-      await supabase.from('lesson_progress').upsert({
+      bumpXP(earned)
+      supabase.from('lesson_progress').upsert({
         user_id: currentUser.id, lesson_id: lesson.id,
         completed: true, score, completed_at: new Date().toISOString(),
-      })
-      if (allDone) {
-        await supabase.from('lesson_progress').upsert({
+      }).then(() => {
+        if (allDone) supabase.from('lesson_progress').upsert({
           user_id: currentUser.id, lesson_id: unit.id,
           completed: true, score: 100, completed_at: new Date().toISOString(),
         })
-      }
-      bumpXP(earned)
-      triggerCoinFly(earned)
-      triggerXPFly(earned * 2)
+      })
     }
 
     setCompletedIds(newCompleted)

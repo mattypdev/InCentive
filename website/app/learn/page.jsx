@@ -239,26 +239,30 @@ export default function Learn() {
   const overallDone  = mapStats.reduce((n, s) => n + s.done, 0)
   const overallTotal = mapStats.reduce((n, s) => n + s.total, 0)
 
-  async function finishLesson(correct, total) {
+  function finishLesson(correct, total) {
     const supabase = createClient()
     const unit   = activeUnit
     const score  = Math.round((correct / total) * 100)
     const earned = Math.round((unit.centsReward ?? 0) * (correct / total))
+
+    triggerCoinFly(earned)
+    triggerXPFly(earned * 2)
+
     if (currentUser) {
-      const { error } = await supabase.from('lesson_progress').upsert(
+      supabase.from('lesson_progress').upsert(
         { user_id: currentUser.id, lesson_id: unit.id, completed: true, score },
         { onConflict: 'user_id,lesson_id' }
-      )
-      if (error) {
-        console.error('Failed to save lesson progress:', error)
-      } else {
-        setCompletedIds(prev => new Set([...prev, unit.id]))
-        bumpXP(earned)
-        triggerCoinFly(earned)
-        triggerXPFly(earned * 2)
-        refreshProfile()
-      }
+      ).then(({ error }) => {
+        if (!error) {
+          setCompletedIds(prev => new Set([...prev, unit.id]))
+          bumpXP(earned)
+          refreshProfile()
+        } else {
+          console.error('Failed to save lesson progress:', error)
+        }
+      })
     }
+
     setCentsEarned(earned)
     setFinalScore({ correct, total })
     setLessonDone(true)
