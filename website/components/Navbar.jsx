@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
 import { getSpent } from '@/lib/shop'
 import './Navbar.css'
+import './Button.css'
 
 const links = [
   { label: 'Resources', href: '/resources' },

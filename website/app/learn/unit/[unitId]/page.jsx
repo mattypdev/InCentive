@@ -14,6 +14,7 @@ import { lessonIntros } from '@/data/lessonIntros'
 import { fetchQuestionsMap } from '@/lib/questionsApi'
 import '@/app/(pages)/Learn.css'
 import '@/app/(pages)/UnitPage.css'
+import '@/components/Button.css'
 
 // Section metadata needed to show "Unit X of N" and colors
 const SECTIONS = [

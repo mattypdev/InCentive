@@ -12,6 +12,7 @@ import {
 } from '@/lib/shop'
 import { saveShopToCloud } from '@/lib/shopSync'
 import '@/app/(pages)/Progress.css'
+import '@/components/Button.css'
 
 const LESSON_IDS_ALL = [
   'u1-1','u1-2','u1-3','u1-4','u2-1','u2-2',

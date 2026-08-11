@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import '@/app/(pages)/Login.css'
+import '@/components/Button.css'
 
 export default function Login() {
   const [mode, setMode] = useState('login')
