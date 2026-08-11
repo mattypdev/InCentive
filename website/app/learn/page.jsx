@@ -589,35 +589,6 @@ export default function Learn() {
             <ChevronLeft size={13}/> swipe to explore <ChevronRight size={13}/>
           </p>
 
-          <div key={sectionIndex} className="carousel-title-fade" style={{ maxWidth: 480, width: '100%', padding: '0 20px', boxSizing: 'border-box' }}>
-            <div className="carousel-info" style={{ '--info-color': sec.color }}>
-              <p className="carousel-eyebrow">
-                {sec.isCapstone ? 'Final Challenge' : `Island ${sectionIndex + 1} of ${SECTIONS.length - 1}`}
-              </p>
-              <h2 className="carousel-title">{sec.label}</h2>
-              <p className="carousel-desc">{sec.desc}</p>
-              {currentUser && mapStats[sectionIndex].total > 0 && (
-                <div className="banner-progress" style={{ margin: '10px 0 4px' }}>
-                  <div className="banner-progress-track carousel-progress-track">
-                    <div className="banner-progress-fill carousel-progress-fill" style={{ background: sec.color, width: `${Math.round(mapStats[sectionIndex].done / mapStats[sectionIndex].total * 100)}%` }} />
-                  </div>
-                  <span className="banner-progress-label carousel-progress-label">{mapStats[sectionIndex].done} / {mapStats[sectionIndex].total}</span>
-                </div>
-              )}
-              {!currentUser && (
-                <p className="carousel-locked-note">Log in to track your progress</p>
-              )}
-              {sec.isCapstone && !capstoneUnlocked ? (
-                <p className="carousel-locked-note">Complete all sections to unlock</p>
-              ) : (
-                <button className="carousel-enter" style={{ background: sec.color }} onClick={() => setView('path')}>
-                  {mapStats[sectionIndex].done > 0 ? 'Continue' : 'Start'}
-                  <ChevronRight size={18} strokeWidth={2.5} />
-                </button>
-              )}
-            </div>
-          </div>
-
         </div>
       </main>
     )
