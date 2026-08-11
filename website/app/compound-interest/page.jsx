@@ -1,16 +1,15 @@
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, BookOpen } from 'lucide-react'
 import CompoundInterestCalc from './CompoundInterestCalc'
-import CompoundInterestContent from './CompoundInterestContent'
 import '@/app/(pages)/Calculator.css'
 
 export const metadata = {
   title: 'Compound Interest Calculator — Incentive',
-  description: 'Calculate how your money grows with compound interest. Includes monthly contributions, a growth chart, and a plain-English guide to the formula, the Rule of 72, and why starting early matters.',
+  description: 'Calculate how your money grows with compound interest. Adjust principal, monthly contributions, rate, and time to see your personalised growth chart.',
   alternates: { canonical: 'https://incentivefinance.org/compound-interest' },
   openGraph: {
     title: 'Compound Interest Calculator — Incentive',
-    description: 'See your money grow with compound interest. Adjust principal, monthly contributions, rate, and time — then read the full guide below.',
+    description: 'See your money grow with compound interest. Adjust principal, monthly contributions, rate, and time.',
     url: 'https://incentivefinance.org/compound-interest',
     type: 'website',
   },
@@ -31,7 +30,16 @@ export default function CompoundInterestPage() {
         </div>
 
         <CompoundInterestCalc />
-        <CompoundInterestContent />
+
+        <div className="calc-article-link">
+          <BookOpen size={20} strokeWidth={2} />
+          <div>
+            <p className="calc-article-link-label">Want the full explanation?</p>
+            <Link href="/articles/how-compound-interest-works" className="calc-article-link-anchor">
+              Read our guide — How Compound Interest Works →
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   )
