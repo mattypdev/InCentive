@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import CoinFlyLayer from '@/components/CoinFlyLayer'
 import { applyCosmetics } from '@/lib/shop'
@@ -7,7 +7,7 @@ import { applyCosmetics } from '@/lib/shop'
 export default function AppShell() {
   const pathname = usePathname()
 
-  useEffect(() => { applyCosmetics() }, [])
+  useLayoutEffect(() => { applyCosmetics() }, [])
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
 
   return (
