@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, LogIn, LogOut } from 'lucide-react'
+import { Menu, X, LogOut } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
 import { getSpent } from '@/lib/shop'
@@ -117,10 +117,6 @@ export default function Navbar() {
                 <CoinBadge size={24} drop="1px 1px 0" />
                 <span className="navbar-cents-count">0</span>
               </div>
-              <button className="btn btn-secondary navbar-logout" onClick={() => router.push('/login')}>
-                <span className="btn-label">Log in</span>
-                <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5} /></span>
-              </button>
             </>
           )}
         </div>
@@ -163,7 +159,7 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          {currentUser ? (
+          {currentUser && (
             <div className="navbar-mobile-bottom">
               <div className="navbar-xp">
                 <span className="navbar-xp-icon-wrap"></span>
@@ -178,11 +174,6 @@ export default function Navbar() {
                 <span className="btn-icon-badge"><LogOut size={16} strokeWidth={2.5} /></span>
               </button>
             </div>
-          ) : (
-            <button className="btn btn-secondary" onClick={() => { router.push('/login'); setOpen(false) }} style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
-              <span className="btn-label">Log in</span>
-              <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5} /></span>
-            </button>
           )}
         </div>
       )}
