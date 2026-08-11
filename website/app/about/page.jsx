@@ -12,6 +12,7 @@ function Instagram({ size, strokeWidth }) {
   )
 }
 import usTopology from '@/data/us-states-10m.json'
+import '@/components/Hero.css'
 import '@/app/(pages)/About.css'
 
 function Squiggle({ className }) {
