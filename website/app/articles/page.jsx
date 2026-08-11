@@ -53,7 +53,7 @@ export default async function ArticlesPage() {
           )}
           <div className="articles-grid">
             {(articles ?? []).map(a => (
-              <Link key={a.id} href={`/articles/${a.id}`} className="article-card">
+              <Link key={a.id} href={`/articles/${a.slug ?? a.id}`} className="article-card">
                 <div className="article-card-body">
                   <h2 className="article-card-title">{a.title}</h2>
                   <p className="article-card-excerpt">{excerpt(a.body)}</p>

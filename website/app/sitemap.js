@@ -45,12 +45,12 @@ export default async function sitemap() {
     const supabase = await createClient()
     const { data: articles } = await supabase
       .from('articles')
-      .select('id, updated_at')
+      .select('id, slug, updated_at')
       .order('updated_at', { ascending: false })
 
     if (articles) {
       articleRoutes = articles.map(article => ({
-        url: `${BASE_URL}/articles/${article.id}`,
+        url: `${BASE_URL}/articles/${article.slug ?? article.id}`,
         lastModified: article.updated_at ? new Date(article.updated_at) : D.articles,
         changeFrequency: 'monthly',
         priority: 0.8,

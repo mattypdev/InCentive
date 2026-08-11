@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { cache } from 'react'
 import { ArrowLeft, Calendar, User } from 'lucide-react'
 import '@/app/(pages)/Articles.css'
 
@@ -14,19 +15,38 @@ function stripHtml(html) {
   return html?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? ''
 }
 
-export async function generateMetadata({ params }) {
-  const { id } = await params
+// Cached per-request so generateMetadata and the page share one Supabase call.
+const resolveArticle = cache(async (slug) => {
   const supabase = await createClient()
-  const { data: article } = await supabase
-    .from('articles')
-    .select('title, body, cover_image_url, published_at, author')
-    .eq('id', id)
-    .single()
 
+  // Try slug first
+  const { data: bySlug } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+  if (bySlug) return { article: bySlug, redirect: null }
+
+  // Fall back to numeric ID for old links — return the slug so caller can 301
+  if (/^\d+$/.test(slug)) {
+    const { data: byId } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('id', slug)
+      .single()
+    if (byId) return { article: byId, redirect: byId.slug ? `/articles/${byId.slug}` : null }
+  }
+
+  return { article: null, redirect: null }
+})
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params
+  const { article } = await resolveArticle(slug)
   if (!article) return { title: 'Article Not Found — Incentive' }
 
   const description = stripHtml(article.body).slice(0, 155)
-  const canonical = `${SITE}/articles/${id}`
+  const canonical = `${SITE}/articles/${article.slug ?? slug}`
 
   return {
     title: `${article.title} — Incentive`,
@@ -50,18 +70,14 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ArticlePage({ params }) {
-  const { id } = await params
-  const supabase = await createClient()
-  const { data: article, error } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const { slug } = await params
+  const { article, redirect } = await resolveArticle(slug)
 
-  if (error || !article) notFound()
+  if (redirect) permanentRedirect(redirect)
+  if (!article) notFound()
 
+  const canonical = `${SITE}/articles/${article.slug ?? slug}`
   const description = stripHtml(article.body).slice(0, 155)
-  const canonical = `${SITE}/articles/${id}`
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -69,6 +85,7 @@ export default async function ArticlePage({ params }) {
     headline: article.title,
     description,
     datePublished: article.published_at,
+    dateModified: article.updated_at ?? article.published_at,
     author: article.author ? { '@type': 'Person', name: article.author } : undefined,
     image: article.cover_image_url || undefined,
     publisher: { '@type': 'Organization', name: 'Incentive', url: SITE },
