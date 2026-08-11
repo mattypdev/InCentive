@@ -241,3 +241,462 @@
     padding: 24px 16px;
   }
 }
+
+/* ─── Compound Interest Content Section ─── */
+
+.ci-content {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.ci-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ci-section-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.ci-prose {
+  font-size: var(--text-base);
+  line-height: 1.75;
+  color: var(--foreground);
+  max-width: 72ch;
+}
+
+/* Worked example callout */
+.ci-highlight-box {
+  background-color: var(--muted);
+  border: var(--border-width) solid var(--foreground);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-card);
+}
+
+.ci-highlight-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.ci-example-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ci-example-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  font-size: var(--text-sm);
+}
+
+.ci-example-year {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+
+.ci-example-calc {
+  color: var(--muted-foreground);
+  font-family: monospace;
+}
+
+.ci-example-result {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--foreground);
+  font-size: var(--text-base);
+}
+
+.ci-highlight-note {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  margin-top: 4px;
+}
+
+/* Formula box */
+.ci-formula-box {
+  background-color: var(--foreground);
+  border-radius: var(--radius-md);
+  padding: 28px 36px;
+  text-align: center;
+}
+
+.ci-formula {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #FFFDF5;
+}
+
+.ci-formula sup {
+  font-size: 0.6em;
+}
+
+/* Term definitions */
+.ci-terms {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.ci-term-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ci-term-row:last-child {
+  border-bottom: none;
+}
+
+.ci-term-row dt {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  color: var(--accent);
+  text-align: center;
+}
+
+.ci-term-row dd {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+/* Simple vs compound comparison table */
+.ci-compare-table {
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.ci-compare-header,
+.ci-compare-row {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+}
+
+.ci-compare-header {
+  background-color: var(--foreground);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #FFFDF5;
+}
+
+.ci-compare-row {
+  border-top: 1px solid var(--border);
+  background-color: var(--card);
+}
+
+.ci-compare-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.ci-compare-formula {
+  font-family: monospace;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+.ci-compare-formula sup {
+  font-size: 0.75em;
+}
+
+.ci-compare-amount {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  text-align: right;
+}
+
+.ci-compare-amount--plain { color: var(--muted-foreground); }
+.ci-compare-amount--accent { color: var(--secondary); }
+
+/* Frequency table */
+.ci-freq-table {
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.ci-freq-header,
+.ci-freq-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 20px;
+  gap: 16px;
+}
+
+.ci-freq-header {
+  background-color: var(--foreground);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #FFFDF5;
+}
+
+.ci-freq-row {
+  border-top: 1px solid var(--border);
+  background-color: var(--card);
+  font-size: var(--text-sm);
+}
+
+.ci-freq-row--highlight {
+  background-color: #F0FDF4;
+}
+
+.ci-freq-amount {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--secondary);
+}
+
+/* Rule of 72 grid */
+.ci-rule72-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ci-rule72-card {
+  flex: 1;
+  min-width: 100px;
+  background-color: var(--card);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.ci-rule72-card--accent {
+  border-color: var(--accent);
+  box-shadow: 4px 4px 0px var(--accent);
+}
+
+.ci-rule72-rate {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  color: var(--foreground);
+  margin-bottom: 4px;
+}
+
+.ci-rule72-years {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.ci-rule72-calc {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  font-family: monospace;
+}
+
+/* Starting age comparison */
+.ci-age-compare {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.ci-age-card {
+  flex: 1;
+  background-color: var(--foreground);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-pop);
+}
+
+.ci-age-card--dim {
+  background-color: var(--muted);
+  box-shadow: var(--shadow-card);
+}
+
+.ci-age-card--dim .ci-age-label,
+.ci-age-card--dim .ci-age-years,
+.ci-age-card--dim .ci-age-contributed,
+.ci-age-card--dim .ci-age-total,
+.ci-age-card--dim .ci-age-total-label {
+  color: var(--muted-foreground);
+}
+
+.ci-age-card--dim .ci-age-total {
+  color: var(--foreground);
+}
+
+.ci-age-label {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #FFFDF5;
+  margin-bottom: 12px;
+}
+
+.ci-age-years {
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+}
+
+.ci-age-contributed {
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 16px;
+}
+
+.ci-age-total {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-3xl);
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.ci-age-total-label {
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+}
+
+.ci-age-vs {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+/* FAQ */
+.ci-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.ci-faq-item {
+  padding: 24px 28px;
+  border-bottom: var(--border-width) solid var(--border);
+  background-color: var(--card);
+}
+
+.ci-faq-item:last-child {
+  border-bottom: none;
+}
+
+.ci-faq-q {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: var(--foreground);
+  margin-bottom: 10px;
+}
+
+.ci-faq-a {
+  font-size: var(--text-sm);
+  line-height: 1.75;
+  color: var(--muted-foreground);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ci-content {
+    margin-top: 56px;
+    gap: 48px;
+  }
+
+  .ci-section-title {
+    font-size: var(--text-xl);
+  }
+
+  .ci-compare-header,
+  .ci-compare-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ci-compare-formula {
+    display: none;
+  }
+
+  .ci-freq-header,
+  .ci-freq-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ci-age-compare {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ci-age-vs {
+    transform: rotate(90deg);
+  }
+
+  .ci-rule72-grid {
+    gap: 8px;
+  }
+
+  .ci-faq-item {
+    padding: 20px;
+  }
+
+  .ci-highlight-box {
+    padding: 20px;
+  }
+
+  .ci-example-row {
+    grid-template-columns: 52px 1fr auto;
+    font-size: var(--text-xs);
+  }
+}
