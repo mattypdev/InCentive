@@ -32,57 +32,66 @@ export function getActive() {
 }
 
 export function getSpent() {
-  return parseInt(localStorage.getItem(SPENT_KEY) ?? '0', 10)
+  try { return parseInt(localStorage.getItem(SPENT_KEY) ?? '0', 10) }
+  catch { return 0 }
 }
 
 export function getPeakCoins() {
-  return parseInt(localStorage.getItem(PEAK_KEY) ?? '0', 10)
+  try { return parseInt(localStorage.getItem(PEAK_KEY) ?? '0', 10) }
+  catch { return 0 }
 }
 
 export function updatePeakCoins(current) {
-  const peak = getPeakCoins()
-  if (current > peak) {
-    localStorage.setItem(PEAK_KEY, String(current))
-    return current
-  }
-  return peak
+  try {
+    const peak = getPeakCoins()
+    if (current > peak) { localStorage.setItem(PEAK_KEY, String(current)); return current }
+    return peak
+  } catch { return current }
 }
 
 export function purchase(itemId, price) {
-  const purchased = getPurchased()
-  if (purchased.has(itemId)) return
-  purchased.add(itemId)
-  localStorage.setItem(PURCHASED_KEY, JSON.stringify([...purchased]))
-  localStorage.setItem(SPENT_KEY, String(getSpent() + price))
-  activateItem(itemId)
-  window.dispatchEvent(new CustomEvent('incentive:shop-update'))
+  try {
+    const purchased = getPurchased()
+    if (purchased.has(itemId)) return
+    purchased.add(itemId)
+    localStorage.setItem(PURCHASED_KEY, JSON.stringify([...purchased]))
+    localStorage.setItem(SPENT_KEY, String(getSpent() + price))
+    activateItem(itemId)
+    window.dispatchEvent(new CustomEvent('incentive:shop-update'))
+  } catch {}
 }
 
 export function activateItem(itemId) {
-  const active = getActive()
-  if (itemId.startsWith('color-')) {
-    THEME_COLORS.forEach(c => active.delete(c.id))
-    active.add(itemId)
-  } else {
-    COIN_SHAPES.forEach(s => { if (s.id !== 'circle') active.delete(s.id) })
-    if (itemId !== 'circle') active.add(itemId)
-  }
-  localStorage.setItem(ACTIVE_KEY, JSON.stringify([...active]))
-  applyCosmetics(active)
+  try {
+    const active = getActive()
+    if (itemId.startsWith('color-')) {
+      THEME_COLORS.forEach(c => active.delete(c.id))
+      active.add(itemId)
+    } else {
+      COIN_SHAPES.forEach(s => { if (s.id !== 'circle') active.delete(s.id) })
+      if (itemId !== 'circle') active.add(itemId)
+    }
+    localStorage.setItem(ACTIVE_KEY, JSON.stringify([...active]))
+    applyCosmetics(active)
+  } catch {}
 }
 
 export function deactivateColor() {
-  const active = getActive()
-  THEME_COLORS.forEach(c => active.delete(c.id))
-  localStorage.setItem(ACTIVE_KEY, JSON.stringify([...active]))
-  applyCosmetics(active)
+  try {
+    const active = getActive()
+    THEME_COLORS.forEach(c => active.delete(c.id))
+    localStorage.setItem(ACTIVE_KEY, JSON.stringify([...active]))
+    applyCosmetics(active)
+  } catch {}
 }
 
 export function deactivateShape() {
-  const active = getActive()
-  COIN_SHAPES.forEach(s => { if (s.id !== 'circle') active.delete(s.id) })
-  localStorage.setItem(ACTIVE_KEY, JSON.stringify([...active]))
-  applyCosmetics(active)
+  try {
+    const active = getActive()
+    COIN_SHAPES.forEach(s => { if (s.id !== 'circle') active.delete(s.id) })
+    localStorage.setItem(ACTIVE_KEY, JSON.stringify([...active]))
+    applyCosmetics(active)
+  } catch {}
 }
 
 export function clearShopData() {
@@ -93,10 +102,11 @@ export function clearShopData() {
     localStorage.removeItem(PEAK_KEY)
   } catch {}
   applyCosmetics(new Set())
-  window.dispatchEvent(new CustomEvent('incentive:shop-update'))
+  try { window.dispatchEvent(new CustomEvent('incentive:shop-update')) } catch {}
 }
 
 export function applyCosmetics(active) {
+  if (typeof window === 'undefined') return
   if (!active) active = getActive()
   const root = document.documentElement
 
