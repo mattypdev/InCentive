@@ -201,7 +201,7 @@ export default function UnitPage() {
 
   function startLesson(lesson) {
     const intros = lessonIntros[lesson.id]
-    const qs = shuffleOptions([...lesson.questions])
+    const qs = shuffleOptions(fisherYates([...lesson.questions]).slice(0, 6))
     setActiveLesson(lesson)
     setShuffledQs(qs)
     setQIndex(0); setSelected(null); setShowFeedback(false)
