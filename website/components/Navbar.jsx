@@ -76,7 +76,7 @@ export default function Navbar() {
             {checkinOpen && (
               <div className="navbar-dropdown">
                 {CHECK_IN_LINKS.map(({ label, href }) => (
-                  <Link key={href} to={href} className="navbar-dropdown-item" onClick={() => { setCheckinOpen(false); setOpen(false) }}>
+                  <Link key={href} href={href} className="navbar-dropdown-item" onClick={() => { setCheckinOpen(false); setOpen(false) }}>
                     {label}
                   </Link>
                 ))}
@@ -85,7 +85,7 @@ export default function Navbar() {
           </li>
           {links.map(({ label, href }) => (
             <li key={href}>
-              <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+              <Link href={href} onClick={() => setOpen(false)}>{label}</Link>
             </li>
           ))}
         </ul>
@@ -153,12 +153,12 @@ export default function Navbar() {
             <li className="navbar-mobile-group-label">Check-in</li>
             {CHECK_IN_LINKS.map(({ label, href }) => (
               <li key={href} className="navbar-mobile-subitem">
-                <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+                <Link href={href} onClick={() => setOpen(false)}>{label}</Link>
               </li>
             ))}
             {links.map(({ label, href }) => (
               <li key={href}>
-                <Link to={href} onClick={() => setOpen(false)}>{label}</Link>
+                <Link href={href} onClick={() => setOpen(false)}>{label}</Link>
               </li>
             ))}
           </ul>
