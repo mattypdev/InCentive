@@ -3,6 +3,7 @@ import '../styles/app.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import AuthProvider from '@/context/AuthContext'
+import AppShell from '@/components/AppShell'
 
 export const metadata = {
   title: 'Incentive',
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       </head>
       <body style={{ backgroundColor: '#FFFDF5' }}>
         <AuthProvider>
+          <AppShell />
           <Navbar />
           {children}
           <Footer />

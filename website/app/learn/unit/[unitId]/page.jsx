@@ -100,6 +100,9 @@ export default function UnitPage() {
   const { unitId } = useParams()
   const router     = useRouter()
   const { currentUser, bumpXP } = useAuth()
+  const sectionIndex = typeof window !== 'undefined'
+    ? (parseInt(new URLSearchParams(window.location.search).get('section') ?? '0') || 0)
+    : 0
 
   const [qData, setQData] = useState(null)
   useEffect(() => {
@@ -182,7 +185,7 @@ export default function UnitPage() {
       <main className="learn-page">
         <div className="unit-not-found">
           <p>Unit not found or has no lessons yet.</p>
-          <Link href="/learn">Back to path</Link>
+          <Link href={`/learn?section=${sectionIndex}&view=path`}>Back to path</Link>
         </div>
       </main>
     )
@@ -427,7 +430,7 @@ export default function UnitPage() {
           {/* Unit banner */}
           <div className="section-banner" style={{ background: color }}>
             <div className="banner-nav">
-              <button className="banner-arrow" onClick={() => router.push('/learn')} aria-label="Back to path">
+              <button className="banner-arrow" onClick={() => router.push(`/learn?section=${sectionIndex}&view=path`)} aria-label="Back to path">
                 <ArrowLeft size={18} strokeWidth={2.5}/>
               </button>
               <span className="banner-eyebrow">

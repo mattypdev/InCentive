@@ -153,8 +153,14 @@ export default function Learn() {
   const [lessonDone,    setLessonDone]    = useState(false)
   const [centsEarned,   setCentsEarned]   = useState(0)
   const [finalScore,    setFinalScore]    = useState({ correct:0, total:0 })
-  const [sectionIndex,  setSectionIndex]  = useState(0)
-  const [view,          setView]          = useState('map')
+  const [sectionIndex,  setSectionIndex]  = useState(() => {
+    if (typeof window === 'undefined') return 0
+    return parseInt(new URLSearchParams(window.location.search).get('section') ?? '0') || 0
+  })
+  const [view,          setView]          = useState(() => {
+    if (typeof window === 'undefined') return 'map'
+    return new URLSearchParams(window.location.search).get('view') ?? 'map'
+  })
   const [sparklingId,   setSparklingId]   = useState(null)
   const [qData,         setQData]         = useState(null)
   const touchStartX  = useRef(null)
@@ -325,7 +331,7 @@ export default function Learn() {
   function handleNodeClick(node) {
     if (!isUnlocked(node.id) || sparklingId) return
     if (node.lessons?.length) {
-      router.push(`/learn/unit/${node.id}`)
+      router.push(`/learn/unit/${node.id}?section=${sectionIndex}`)
       return
     }
     setSparklingId(node.id)
