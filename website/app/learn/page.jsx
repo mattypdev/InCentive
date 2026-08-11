@@ -320,10 +320,6 @@ export default function Learn() {
 
   function handleNodeClick(node) {
     if (!isUnlocked(node.id) || sparklingId) return
-    if (node.lessons?.length) {
-      router.push(`/learn/unit/${node.id}`)
-      return
-    }
     setSparklingId(node.id)
     setTimeout(() => { setSparklingId(null); startItem(node) }, 550)
   }
