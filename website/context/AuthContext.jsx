@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { allUnits } from '@/data/levels'
 import { clearStoredProgress } from '@/lib/guestProgress'
@@ -7,6 +7,29 @@ import { clearShopData } from '@/lib/shop'
 import { loadShopFromCloud } from '@/lib/shopSync'
 
 const AuthContext = createContext(null)
+
+// ── Cache helpers ──────────────────────────────────────────────────────────
+// We persist { userId, profile } to localStorage so the navbar and any other
+// auth-aware UI can restore the correct state synchronously before the first
+// paint, avoiding any flash of the wrong (guest) state on reload.
+
+const CACHE_KEY = 'incentive_auth_cache'
+
+function readCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY) ?? 'null') }
+  catch { return null }
+}
+
+function writeCache(userId, profile) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ userId, profile })) }
+  catch {}
+}
+
+function clearCache() {
+  try { localStorage.removeItem(CACHE_KEY) } catch {}
+}
+
+// ── XP helpers ────────────────────────────────────────────────────────────
 
 const rewardMap = {}
 allUnits.forEach(u => {
@@ -29,19 +52,34 @@ function computeXP(rows) {
   return total
 }
 
+// ── Provider ──────────────────────────────────────────────────────────────
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
-  const [profile, setProfile]         = useState(null)
-  const [loading, setLoading]         = useState(true)
+  const [profile,     setProfile]     = useState(null)
+  const [loading,     setLoading]     = useState(true)
   const supabase = createClient()
+
+  // Restore cached state before the browser paints so the UI is immediately
+  // correct on reload. useLayoutEffect fires synchronously after the DOM is
+  // updated but before paint — no flash of the guest state.
+  useLayoutEffect(() => {
+    const cached = readCache()
+    if (cached?.userId) {
+      setCurrentUser(prev => prev ?? { id: cached.userId })
+      if (cached.profile) setProfile(prev => prev ?? cached.profile)
+    }
+  }, [])
 
   async function fetchProfile(userId) {
     const [{ data: profileData }, { data: progressData }] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', userId).single(),
       supabase.from('lesson_progress').select('lesson_id, score').eq('user_id', userId).eq('completed', true),
     ])
-    const xp = progressData ? computeXP(progressData) : 0
-    setProfile(prev => ({ ...prev, ...(profileData ?? {}), xp }))
+    const xp      = progressData ? computeXP(progressData) : 0
+    const updated = { ...(profileData ?? {}), xp }
+    setProfile(updated)
+    writeCache(userId, updated)
     loadShopFromCloud(userId)
   }
 
@@ -55,10 +93,15 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setCurrentUser(session?.user ?? null)
-      if (session?.user) {
-        await ensureProfile(session.user)
-        fetchProfile(session.user.id)
+      const user = session?.user ?? null
+      setCurrentUser(user)
+      if (user) {
+        await ensureProfile(user)
+        fetchProfile(user.id)
+      } else {
+        // Session gone — wipe cached state so a stale cache doesn't linger
+        setProfile(null)
+        clearCache()
       }
       setLoading(false)
     })
@@ -73,7 +116,12 @@ export function AuthProvider({ children }) {
           }
         }
         fetchProfile(session.user.id)
-      } else { setProfile(null); clearStoredProgress(); clearShopData() }
+      } else {
+        setProfile(null)
+        clearCache()
+        clearStoredProgress()
+        clearShopData()
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -105,7 +153,10 @@ export function AuthProvider({ children }) {
     if (error) throw error
   }
 
-  async function logOut() { await supabase.auth.signOut() }
+  async function logOut() {
+    await supabase.auth.signOut()
+    clearCache()
+  }
 
   async function refreshProfile() { if (currentUser) await fetchProfile(currentUser.id) }
 
