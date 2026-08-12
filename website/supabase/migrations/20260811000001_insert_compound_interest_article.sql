@@ -2,7 +2,7 @@
 -- Run once in Supabase Dashboard → SQL Editor.
 -- Requires the slug column to exist (migration 20260811000000).
 
-INSERT INTO articles (title, author, slug, published_at, updated_at, body)
+INSERT INTO articles (title, author, slug, published_at, body)
 VALUES (
   'How Compound Interest Works',
   'incentive team',
