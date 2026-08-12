@@ -2,21 +2,98 @@ import ChapterMap from './ChapterMap'
 import '@/components/Hero.css'
 import '@/app/(pages)/About.css'
 
+const SITE = 'https://incentivefinance.org'
+
 export const metadata = {
   title: 'About Incentive: Student-Led Financial Literacy Nonprofit',
-  description: 'Meet the student-led nonprofit making free financial literacy education accessible to every high school student. Learn about our mission, team, and chapters.',
-  alternates: { canonical: 'https://incentivefinance.org/about' },
+  description: 'Founded by Sathvik Vadlakunta and Matthew Park, Incentive brings free financial literacy to high school students. Meet the co-founders, team, and board of advisors.',
+  alternates: { canonical: `${SITE}/about` },
   openGraph: {
     title: 'About Incentive: Student-Led Financial Literacy Nonprofit',
-    description: 'Meet the student-led nonprofit making free financial literacy education accessible to every high school student. Learn about our mission, team, and chapters.',
-    url: 'https://incentivefinance.org/about',
-    type: 'website',
+    description: 'Founded by Sathvik Vadlakunta and Matthew Park, Incentive brings free financial literacy to high school students. Meet the co-founders, team, and board of advisors.',
+    url: `${SITE}/about`,
+    type: 'profile',
   },
+}
+
+const org = {
+  '@type': 'Organization',
+  '@id': `${SITE}/#org`,
+  name: 'Incentive',
+  url: SITE,
+}
+
+const teamLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Sathvik Vadlakunta',
+    jobTitle: 'Co-Founder',
+    worksFor: org,
+    url: `${SITE}/about`,
+    image: `${SITE}/images/sathvik-vadlakunta.jpeg`,
+    sameAs: [
+      'https://www.linkedin.com/in/sathvik-vadlakunta-239b03379/',
+      'https://www.instagram.com/sathvik.vadlakunta/',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Matthew Park',
+    jobTitle: 'Co-Founder',
+    worksFor: org,
+    url: `${SITE}/about`,
+    image: `${SITE}/images/matthew-park.jpg`,
+    sameAs: [
+      'https://www.linkedin.com/in/matthew-park-11b036309/',
+      'https://www.instagram.com/mattyp.21/',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Esha Yarram',
+    jobTitle: 'Social Media Coordinator',
+    worksFor: org,
+    url: `${SITE}/about`,
+    image: `${SITE}/images/esha-yarram.jpeg`,
+    sameAs: [
+      'https://www.linkedin.com/in/esha-yarram-713ab6379/',
+      'https://www.instagram.com/eshayarram/',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Frederick Steinmann',
+    jobTitle: 'Assistant Research Professor at UNR',
+    worksFor: { '@type': 'CollegeOrUniversity', name: 'University of Nevada, Reno' },
+    url: `${SITE}/about`,
+    image: `${SITE}/images/advisor.jpg`,
+    sameAs: [
+      'https://www.linkedin.com/in/fredsteinmann/',
+    ],
+  },
+]
+
+const aboutPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About Incentive',
+  description: 'Founded by Sathvik Vadlakunta and Matthew Park, Incentive is a student-led nonprofit providing free financial literacy education to high school students.',
+  url: `${SITE}/about`,
+  mainEntity: org,
 }
 
 export default function AboutPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageLd) }} />
+      {teamLd.map(person => (
+        <script key={person.name} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
+      ))}
+
       {/* ── HERO ── */}
       <section className="about-hero section">
         <div className="container">
