@@ -1,12 +1,39 @@
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import RetirementCalc from './RetirementCalc'
+import { SITE, webAppLd, breadcrumbLd } from '@/lib/schema'
 import '@/app/(pages)/Calculator.css'
+
+export const metadata = {
+  title: 'Retirement Calculator — Incentive',
+  description: 'Plan your retirement savings and see what it takes to retire on your terms. Adjust age, contributions, and return rate for a personalised projection.',
+  alternates: { canonical: `${SITE}/retirement-calculator` },
+  openGraph: {
+    title: 'Retirement Calculator — Incentive',
+    description: 'Plan ahead and see what it takes to retire on your terms.',
+    url: `${SITE}/retirement-calculator`,
+    type: 'website',
+  },
+}
+
+const appLd = webAppLd({
+  name: 'Retirement Calculator',
+  description: 'Project your retirement savings based on current age, retirement age, existing savings, monthly contributions, and expected annual return.',
+  url: `${SITE}/retirement-calculator`,
+})
+
+const crumbLd = breadcrumbLd([
+  ['Resources', '/resources'],
+  ['Retirement Calculator', '/retirement-calculator'],
+])
 
 export default function RetirementCalculatorPage() {
   return (
     <section className="calc-page section">
       <div className="container">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }} />
+
         <Link href="/resources" className="calc-back">
           <ArrowLeft size={16} strokeWidth={2.5} />
           Back to Resources

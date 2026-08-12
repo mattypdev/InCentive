@@ -1,24 +1,39 @@
 import Link from 'next/link'
 import { ArrowLeft, BookOpen } from 'lucide-react'
 import CompoundInterestCalc from './CompoundInterestCalc'
+import { SITE, webAppLd, breadcrumbLd } from '@/lib/schema'
 import '@/app/(pages)/Calculator.css'
 
 export const metadata = {
   title: 'Compound Interest Calculator — Incentive',
   description: 'Calculate how your money grows with compound interest. Adjust principal, monthly contributions, rate, and time to see your personalised growth chart.',
-  alternates: { canonical: 'https://incentivefinance.org/compound-interest' },
+  alternates: { canonical: `${SITE}/compound-interest` },
   openGraph: {
     title: 'Compound Interest Calculator — Incentive',
     description: 'See your money grow with compound interest. Adjust principal, monthly contributions, rate, and time.',
-    url: 'https://incentivefinance.org/compound-interest',
+    url: `${SITE}/compound-interest`,
     type: 'website',
   },
 }
+
+const appLd = webAppLd({
+  name: 'Compound Interest Calculator',
+  description: 'Calculate how money grows over time with compound interest, including monthly contributions and a visual growth chart.',
+  url: `${SITE}/compound-interest`,
+})
+
+const crumbLd = breadcrumbLd([
+  ['Resources', '/resources'],
+  ['Compound Interest Calculator', '/compound-interest'],
+])
 
 export default function CompoundInterestPage() {
   return (
     <section className="calc-page section">
       <div className="container">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }} />
+
         <Link href="/resources" className="calc-back">
           <ArrowLeft size={16} strokeWidth={2.5} />
           Back to Resources

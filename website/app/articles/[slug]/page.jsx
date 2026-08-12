@@ -3,9 +3,9 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { cache } from 'react'
 import { ArrowLeft, Calendar, User } from 'lucide-react'
+import { ORG, SITE, breadcrumbLd } from '@/lib/schema'
+import { slugify } from '@/lib/slugify'
 import '@/app/(pages)/Articles.css'
-
-const SITE = 'https://incentivefinance.org'
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -15,11 +15,13 @@ function stripHtml(html) {
   return html?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() ?? ''
 }
 
-// Cached per-request so generateMetadata and the page share one Supabase call.
+function wordCount(html) {
+  return stripHtml(html).split(/\s+/).filter(Boolean).length
+}
+
 const resolveArticle = cache(async (slug) => {
   const supabase = await createClient()
 
-  // Try slug first
   const { data: bySlug } = await supabase
     .from('articles')
     .select('*')
@@ -27,7 +29,6 @@ const resolveArticle = cache(async (slug) => {
     .single()
   if (bySlug) return { article: bySlug, redirect: null }
 
-  // Fall back to numeric ID for old links — return the slug so caller can 301
   if (/^\d+$/.test(slug)) {
     const { data: byId } = await supabase
       .from('articles')
@@ -79,25 +80,37 @@ export default async function ArticlePage({ params }) {
   const canonical = `${SITE}/articles/${article.slug ?? slug}`
   const description = stripHtml(article.body).slice(0, 155)
 
-  const jsonLd = {
+  const articleLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
     description,
     datePublished: article.published_at,
-    dateModified: article.updated_at ?? article.published_at,
-    author: article.author ? { '@type': 'Person', name: article.author } : undefined,
-    image: article.cover_image_url || undefined,
-    publisher: { '@type': 'Organization', name: 'Incentive', url: SITE },
+    dateModified: article.published_at,
+    inLanguage: 'en-US',
+    isAccessibleForFree: true,
+    wordCount: wordCount(article.body),
     url: canonical,
+    ...(article.cover_image_url ? { image: article.cover_image_url } : {}),
+    author: article.author
+      ? {
+          '@type': 'Person',
+          name: article.author,
+          url: `${SITE}/authors/${slugify(article.author)}`,
+        }
+      : { '@type': 'Organization', ...ORG },
+    publisher: ORG,
   }
+
+  const crumbLd = breadcrumbLd([
+    ['Articles', '/articles'],
+    [article.title, `/articles/${article.slug ?? slug}`],
+  ])
 
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }} />
       <section className="section">
         <div className="container article-page">
           <Link href="/articles" className="article-back">
