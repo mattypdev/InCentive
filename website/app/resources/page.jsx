@@ -85,26 +85,11 @@ export default function ResourcesPage() {
           </div>
 
           <div className="pdf-embed-wrapper">
-            <object
-              data="/financial-literacy-presentation.pdf"
-              type="application/pdf"
+            <iframe
+              src="/financial-literacy-presentation.pdf"
               className="pdf-embed"
-              aria-label="Financial education presentation"
-            >
-              <div className="pdf-fallback">
-                <FileText size={48} strokeWidth={2} />
-                <p>Your browser doesn&rsquo;t support embedded PDFs.</p>
-                <Button
-                  variant="primary"
-                  icon={Download}
-                  href="/financial-literacy-presentation.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download Presentation
-                </Button>
-              </div>
-            </object>
+              title="Financial Literacy Presentation"
+            />
           </div>
 
           <div className="pdf-download-bar">

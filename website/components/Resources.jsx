@@ -17,28 +17,11 @@ export default function Resources() {
         </div>
 
         <div className="resources-embed-wrapper">
-          <object
-            data="/financial-literacy-presentation.pdf"
-            type="application/pdf"
+          <iframe
+            src="/financial-literacy-presentation.pdf"
             className="resources-embed"
-            aria-label="Financial education presentation"
-          >
-            <div className="resources-fallback">
-              <FileText size={48} strokeWidth={2} />
-              <p>
-                Your browser doesn't support embedded PDFs.
-              </p>
-              <Button
-                variant="primary"
-                icon={Download}
-                href="/financial-literacy-presentation.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Download Presentation
-              </Button>
-            </div>
-          </object>
+            title="Financial Literacy Presentation"
+          />
         </div>
 
         <div className="resources-download-bar">
