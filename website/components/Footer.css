@@ -57,6 +57,12 @@
   background-color: rgba(255, 111, 97, 0.15);
 }
 
+.footer-nonprofit {
+  margin-top: 20px;
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.35);
+}
+
 /* Bottom bar */
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mail } from 'lucide-react'
+import { Mail, Linkedin } from 'lucide-react'
 import './Footer.css'
 
 function InstagramIcon({ size, strokeWidth }) {
@@ -12,7 +12,8 @@ function InstagramIcon({ size, strokeWidth }) {
 
 const socials = [
   { icon: InstagramIcon, href: 'https://www.instagram.com/incentive.finance/', label: 'Instagram' },
-  { icon: Mail, href: 'mailto:incentivefinanceinfo@gmail.com', label: 'Email' },
+  { icon: Linkedin,     href: 'https://www.linkedin.com/company/incentive-finance/', label: 'LinkedIn' },
+  { icon: Mail,         href: 'mailto:incentivefinanceinfo@gmail.com', label: 'Email' },
 ]
 
 export default function Footer() {
@@ -42,6 +43,9 @@ export default function Footer() {
             )
           })}
         </div>
+        <p className="footer-nonprofit">
+          Incentive is a student-led nonprofit organization.
+        </p>
       </div>
 
       <div className="footer-bottom container">

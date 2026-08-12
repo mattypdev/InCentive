@@ -3,12 +3,16 @@ export const SITE = 'https://incentivefinance.org'
 export const ORG = {
   '@type': 'Organization',
   '@id': `${SITE}/#org`,
-  name: 'incentive',
+  name: 'Incentive',
   url: SITE,
   logo: {
     '@type': 'ImageObject',
     url: `${SITE}/coin-logo.png`,
   },
+  sameAs: [
+    'https://www.instagram.com/incentive.finance/',
+    'https://www.linkedin.com/company/incentive-finance/',
+  ],
 }
 
 export function breadcrumbLd(crumbs) {
