@@ -1,4 +1,43 @@
+# ── All crawlers ─────────────────────────────────────────────────────────────
 User-agent: *
 Allow: /
+
+# Routes that require a logged-in account — no indexable content for crawlers
+Disallow: /admin
+Disallow: /auth/
+Disallow: /login
+Disallow: /progress
+Disallow: /quizzes/create
+Disallow: /quizzes/edit/
+
+# ── AI crawlers — explicitly named so intent is unambiguous ──────────────────
+# Specific User-agent blocks override the * block, so Disallow rules are
+# repeated here to keep the same access policy for all named bots.
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Amazonbot
+User-agent: meta-externalagent
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin
+Disallow: /auth/
+Disallow: /login
+Disallow: /progress
+Disallow: /quizzes/create
+Disallow: /quizzes/edit/
+
+# ── Machine-readable content indexes ─────────────────────────────────────────
+# /llms.txt      — concise site index for AI assistants and answer engines
+# /llms-full.txt — complete content for AI retrieval and training
 
 Sitemap: https://incentivefinance.org/sitemap.xml
