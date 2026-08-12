@@ -28,8 +28,15 @@ const tools = [
 ]
 
 export const metadata = {
-  title: 'Resources — Incentive',
-  description: 'Interactive financial tools and materials to sharpen your financial skills.',
+  title: 'Free Money Calculators and Teaching Tools | Incentive',
+  description: 'Free financial calculators and classroom teaching tools from Incentive. Calculate compound interest, loan payments, and retirement savings — no sign-up needed.',
+  alternates: { canonical: 'https://incentivefinance.org/resources' },
+  openGraph: {
+    title: 'Free Money Calculators and Teaching Tools | Incentive',
+    description: 'Free financial calculators and classroom teaching tools from Incentive. Calculate compound interest, loan payments, and retirement savings — no sign-up needed.',
+    url: 'https://incentivefinance.org/resources',
+    type: 'website',
+  },
 }
 
 export default function ResourcesPage() {

@@ -5,12 +5,12 @@ import { SITE, webAppLd, breadcrumbLd } from '@/lib/schema'
 import '@/app/(pages)/Calculator.css'
 
 export const metadata = {
-  title: 'Compound Interest Calculator — Incentive',
-  description: 'Calculate how your money grows with compound interest. Adjust principal, monthly contributions, rate, and time to see your personalised growth chart.',
+  title: 'Free Compound Interest Calculator | Incentive',
+  description: 'Free compound interest calculator — enter your principal, monthly contribution, rate, and years to see exactly how your savings or investments will grow.',
   alternates: { canonical: `${SITE}/compound-interest` },
   openGraph: {
-    title: 'Compound Interest Calculator — Incentive',
-    description: 'See your money grow with compound interest. Adjust principal, monthly contributions, rate, and time.',
+    title: 'Free Compound Interest Calculator | Incentive',
+    description: 'Free compound interest calculator — enter your principal, monthly contribution, rate, and years to see exactly how your savings or investments will grow.',
     url: `${SITE}/compound-interest`,
     type: 'website',
   },

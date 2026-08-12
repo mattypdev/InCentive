@@ -2,12 +2,12 @@ import LearnClient from './LearnClient'
 import { SITE, ORG, breadcrumbLd } from '@/lib/schema'
 
 export const metadata = {
-  title: 'Learn Personal Finance — Incentive',
-  description: 'Master personal finance through interactive lessons, quizzes, and challenges. Six modules covering budgeting, banking, taxes, investing, markets, and behavioral finance.',
+  title: 'Free Personal Finance Courses for Students | Incentive',
+  description: 'Free personal finance courses for high school students. Learn budgeting, banking, taxes, and investing through interactive lessons and earn rewards as you go.',
   alternates: { canonical: `${SITE}/learn` },
   openGraph: {
-    title: 'Learn Personal Finance — Incentive',
-    description: 'Interactive personal finance lessons for high school students. Earn rewards as you progress through budgeting, investing, taxes, and more.',
+    title: 'Free Personal Finance Courses for Students | Incentive',
+    description: 'Free personal finance courses for high school students. Learn budgeting, banking, taxes, and investing through interactive lessons and earn rewards as you go.',
     url: `${SITE}/learn`,
     type: 'website',
   },

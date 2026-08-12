@@ -2,6 +2,18 @@ import ChapterMap from './ChapterMap'
 import '@/components/Hero.css'
 import '@/app/(pages)/About.css'
 
+export const metadata = {
+  title: 'About Incentive: Student-Led Financial Literacy Nonprofit',
+  description: 'Meet the student-led nonprofit making free financial literacy education accessible to every high school student. Learn about our mission, team, and chapters.',
+  alternates: { canonical: 'https://incentivefinance.org/about' },
+  openGraph: {
+    title: 'About Incentive: Student-Led Financial Literacy Nonprofit',
+    description: 'Meet the student-led nonprofit making free financial literacy education accessible to every high school student. Learn about our mission, team, and chapters.',
+    url: 'https://incentivefinance.org/about',
+    type: 'website',
+  },
+}
+
 export default function AboutPage() {
   return (
     <>

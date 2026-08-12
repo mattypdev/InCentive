@@ -5,12 +5,12 @@ import { SITE, webAppLd, breadcrumbLd } from '@/lib/schema'
 import '@/app/(pages)/Calculator.css'
 
 export const metadata = {
-  title: 'Loan Calculator — Incentive',
-  description: 'Estimate monthly payments, total interest, and payoff timelines for any loan. Adjust amount, rate, and term to plan your borrowing.',
+  title: 'Free Loan Payment Calculator | Incentive',
+  description: 'Free loan payment calculator. Enter your loan amount, interest rate, and repayment term to estimate your monthly payment, total interest, and payoff timeline.',
   alternates: { canonical: `${SITE}/loan-calculator` },
   openGraph: {
-    title: 'Loan Calculator — Incentive',
-    description: 'Estimate monthly payments, total interest, and payoff timelines for any loan.',
+    title: 'Free Loan Payment Calculator | Incentive',
+    description: 'Free loan payment calculator. Enter your loan amount, interest rate, and repayment term to estimate your monthly payment, total interest, and payoff timeline.',
     url: `${SITE}/loan-calculator`,
     type: 'website',
   },

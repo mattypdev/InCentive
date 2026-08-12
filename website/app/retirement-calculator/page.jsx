@@ -5,12 +5,12 @@ import { SITE, webAppLd, breadcrumbLd } from '@/lib/schema'
 import '@/app/(pages)/Calculator.css'
 
 export const metadata = {
-  title: 'Retirement Calculator — Incentive',
-  description: 'Plan your retirement savings and see what it takes to retire on your terms. Adjust age, contributions, and return rate for a personalised projection.',
+  title: 'Free Retirement Savings Calculator | Incentive',
+  description: 'Free retirement savings calculator. Adjust your age, savings balance, monthly contributions, and expected return to project what you\'ll have at retirement.',
   alternates: { canonical: `${SITE}/retirement-calculator` },
   openGraph: {
-    title: 'Retirement Calculator — Incentive',
-    description: 'Plan ahead and see what it takes to retire on your terms.',
+    title: 'Free Retirement Savings Calculator | Incentive',
+    description: 'Free retirement savings calculator. Adjust your age, savings balance, monthly contributions, and expected return to project what you\'ll have at retirement.',
     url: `${SITE}/retirement-calculator`,
     type: 'website',
   },

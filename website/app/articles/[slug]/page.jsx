@@ -44,13 +44,14 @@ const resolveArticle = cache(async (slug) => {
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const { article } = await resolveArticle(slug)
-  if (!article) return { title: 'Article Not Found — Incentive' }
+  if (!article) return { title: 'Article Not Found | Incentive' }
 
-  const description = stripHtml(article.body).slice(0, 155)
+  const raw = stripHtml(article.body)
+  const description = raw.length > 155 ? raw.slice(0, 155).replace(/\s+\S*$/, '') : raw
   const canonical = `${SITE}/articles/${article.slug ?? slug}`
 
   return {
-    title: `${article.title} — Incentive`,
+    title: `${article.title} | Incentive`,
     description,
     alternates: { canonical },
     openGraph: {

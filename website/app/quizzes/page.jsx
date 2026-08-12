@@ -6,12 +6,12 @@ import '@/app/(pages)/Quizzes.css'
 import '@/components/Button.css'
 
 export const metadata = {
-  title: 'Join a Quiz — Incentive',
-  description: 'Enter a quiz code to join a live personal finance quiz, or create your own to share with students and friends.',
+  title: 'Financial Literacy Quizzes for Classrooms | Incentive',
+  description: 'Run free financial literacy quizzes for your classroom or join one with a code. Create, share, and play quizzes on budgeting, investing, taxes, and more.',
   alternates: { canonical: `${SITE}/quizzes` },
   openGraph: {
-    title: 'Join a Quiz — Incentive',
-    description: 'Enter a quiz code to join a live personal finance quiz, or create and share your own.',
+    title: 'Financial Literacy Quizzes for Classrooms | Incentive',
+    description: 'Run free financial literacy quizzes for your classroom or join one with a code. Create, share, and play quizzes on budgeting, investing, taxes, and more.',
     url: `${SITE}/quizzes`,
     type: 'website',
   },
