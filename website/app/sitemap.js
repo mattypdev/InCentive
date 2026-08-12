@@ -46,7 +46,7 @@ export default async function sitemap() {
     const { data: articles } = await supabase
       .from('articles')
       .select('id, slug, published_at')
-      .order('updated_at', { ascending: false })
+      .order('published_at', { ascending: false })
 
     if (articles) {
       articleRoutes = articles.map(article => ({

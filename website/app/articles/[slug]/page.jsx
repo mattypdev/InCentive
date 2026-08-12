@@ -1,11 +1,21 @@
 import Link from 'next/link'
 import { notFound, permanentRedirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { cache } from 'react'
 import { ArrowLeft, Calendar, User } from 'lucide-react'
 import { ORG, SITE, breadcrumbLd } from '@/lib/schema'
 import { slugify } from '@/lib/slugify'
 import '@/app/(pages)/Articles.css'
+
+export const dynamicParams = true
+export const revalidate = 86400
+
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  )
+}
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -19,8 +29,15 @@ function wordCount(html) {
   return stripHtml(html).split(/\s+/).filter(Boolean).length
 }
 
+export async function generateStaticParams() {
+  const { data: articles } = await getSupabase()
+    .from('articles')
+    .select('slug')
+  return (articles ?? []).map(a => ({ slug: a.slug }))
+}
+
 const resolveArticle = cache(async (slug) => {
-  const supabase = await createClient()
+  const supabase = getSupabase()
 
   const { data: bySlug } = await supabase
     .from('articles')

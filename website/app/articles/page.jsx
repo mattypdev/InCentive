@@ -1,7 +1,9 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { Calendar, User } from 'lucide-react'
 import '@/app/(pages)/Articles.css'
+
+export const revalidate = 3600
 
 export const metadata = {
   title: 'Articles — Incentive',
@@ -26,7 +28,10 @@ function excerpt(body, max = 180) {
 }
 
 export default async function ArticlesPage() {
-  const supabase = await createClient()
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  )
   const { data: articles = [], error } = await supabase
     .from('articles')
     .select('*')
