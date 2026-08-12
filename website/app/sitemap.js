@@ -1,4 +1,11 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
+
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  )
+}
 
 const BASE_URL = 'https://incentivefinance.org'
 
@@ -42,7 +49,7 @@ export default async function sitemap() {
 
   let articleRoutes = []
   try {
-    const supabase = await createClient()
+    const supabase = getSupabase()
     const { data: articles } = await supabase
       .from('articles')
       .select('id, slug, published_at')
