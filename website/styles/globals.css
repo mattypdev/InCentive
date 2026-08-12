@@ -16,10 +16,6 @@
   --card: #FFFFFF;
   --ring: #FF6F61;
 
-  /* Typography */
-  --font-heading: "Outfit", system-ui, sans-serif;
-  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
-
   /* Type scale — Major Third (1.25) from 18px base */
   --text-xs: 0.694rem;
   --text-sm: 0.833rem;
