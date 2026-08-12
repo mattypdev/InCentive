@@ -8,7 +8,6 @@ VALUES (
   'incentive team',
   'how-compound-interest-works',
   NOW(),
-  NOW(),
   $body$<p>Compound interest is one of the most powerful forces in personal finance — and one of the most misunderstood. Once you see the math, you'll understand why starting to invest early isn't just good advice: it's the difference between a comfortable future and a stressful one.</p>
 
 <h2>What is compound interest?</h2>
