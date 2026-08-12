@@ -18,7 +18,7 @@ export default function Resources() {
 
         <div className="resources-embed-wrapper">
           <object
-            data="/financial-literacy-presentation.pdf"
+            data="/Financial Literacy.pdf"
             type="application/pdf"
             className="resources-embed"
             aria-label="Financial education presentation"
@@ -29,7 +29,7 @@ export default function Resources() {
               <Button
                 variant="primary"
                 icon={Download}
-                href="/financial-literacy-presentation.pdf"
+                href="/Financial Literacy.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -43,7 +43,7 @@ export default function Resources() {
           <Button
             variant="secondary"
             icon={Download}
-            href="/financial-literacy-presentation.pdf"
+            href="/Financial Literacy.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
