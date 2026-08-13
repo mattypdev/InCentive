@@ -192,21 +192,31 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 14px 28px;
   font-family: var(--font-heading);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: 700;
   color: var(--foreground);
-  background: var(--card);
+  background: transparent;
   border: var(--border-width) solid var(--foreground);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: box-shadow 200ms ease, background-color 200ms ease;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    background-color var(--transition-base);
   margin-bottom: 24px;
 }
 
 .login-google-btn:hover:not(:disabled) {
-  box-shadow: 3px 3px 0px 0px var(--foreground);
+  background-color: var(--tertiary);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pop);
+}
+
+.login-google-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-pop-active);
 }
 
 .login-google-btn:disabled {
