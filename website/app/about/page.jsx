@@ -167,21 +167,6 @@ export default function AboutPage() {
             <div className="about-team-grid">
               <div className="about-person-card">
                 <div className="about-person-photo">
-                  <img src="/images/matthew-park.jpg" alt="Matthew Park" />
-                </div>
-                <h4>Matthew Park</h4>
-                <p className="about-person-role">Co-Founder</p>
-                <div className="about-person-socials">
-                  <a href="https://www.instagram.com/mattyp.21/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Matthew Instagram">
-                    <img src="/images/instagram-logo.svg" alt="Instagram" />
-                  </a>
-                  <a href="https://www.linkedin.com/in/matthew-park-11b036309/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Matthew LinkedIn">
-                    <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
-                  </a>
-                </div>
-              </div>
-              <div className="about-person-card">
-                <div className="about-person-photo">
                   <img src="/images/sathvik-vadlakunta.jpeg" alt="Sathvik Vadlakunta" />
                 </div>
                 <h4>Sathvik Vadlakunta</h4>
@@ -191,6 +176,21 @@ export default function AboutPage() {
                     <img src="/images/instagram-logo.svg" alt="Instagram" />
                   </a>
                   <a href="https://www.linkedin.com/in/sathvik-vadlakunta-239b03379/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Sathvik LinkedIn">
+                    <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
+                  </a>
+                </div>
+              </div>
+              <div className="about-person-card">
+                <div className="about-person-photo">
+                  <img src="/images/matthew-park.jpg" alt="Matthew Park" />
+                </div>
+                <h4>Matthew Park</h4>
+                <p className="about-person-role">Co-Founder</p>
+                <div className="about-person-socials">
+                  <a href="https://www.instagram.com/mattyp.21/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Matthew Instagram">
+                    <img src="/images/instagram-logo.svg" alt="Instagram" />
+                  </a>
+                  <a href="https://www.linkedin.com/in/matthew-park-11b036309/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Matthew LinkedIn">
                     <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
                   </a>
                 </div>
