@@ -53,6 +53,13 @@ const chapters = [
     instagram: null,
     coordinates: [-88.320, 41.760],
   },
+  {
+    id: 'reno',
+    name: 'Reno, NV',
+    presidents: 'Bella P.',
+    instagram: null,
+    coordinates: [-119.813, 39.529],
+  },
 ]
 
 export default function ChapterMap() {
