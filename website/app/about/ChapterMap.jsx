@@ -46,6 +46,13 @@ const chapters = [
     instagram: 'incentive.lhs',
     coordinates: [-77.349, 39.377],
   },
+  {
+    id: 'aurora',
+    name: 'Aurora, IL',
+    presidents: 'Nikhil B.',
+    instagram: null,
+    coordinates: [-88.320, 41.760],
+  },
 ]
 
 export default function ChapterMap() {
