@@ -66,6 +66,16 @@ const teamLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    name: 'Nikhil Baman',
+    jobTitle: 'Head of Education',
+    worksFor: org,
+    url: `${SITE}/about`,
+    image: `${SITE}/images/nikhil-baman.jpg`,
+    sameAs: [],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
     name: 'Frederick Steinmann',
     jobTitle: 'Assistant Research Professor at UNR',
     worksFor: { '@type': 'CollegeOrUniversity', name: 'University of Nevada, Reno' },
@@ -214,6 +224,21 @@ export default function AboutPage() {
                   <a href="https://www.linkedin.com/in/esha-yarram-713ab6379/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Esha LinkedIn">
                     <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
                   </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="about-team-group">
+            <h3>Education</h3>
+            <div className="about-team-grid">
+              <div className="about-person-card">
+                <div className="about-person-photo">
+                  <img src="/images/nikhil-baman.jpg" alt="Nikhil Baman" />
+                </div>
+                <h4>Nikhil Baman</h4>
+                <p className="about-person-role">Head of Education</p>
+                <div className="about-person-socials">
                 </div>
               </div>
             </div>
