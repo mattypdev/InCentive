@@ -67,7 +67,7 @@ const teamLd = [
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Nikhil Baman',
-    jobTitle: 'Head of Education',
+    jobTitle: 'Education Coordinator',
     worksFor: org,
     url: `${SITE}/about`,
     image: `${SITE}/images/nikhil-baman.jpg`,
@@ -241,7 +241,7 @@ export default function AboutPage() {
                     <img src="/images/nikhil-baman.jpg" alt="Nikhil Baman" />
                   </div>
                   <h4>Nikhil Baman</h4>
-                  <p className="about-person-role">Head of Education</p>
+                  <p className="about-person-role">Education Coordinator</p>
                   <div className="about-person-socials">
                     <a href="https://www.instagram.com/nbaman_10/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Nikhil Instagram">
                       <img src="/images/instagram-logo.svg" alt="Instagram" />
