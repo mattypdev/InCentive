@@ -216,6 +216,7 @@
 
 .about-team-row {
   display: flex;
+  justify-content: center;
   gap: 80px;
   margin-bottom: 56px;
 }
