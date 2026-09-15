@@ -214,6 +214,16 @@
   width: fit-content;
 }
 
+.about-team-row {
+  display: flex;
+  gap: 80px;
+  margin-bottom: 56px;
+}
+
+.about-team-row .about-team-group {
+  margin-bottom: 0;
+}
+
 .about-team-group {
   margin-bottom: 56px;
 }
@@ -494,6 +504,11 @@
     width: 200px;
     height: 200px;
     box-shadow: 3px 3px 0px 0px var(--foreground);
+  }
+
+  .about-team-row {
+    flex-direction: column;
+    gap: 0;
   }
 
   .about-team-group--founders .about-team-grid {

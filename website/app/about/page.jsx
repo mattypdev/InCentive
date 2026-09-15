@@ -211,43 +211,45 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="about-team-group">
-            <h3>Social Media</h3>
-            <div className="about-team-grid">
-              <div className="about-person-card">
-                <div className="about-person-photo">
-                  <img src="/images/esha-yarram.jpeg" alt="Esha Yarram" />
-                </div>
-                <h4>Esha Yarram</h4>
-                <p className="about-person-role">Social Media Coordinator</p>
-                <div className="about-person-socials">
-                  <a href="https://www.instagram.com/eshayarram/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Esha Instagram">
-                    <img src="/images/instagram-logo.svg" alt="Instagram" />
-                  </a>
-                  <a href="https://www.linkedin.com/in/esha-yarram-713ab6379/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Esha LinkedIn">
-                    <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
-                  </a>
+          <div className="about-team-row">
+            <div className="about-team-group">
+              <h3>Social Media</h3>
+              <div className="about-team-grid">
+                <div className="about-person-card">
+                  <div className="about-person-photo">
+                    <img src="/images/esha-yarram.jpeg" alt="Esha Yarram" />
+                  </div>
+                  <h4>Esha Yarram</h4>
+                  <p className="about-person-role">Social Media Coordinator</p>
+                  <div className="about-person-socials">
+                    <a href="https://www.instagram.com/eshayarram/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Esha Instagram">
+                      <img src="/images/instagram-logo.svg" alt="Instagram" />
+                    </a>
+                    <a href="https://www.linkedin.com/in/esha-yarram-713ab6379/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Esha LinkedIn">
+                      <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="about-team-group">
-            <h3>Education</h3>
-            <div className="about-team-grid">
-              <div className="about-person-card">
-                <div className="about-person-photo">
-                  <img src="/images/nikhil-baman.jpg" alt="Nikhil Baman" />
-                </div>
-                <h4>Nikhil Baman</h4>
-                <p className="about-person-role">Head of Education</p>
-                <div className="about-person-socials">
-                  <a href="https://www.instagram.com/nbaman_10/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Nikhil Instagram">
-                    <img src="/images/instagram-logo.svg" alt="Instagram" />
-                  </a>
-                  <a href="https://www.linkedin.com/in/nikhil-baman-b28a8837b/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Nikhil LinkedIn">
-                    <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
-                  </a>
+            <div className="about-team-group">
+              <h3>Education</h3>
+              <div className="about-team-grid">
+                <div className="about-person-card">
+                  <div className="about-person-photo">
+                    <img src="/images/nikhil-baman.jpg" alt="Nikhil Baman" />
+                  </div>
+                  <h4>Nikhil Baman</h4>
+                  <p className="about-person-role">Head of Education</p>
+                  <div className="about-person-socials">
+                    <a href="https://www.instagram.com/nbaman_10/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Nikhil Instagram">
+                      <img src="/images/instagram-logo.svg" alt="Instagram" />
+                    </a>
+                    <a href="https://www.linkedin.com/in/nikhil-baman-b28a8837b/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Nikhil LinkedIn">
+                      <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
