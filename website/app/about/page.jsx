@@ -86,6 +86,7 @@ const teamLd = [
     image: `${SITE}/images/bella-parikh.jpg`,
     sameAs: [
       'https://www.instagram.com/bells.parikh/',
+      'https://www.linkedin.com/',
     ],
   },
   {
@@ -278,6 +279,9 @@ export default function AboutPage() {
                   <div className="about-person-socials">
                     <a href="https://www.instagram.com/bells.parikh/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Bella Instagram">
                       <img src="/images/instagram-logo.svg" alt="Instagram" />
+                    </a>
+                    <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" className="about-social-btn about-social-btn--linkedin" aria-label="Bella LinkedIn">
+                      <img src="/images/linkedin-logo.jpg" alt="LinkedIn" />
                     </a>
                   </div>
                 </div>
