@@ -84,7 +84,9 @@ const teamLd = [
     worksFor: org,
     url: `${SITE}/about`,
     image: `${SITE}/images/bella-parikh.jpg`,
-    sameAs: [],
+    sameAs: [
+      'https://www.instagram.com/bells.parikh/',
+    ],
   },
   {
     '@context': 'https://schema.org',
@@ -274,6 +276,9 @@ export default function AboutPage() {
                   <h4>Bella Parikh</h4>
                   <p className="about-person-role">Outreach Coordinator</p>
                   <div className="about-person-socials">
+                    <a href="https://www.instagram.com/bells.parikh/" target="_blank" rel="noopener noreferrer" className="about-social-btn" aria-label="Bella Instagram">
+                      <img src="/images/instagram-logo.svg" alt="Instagram" />
+                    </a>
                   </div>
                 </div>
               </div>
