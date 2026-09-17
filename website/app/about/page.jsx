@@ -269,7 +269,7 @@ export default function AboutPage() {
               <div className="about-team-grid">
                 <div className="about-person-card">
                   <div className="about-person-photo">
-                    <img src="/images/bella-parikh.jpg" alt="Bella Parikh" />
+                    <img src="/images/bella-parikh.jpg" alt="Bella Parikh" style={{ objectPosition: 'center 15%' }} />
                   </div>
                   <h4>Bella Parikh</h4>
                   <p className="about-person-role">Outreach Coordinator</p>
