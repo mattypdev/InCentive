@@ -251,7 +251,7 @@ export default function AboutPage() {
               <div className="about-team-grid">
                 <div className="about-person-card">
                   <div className="about-person-photo">
-                    <img src="/images/nikhil-baman.jpg" alt="Nikhil Baman" style={{ objectPosition: 'center 7%' }} />
+                    <img src="/images/nikhil-baman.jpg" alt="Nikhil Baman" style={{ objectPosition: 'center 3%' }} />
                   </div>
                   <h4>Nikhil Baman</h4>
                   <p className="about-person-role">Education Coordinator</p>
