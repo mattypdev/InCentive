@@ -60,6 +60,13 @@ const chapters = [
     instagram: null,
     coordinates: [-119.813, 39.529],
   },
+  {
+    id: 'carson',
+    name: 'Carson City, NV',
+    presidents: 'Sujwal Reddy',
+    instagram: 'incentive.carson',
+    coordinates: [-119.767, 39.164],
+  },
 ]
 
 export default function ChapterMap() {
