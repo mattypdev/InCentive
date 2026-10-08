@@ -57,7 +57,7 @@ const chapters = [
     id: 'reno',
     name: 'Reno, NV',
     presidents: 'Bella P.',
-    instagram: null,
+    instagram: 'incentive.galena',
     coordinates: [-119.813, 39.529],
   },
   {
