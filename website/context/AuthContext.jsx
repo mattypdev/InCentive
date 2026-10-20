@@ -148,7 +148,12 @@ export function AuthProvider({ children }) {
   async function refreshProfile() { if (currentUser) await fetchProfile(currentUser.id) }
 
   function bumpXP(amount) {
-    setProfile(prev => prev ? { ...prev, xp: (prev.xp ?? 0) + amount } : { xp: amount })
+    setProfile(prev => {
+      if (!prev) return { xp: amount }
+      const updated = { ...prev, xp: (prev.xp ?? 0) + amount }
+      if (currentUser?.id) writeCache(currentUser.id, updated)
+      return updated
+    })
   }
 
   function setXP(amount) {

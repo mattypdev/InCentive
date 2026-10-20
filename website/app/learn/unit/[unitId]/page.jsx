@@ -100,7 +100,7 @@ function SparkleEffect({ color }) {
 export default function UnitPage() {
   const { unitId } = useParams()
   const router     = useRouter()
-  const { currentUser, bumpXP } = useAuth()
+  const { currentUser, bumpXP, refreshProfile } = useAuth()
   const sectionIndex = typeof window !== 'undefined'
     ? (parseInt(new URLSearchParams(window.location.search).get('section') ?? '0') || 0)
     : 0
@@ -250,14 +250,18 @@ export default function UnitPage() {
     if (currentUser) {
       storeProgress(newCompleted)
       bumpXP(earned)
-      supabase.from('lesson_progress').upsert({
-        user_id: currentUser.id, lesson_id: lesson.id,
-        completed: true, score, completed_at: new Date().toISOString(),
-      }).then(() => {
-        if (allDone) supabase.from('lesson_progress').upsert({
-          user_id: currentUser.id, lesson_id: unit.id,
-          completed: true, score: 100, completed_at: new Date().toISOString(),
-        })
+      supabase.from('lesson_progress').upsert(
+        { user_id: currentUser.id, lesson_id: lesson.id, completed: true, score, completed_at: new Date().toISOString() },
+        { onConflict: 'user_id,lesson_id' }
+      ).then(async ({ error }) => {
+        if (error) { console.error('Failed to save lesson progress:', error); return }
+        if (allDone) {
+          await supabase.from('lesson_progress').upsert(
+            { user_id: currentUser.id, lesson_id: unit.id, completed: true, score: 100, completed_at: new Date().toISOString() },
+            { onConflict: 'user_id,lesson_id' }
+          )
+        }
+        refreshProfile()
       })
     }
 
