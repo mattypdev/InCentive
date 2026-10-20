@@ -141,6 +141,12 @@ function SparkleEffect({ color }) {
 }
 
 
+const ALL_SPRITES = [
+  '/sprites/coin-0-0.png', '/sprites/coin-0-1.png', '/sprites/coin-0-2.png',
+  '/sprites/coin-1-0.png', '/sprites/coin-1-1.png', '/sprites/coin-1-2.png',
+  '/sprites/coin-2-0.png', '/sprites/coin-2-1.png', '/sprites/coin-2-2.png',
+]
+
 export default function LearnClient() {
   const { currentUser, profile, refreshProfile, bumpXP } = useAuth()
   const router = useRouter()
@@ -154,30 +160,25 @@ export default function LearnClient() {
   const [lessonDone,    setLessonDone]    = useState(false)
   const [centsEarned,   setCentsEarned]   = useState(0)
   const [finalScore,    setFinalScore]    = useState({ correct:0, total:0 })
-  const [sectionIndex,  setSectionIndex]  = useState(() => {
-    if (typeof window === 'undefined') return 0
-    return parseInt(new URLSearchParams(window.location.search).get('section') ?? '0') || 0
-  })
-  const [view,          setView]          = useState(() => {
-    if (typeof window === 'undefined') return 'map'
-    return new URLSearchParams(window.location.search).get('view') ?? 'map'
-  })
+  const [sectionIndex,  setSectionIndex]  = useState(0)
+  const [view,          setView]          = useState('map')
   const [sparklingId,   setSparklingId]   = useState(null)
   const [qData,         setQData]         = useState(null)
   const touchStartX  = useRef(null)
   const trackRef     = useRef(null)
 
-  const ALL_SPRITES = [
-    '/sprites/coin-0-0.png', '/sprites/coin-0-1.png', '/sprites/coin-0-2.png',
-    '/sprites/coin-1-0.png', '/sprites/coin-1-1.png', '/sprites/coin-1-2.png',
-    '/sprites/coin-2-0.png', '/sprites/coin-2-1.png', '/sprites/coin-2-2.png',
-  ]
-  const [coinSprites, setCoinSprites] = useState(() =>
-    [...ALL_SPRITES].sort(() => Math.random() - 0.5).slice(0, 4)
-  )
+  const [coinSprites, setCoinSprites] = useState(ALL_SPRITES.slice(0, 4))
   useEffect(() => {
     setCoinSprites([...ALL_SPRITES].sort(() => Math.random() - 0.5).slice(0, 4))
   }, [sectionIndex])
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const sec  = parseInt(params.get('section') ?? '0') || 0
+    const v    = params.get('view') ?? 'map'
+    if (sec !== 0)    setSectionIndex(sec)
+    if (v !== 'map')  setView(v)
+  }, [])
 
   useEffect(() => {
     fetchQuestionsMap()

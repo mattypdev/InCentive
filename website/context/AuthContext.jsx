@@ -92,20 +92,6 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const user = session?.user ?? null
-      setCurrentUser(user)
-      if (user) {
-        await ensureProfile(user)
-        fetchProfile(user.id)
-      } else {
-        // Session gone — wipe cached state so a stale cache doesn't linger
-        setProfile(null)
-        clearCache()
-      }
-      setLoading(false)
-    })
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setCurrentUser(session?.user ?? null)
       if (session?.user) {
@@ -122,6 +108,7 @@ export function AuthProvider({ children }) {
         clearStoredProgress()
         clearShopData()
       }
+      if (_event === 'INITIAL_SESSION') setLoading(false)
     })
 
     return () => subscription.unsubscribe()
