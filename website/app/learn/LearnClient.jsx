@@ -10,6 +10,7 @@ import { getStoredProgress, storeProgress } from '@/lib/guestProgress'
 import { ChevronLeft, ChevronRight, ArrowLeft, LogIn, Lock, Check, Star, Trophy, RefreshCw, Map as MapIcon } from 'lucide-react'
 import { triggerCoinFly, triggerXPFly } from '@/components/CoinFlyLayer'
 import CoinBadge from '@/components/CoinBadge'
+import QuestionRenderer from '@/components/QuestionRenderer'
 import '@/app/(pages)/Learn.css'
 import '@/components/Button.css'
 
@@ -110,19 +111,6 @@ function shuffleOptions(questions) {
   })
 }
 
-function FillBlankPrompt({ prompt, selectedOption, correctIndex, selectedIndex, showFeedback }) {
-  const parts = prompt.split('______')
-  if (parts.length < 2) return <p className="lesson-prompt">{prompt}</p>
-  let cls = 'fill-blank-gap'
-  if (selectedOption !== null && !showFeedback) cls += ' fill-blank-gap--pending'
-  if (showFeedback && selectedIndex === correctIndex) cls += ' fill-blank-gap--correct'
-  if (showFeedback && selectedIndex !== correctIndex) cls += ' fill-blank-gap--wrong'
-  return (
-    <p className="lesson-prompt lesson-prompt--fill-blank">
-      {parts[0]}<span className={cls}>{selectedOption ?? '______'}</span>{parts[1]}
-    </p>
-  )
-}
 
 function SparkleEffect({ color }) {
   return (
@@ -398,11 +386,11 @@ export default function LearnClient() {
   /* ── ACTIVE LESSON ── */
   if (activeUnit) {
     const q         = shuffledQs[qIndex]
-    const isFill    = q?.type === 'fill-blank'
     const isCorrect = selected === q?.correct
     const pct       = (qIndex / shuffledQs.length) * 100
     const isTest    = activeUnit.isChapterTest || activeUnit.isCapstone
     const threshold = activeUnit.isCapstone ? 35 : 7
+    const typeBadge = { 'fill-blank': 'Fill in the blank', sort: 'Sort it', order: 'Put in order', wordbank: 'Word bank' }[q?.type]
     return (
       <main className="learn-page">
         <section className="section"><div className="container">
@@ -414,32 +402,10 @@ export default function LearnClient() {
             </div>
             <div className="lesson-meta">
               <span className="lesson-title-inline">{activeUnit.title}</span>
-              {isFill && <span className="fill-blank-tag">Fill in the blank</span>}
+              {typeBadge && <span className="fill-blank-tag">{typeBadge}</span>}
               {isTest && <span className="lesson-test-badge">Pass {threshold}/{shuffledQs.length}</span>}
             </div>
-            {isFill ? (
-              <FillBlankPrompt
-                prompt={q.prompt}
-                selectedOption={selected !== null ? q.options[selected] : null}
-                correctIndex={q.correct} selectedIndex={selected} showFeedback={showFeedback}
-              />
-            ) : (
-              <p className="lesson-prompt">{q?.prompt}</p>
-            )}
-            <ul className={`lesson-options${isFill ? ' lesson-options--fill-blank':''}`}>
-              {q?.options.map((opt, i) => {
-                let cls = 'lesson-option'
-                if (showFeedback) { if (i===q.correct) cls+=' correct'; else if (i===selected) cls+=' wrong' }
-                else if (i===selected) cls+=' selected'
-                return (
-                  <li key={i}>
-                    <button className={cls} onClick={()=>handleAnswer(i)} disabled={showFeedback}>
-                      <span className="option-letter">{i+1}</span>{opt}
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
+            <QuestionRenderer key={qIndex} q={q} showFeedback={showFeedback} selected={selected} onAnswer={handleAnswer} />
             {showFeedback && (
               <div className={`lesson-feedback ${isCorrect?'feedback-correct':'feedback-wrong'}`}>
                 <p className="feedback-label">{isCorrect?'Correct':'Not quite'}</p>
