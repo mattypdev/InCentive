@@ -18,17 +18,19 @@ const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE
 
 // ─── Question builders ───────────────────────────────────────────────────
 
+const unitOf = lessonId => lessonId.replace(/-l\d+$/, '')
+
 const mc = (lessonId, pos, prompt, options, correct, explanation) =>
-  ({ lesson_id: lessonId, unit_id: null, type: 'multiple-choice', position: pos, prompt, options, correct, explanation, meta: null })
+  ({ lesson_id: lessonId, unit_id: unitOf(lessonId), type: 'multiple-choice', position: pos, prompt, options, correct, explanation, meta: null })
 
 const sort = (lessonId, pos, prompt, buckets, items, explanation) =>
-  ({ lesson_id: lessonId, unit_id: null, type: 'sort', position: pos, prompt, options: [], correct: 0, explanation, meta: { buckets, items } })
+  ({ lesson_id: lessonId, unit_id: unitOf(lessonId), type: 'sort', position: pos, prompt, options: [], correct: 0, explanation, meta: { buckets, items } })
 
 const order = (lessonId, pos, prompt, items, explanation) =>
-  ({ lesson_id: lessonId, unit_id: null, type: 'order', position: pos, prompt, options: [], correct: 0, explanation, meta: { items } })
+  ({ lesson_id: lessonId, unit_id: unitOf(lessonId), type: 'order', position: pos, prompt, options: [], correct: 0, explanation, meta: { items } })
 
 const wb = (lessonId, pos, prompt, bank, answers, explanation) =>
-  ({ lesson_id: lessonId, unit_id: null, type: 'wordbank', position: pos, prompt, options: [], correct: 0, explanation, meta: { bank, answers } })
+  ({ lesson_id: lessonId, unit_id: unitOf(lessonId), type: 'wordbank', position: pos, prompt, options: [], correct: 0, explanation, meta: { bank, answers } })
 
 // ─── Questions ───────────────────────────────────────────────────────────
 
