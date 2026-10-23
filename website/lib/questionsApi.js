@@ -23,6 +23,7 @@ export async function fetchQuestionsMap() {
       options: row.options,
       correct: row.correct,
       explanation: row.explanation,
+      meta: row.meta ?? null,
     }
     if (row.type === 'fill-blank') {
       q.type = 'fill-blank'
@@ -58,10 +59,10 @@ export async function fetchFillBlank(unitId) {
   return data
 }
 
-export async function createQuestion({ unitId, lessonId, type = 'multiple-choice', position = 0, prompt, options, correct, explanation }) {
+export async function createQuestion({ unitId, lessonId, type = 'multiple-choice', position = 0, prompt, options, correct, explanation, meta = null }) {
   const { data, error } = await supabase
     .from('questions')
-    .insert({ unit_id: unitId, lesson_id: lessonId ?? null, type, position, prompt, options, correct, explanation })
+    .insert({ unit_id: unitId, lesson_id: lessonId ?? null, type, position, prompt, options, correct, explanation, meta })
     .select()
     .single()
   if (error) throw error

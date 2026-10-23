@@ -12,6 +12,7 @@ import { getStoredProgress, storeProgress } from '@/lib/guestProgress'
 import { allUnits } from '@/data/levels'
 import { lessonIntros } from '@/data/lessonIntros'
 import { fetchQuestionsMap } from '@/lib/questionsApi'
+import QuestionRenderer from '@/components/QuestionRenderer'
 import '@/app/(pages)/Learn.css'
 import '@/app/(pages)/UnitPage.css'
 import '@/components/Button.css'
@@ -385,22 +386,13 @@ export default function UnitPage() {
               <span className="unit-lesson-badge" style={{ '--badge-color': color }}>
                 Lesson {lessonNum} of {lessons.length}
               </span>
+              {q?.type && !['multiple-choice','fill-blank'].includes(q.type) && (
+                <span className="fill-blank-tag">
+                  {{ sort: 'Sort it', order: 'Put in order', wordbank: 'Word bank' }[q.type]}
+                </span>
+              )}
             </div>
-            <p className="lesson-prompt">{q?.prompt}</p>
-            <ul className="lesson-options">
-              {q?.options.map((opt, i) => {
-                let cls = 'lesson-option'
-                if (showFeedback) { if (i===q.correct) cls+=' correct'; else if (i===selected) cls+=' wrong' }
-                else if (i===selected) cls+=' selected'
-                return (
-                  <li key={i}>
-                    <button className={cls} onClick={() => handleAnswer(i)} disabled={showFeedback}>
-                      <span className="option-letter">{i+1}</span>{opt}
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
+            <QuestionRenderer key={qIndex} q={q} showFeedback={showFeedback} selected={selected} onAnswer={handleAnswer} />
             {showFeedback && (
               <div className={`lesson-feedback ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`}>
                 <p className="feedback-label">{isCorrect ? 'Correct' : 'Not quite'}</p>
