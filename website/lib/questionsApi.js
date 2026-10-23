@@ -19,6 +19,7 @@ export async function fetchQuestionsMap() {
   for (const row of data ?? []) {
     const q = {
       id: row.id,
+      type: row.type,
       prompt: row.prompt,
       options: row.options,
       correct: row.correct,
@@ -26,7 +27,6 @@ export async function fetchQuestionsMap() {
       meta: row.meta ?? null,
     }
     if (row.type === 'fill-blank') {
-      q.type = 'fill-blank'
       fillBlanks[row.unit_id] = q
     } else if (row.lesson_id) {
       if (!byLesson[row.lesson_id]) byLesson[row.lesson_id] = []
