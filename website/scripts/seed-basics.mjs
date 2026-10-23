@@ -45,7 +45,7 @@ const questions = [
     'Money evolved from barter → commodity → coins → paper → digital. Each step made trade easier and more scalable.'
   ),
   mc('u1-1-l1', 1, 'What is the main problem with a barter economy?',
-    ['You need a "double coincidence of wants" — both parties must have exactly what the other wants', 'Goods are too heavy to carry', 'Governments can\'t regulate it', 'It requires a bank to work'],
+    ['Both parties must want exactly what the other is offering', 'There are no agreed-upon prices for any goods', 'Goods are too heavy and bulky to transport', 'Governments cannot regulate or tax any trades'],
     0, 'In barter, you can only trade if you find someone who has what you want AND wants what you have. Money solves this.'
   ),
   mc('u1-1-l1', 2, 'Which of these is an example of commodity money?',
@@ -61,7 +61,7 @@ const questions = [
     0, 'The US left the gold standard in 1971. Before that, dollars could be exchanged for gold.'
   ),
   mc('u1-1-l1', 5, 'Digital money is different from paper money because it:',
-    ['Exists only as electronic records — no physical form', 'Is worth more', 'Isn\'t backed by a government', 'Can only be used online'],
+    ['Exists only as electronic records and numbers', 'Has greater purchasing power than paper notes', 'Is not controlled or backed by any government', 'Can only be used for purchases made online'],
     0, 'Digital money (bank balances, transfers) is just numbers in a computer system.'
   ),
 
@@ -109,17 +109,17 @@ const questions = [
     0, 'Store of value = money preserving purchasing power over time.'
   ),
   mc('u1-1-l3', 4, 'What would happen if everyone suddenly stopped trusting the US dollar?',
-    ['Its value would collapse — no one would accept it', 'Its value would rise', 'The government would back it with gold automatically', 'Banks would create a new currency'],
+    ['Its value would collapse and no one would accept it', 'Its value would rise sharply overnight', 'The government would back it with gold reserves', 'Banks would quickly create a replacement currency'],
     0, 'Fiat currency only has value because of collective trust. Without trust, it\'s worthless paper.'
   ),
   mc('u1-1-l3', 5, 'Ancient societies used shells as money because shells were:',
-    ['Scarce, portable, and widely recognised as valuable', 'Made of gold', 'Issued by a government', 'Electronic and easy to transfer'],
+    ['Rare enough, portable, and accepted by many traders', 'Crafted from valuable metals and minerals', 'Endorsed by a government as official currency', 'Found in unlimited supply near coastlines'],
     0, 'Good money must be scarce (not too easy to find), portable, and accepted by others.'
   ),
 
   // l4: Fiat Currency
   mc('u1-1-l4', 0, '"Fiat" comes from Latin meaning:',
-    ['"Let it be done" — value by government decree', '"Made of gold"', '"Backed by silver"', '"Digital exchange"'],
+    ['"Let it be done," implying value by decree', '"Forged from precious metal"', '"Backed by silver reserves"', '"Exchanged across digital networks"'],
     0, 'Fiat currency gets its value from the government declaring it legal tender — not from any physical backing.'
   ),
   mc('u1-1-l4', 1, 'What backs a fiat currency?',
@@ -127,7 +127,7 @@ const questions = [
     0, 'Unlike commodity-backed money, fiat money\'s value rests entirely on trust in the issuing government.'
   ),
   mc('u1-1-l4', 2, 'The main risk of governments printing too much fiat money is:',
-    ['Inflation — more money chasing the same goods raises prices', 'Deflation', 'The currency becomes commodity money', 'Interest rates drop to zero'],
+    ['Inflation, as more money chases the same goods', 'Deflation, as prices fall across the economy', 'The currency converts back to commodity money', 'Interest rates automatically drop close to zero'],
     0, 'Excess money supply causes inflation. Zimbabwe\'s 2008 hyperinflation is a famous example.'
   ),
   mc('u1-1-l4', 3, 'Which of these is a fiat currency?',
@@ -161,7 +161,7 @@ const questions = [
     0, 'Gold is valuable for jewelry and electronics. Salt was valuable for preserving food. That underlying usefulness made them work as money.'
   ),
   mc('u1-1-l5', 2, 'Why did gold work so well as commodity money?',
-    ['Durable, scarce, divisible, and portable', 'Easy to find everywhere', 'Backed by government', 'Grows in value automatically'],
+    ['It is durable, scarce, divisible, and portable', 'It is simple to find in any region or climate', 'It is officially endorsed and regulated by states', 'It gains value on its own without any effort'],
     0, 'Good commodity money must resist decay, be rare enough to be valuable, divide easily, and be practical to carry.'
   ),
   mc('u1-1-l5', 3, 'The word "salary" comes from "sal," the Latin word for:',
@@ -205,11 +205,11 @@ const questions = [
 
   // l7: Cryptocurrency Basics
   mc('u1-1-l7', 0, 'What technology powers most cryptocurrencies like Bitcoin?',
-    ['Blockchain — a distributed public ledger', 'The internet banking system', 'Federal Reserve servers', 'Gold reserves'],
+    ['A distributed public ledger called blockchain', 'The standard internet banking network', 'Federal Reserve computer servers', 'Gold held in national reserve vaults'],
     0, 'Blockchain is a chain of transaction records maintained by thousands of computers simultaneously, with no central authority.'
   ),
   mc('u1-1-l7', 1, 'Bitcoin is best described as:',
-    ['A decentralised digital currency not controlled by any government', 'A government-backed digital dollar', 'A type of credit card', 'An investment fund'],
+    ['A peer-to-peer currency with no central authority', 'A government-backed digital version of the dollar', 'A type of prepaid digital credit card', 'A managed fund investing in tech companies'],
     0, 'Bitcoin operates on a peer-to-peer network with no central bank or government controlling it.'
   ),
   mc('u1-1-l7', 2, 'What does "mining" mean in the context of Bitcoin?',
@@ -217,11 +217,11 @@ const questions = [
     0, 'Miners run powerful computers that verify and record transactions. As a reward, they earn newly created Bitcoin.'
   ),
   mc('u1-1-l7', 3, 'Cryptocurrency is most controversial as a "store of value" because:',
-    ['Its price is highly volatile — it can gain or lose 50%+ in weeks', 'It\'s illegal', 'Governments can print more of it', 'It doesn\'t exist digitally'],
+    ['Its price swings dramatically over very short periods', 'Most governments have banned or restricted its use', 'Central banks can issue unlimited amounts of it', 'You need a physical device to hold your coins'],
     0, 'Bitcoin dropped over 70% in 2022. Something that volatile is a risky store of value compared to gold or savings accounts.'
   ),
   mc('u1-1-l7', 4, 'Which of the three functions of money does cryptocurrency struggle with most?',
-    ['Store of value — price swings make it unreliable', 'Medium of exchange', 'Unit of account', 'All three equally'],
+    ['Store of value, due to extreme price volatility', 'Medium of exchange for everyday transactions', 'Unit of account for measuring prices clearly', 'All three functions fail at the same rate'],
     0, 'Wild price swings make crypto a poor store of value. Imagine your grocery bill tripling in a week because crypto crashed.'
   ),
   mc('u1-1-l7', 5, 'What does "decentralised" mean for a cryptocurrency?',
@@ -231,7 +231,7 @@ const questions = [
 
   // l8: Inflation Introduction
   mc('u1-1-l8', 0, 'Inflation means:',
-    ['The general price level rises, so each dollar buys less', 'The economy is growing', 'Interest rates are falling', 'The government prints less money'],
+    ['Prices rise overall, reducing your purchasing power', 'The economy is experiencing strong growth', 'Interest rates are trending downward nationally', 'The government is reducing its money supply'],
     0, 'Inflation erodes purchasing power. A 5% inflation rate means $100 today buys only $95 worth of goods next year.'
   ),
   mc('u1-1-l8', 1, 'If inflation is 5% and a coffee costs $3.00 today, what will it likely cost next year?',
@@ -393,7 +393,7 @@ const questions = [
     0, 'The FLSA exempts certain salaried employees in executive, administrative, or professional roles from overtime requirements.'
   ),
   mc('u1-2-l5', 5, 'From an employer\'s perspective, why might they hire a second part-time worker instead of giving one person overtime?',
-    ['Overtime costs 50% more per hour — a second worker may be cheaper', 'Workers can\'t work overtime by law', 'Part-time workers are more productive', 'It avoids paying benefits'],
+    ['Overtime costs 50% more per hour than regular pay', 'Workers are legally prohibited from working overtime', 'Part-time workers consistently outperform full-time staff', 'Splitting hours avoids mandatory benefit contributions'],
     0, 'The 1.5× overtime rate means one person working 50 hours costs more per labor hour than two people each working 25.'
   ),
 
@@ -429,7 +429,7 @@ const questions = [
     0, 'Performance bonuses reward hitting targets — they\'re discretionary and not guaranteed.'
   ),
   mc('u1-2-l7', 1, 'Are tips taxable income in the US?',
-    ['Yes — all tips must be reported as income', 'No — tips are gifts and tax-free', 'Only tips over $100', 'Only if paid by credit card'],
+    ['Yes, all tip income must be reported to the IRS', 'No, tips are classified as gifts and are tax-free', 'Only tips exceeding $100 per month are taxable', 'Only tips received via credit card are taxable'],
     0, 'The IRS requires all tip income to be reported. Servers must track and declare their tips.'
   ),
   mc('u1-2-l7', 2, 'A server receives $200 in tips. If their effective tax rate is 15%, they keep:',
@@ -492,7 +492,7 @@ const questions = [
     'Needs = essential for survival and functioning (shelter, health, utilities). Wants = things that improve life but aren\'t essential.'
   ),
   mc('u1-3-l1', 1, 'A "need" is best defined as:',
-    ['Something required for basic survival or essential functioning', 'Anything you desire strongly', 'The cheapest option available', 'Something your friends have'],
+    ['Something essential for health, safety, or income', 'Anything you feel a strong desire to have', 'Whichever option carries the lowest price tag', 'Something your social circle expects you to own'],
     0, 'Needs: food, shelter, clothing, healthcare, transportation to work. Everything else is a want.'
   ),
   mc('u1-3-l1', 2, 'Why is separating needs from wants important when budgeting?',
@@ -514,7 +514,7 @@ const questions = [
 
   // l2: Opportunity Cost
   mc('u1-3-l2', 0, 'Opportunity cost is:',
-    ['The value of the best alternative you give up when making a choice', 'The price of an item', 'The cost of borrowing money', 'Hidden fees on a purchase'],
+    ['The value of the best option you gave up', 'The listed price you pay at checkout', 'The interest charged for borrowing money', 'Hidden fees not shown in the advertised price'],
     0, 'Every choice eliminates other options. Opportunity cost = what you sacrificed to make your choice.'
   ),
   mc('u1-3-l2', 1, 'You spend Saturday working a shift instead of attending a friend\'s party. The opportunity cost is:',
@@ -522,7 +522,7 @@ const questions = [
     0, 'Opportunity cost isn\'t always money. Here, your earnings come at the cost of social time.'
   ),
   mc('u1-3-l2', 2, 'You spend $200 on new clothes instead of putting it in savings. The opportunity cost is:',
-    ['The future interest and growth that $200 would have earned', '$200', 'The clothes\' depreciation', 'Nothing — you needed clothes'],
+    ['The investment gains that $200 could have made', 'Exactly the $200 purchase price you paid', 'The gradual decline in the clothing\'s resale value', 'Nothing, since replacing worn clothes is a need'],
     0, '$200 invested at 7% for 10 years = ~$394. The opportunity cost is that lost future growth.'
   ),
   mc('u1-3-l2', 3, 'A company builds a parking lot on land it owns instead of leasing it. The opportunity cost is:',
@@ -530,11 +530,11 @@ const questions = [
     0, 'Even "free" choices have opportunity costs. Using owned resources means giving up alternative uses of those resources.'
   ),
   mc('u1-3-l2', 4, 'Why is opportunity cost important in financial decisions?',
-    ['Every choice has a hidden cost — what you gave up to make it', 'It helps calculate taxes', 'It measures inflation', 'It shows your credit score'],
+    ['Every choice eliminates other valuable alternatives', 'It helps you calculate your effective tax rate', 'It measures how quickly consumer prices are rising', 'It determines your current credit score rating'],
     0, 'Opportunity cost makes you think about alternatives, not just the choice in front of you.'
   ),
   mc('u1-3-l2', 5, 'Which concept does opportunity cost most closely relate to?',
-    ['Trade-offs — getting something always means giving up something else', 'Supply and demand', 'Compound interest', 'Tax brackets'],
+    ['The idea that every choice requires giving something up', 'The relationship between product prices and quantity', 'Interest that compounds on both principal and earnings', 'The system of progressively higher income tax rates'],
     0, 'Opportunity cost is the economic way of quantifying trade-offs in decision-making.'
   ),
 
@@ -560,7 +560,7 @@ const questions = [
     0, 'Predictability is the key benefit — you know exactly what you owe and when.'
   ),
   mc('u1-3-l3', 3, 'What happens to your fixed expenses if your income suddenly drops?',
-    ['They stay the same — you still owe rent, insurance, etc.', 'They automatically decrease', 'They become optional', 'Banks pause them for you'],
+    ['They remain the same regardless of your income level', 'They automatically adjust lower to match your income', 'They become optional payments you can skip freely', 'Banks temporarily pause them until income recovers'],
     0, 'Fixed expenses don\'t flex with income — this is why high fixed costs create financial fragility.'
   ),
   mc('u1-3-l3', 4, 'Which of these is NOT a fixed expense?',
@@ -620,7 +620,7 @@ const questions = [
     0, 'A furniture purchase is a one-time event — you don\'t re-buy a couch every month.'
   ),
   mc('u1-3-l5', 3, 'Annual recurring expenses are tricky because:',
-    ['People forget about them and get caught off-guard once a year', 'They\'re usually huge', 'They can\'t be planned for', 'Banks reject annual payments'],
+    ['They arrive once a year and are easy to forget', 'They are typically much larger than monthly costs', 'Their annual timing makes them impossible to plan for', 'Most banks decline or reject annual payment requests'],
     0, 'Car registration, Amazon Prime, and annual insurance bills can surprise you if you haven\'t saved up monthly.'
   ),
   mc('u1-3-l5', 4, 'Your car registration costs $180/year. To prepare monthly, you should save:',
@@ -638,7 +638,7 @@ const questions = [
     0, 'Impulse purchases bypass rational decision-making — triggered by emotion, boredom, or clever marketing.'
   ),
   mc('u1-3-l6', 1, 'The BEST strategy to avoid impulse buying is:',
-    ['Wait 24–48 hours before buying anything not on your planned budget', 'Never shop online', 'Only carry cash', 'Delete all shopping apps'],
+    ['Wait a day or two before making any unplanned purchase', 'Avoid all online shopping websites entirely', 'Only carry cash so you cannot overspend digitally', 'Permanently delete every shopping app on your phone'],
     0, 'The waiting period lets the emotional urge fade. If you still want it after 48 hours, it may be worth buying.'
   ),
   mc('u1-3-l6', 2, 'Stores place candy and small items at checkout counters to:',
@@ -646,7 +646,7 @@ const questions = [
     0, 'This is a deliberate retail strategy. The checkout wait gives you time to notice and want small, inexpensive items.'
   ),
   mc('u1-3-l6', 3, 'Social media ads are especially effective at driving impulse buying because they:',
-    ['Create urgency and target your personal interests algorithmically', 'Show you items you don\'t need', 'Are annoying and forgettable', 'Only appear on weekends'],
+    ['Target your specific interests with personalized content', 'Show you random products you have no interest in', 'Are easy to ignore and rarely change behavior', 'Only display on weekends when shopping urges peak'],
     0, 'Algorithms know your interests. "Limited time offer" creates fear of missing out. Together = powerful impulse trigger.'
   ),
   mc('u1-3-l6', 4, 'A student buys a $60 game impulsively and regrets it. Best strategy next time:',
@@ -660,7 +660,7 @@ const questions = [
 
   // l7: Lifestyle Inflation
   mc('u1-3-l7', 0, 'Lifestyle inflation means:',
-    ['Spending increases as income rises, leaving you no better off financially', 'Inflation affecting luxury goods', 'Prices rising faster than wages', 'Investing in your lifestyle'],
+    ['Spending rises in step with each income increase', 'Higher inflation rates on luxury goods than basics', 'Wages failing to keep pace with rising prices', 'Strategically directing money into lifestyle upgrades'],
     0, 'Lifestyle inflation (or "lifestyle creep") is the tendency to spend more as you earn more, preventing wealth accumulation.'
   ),
   mc('u1-3-l7', 1, 'A new grad gets a $15k raise and immediately upgrades their apartment, car, and wardrobe. This is:',
@@ -668,7 +668,7 @@ const questions = [
     0, 'All of the raise goes to a bigger lifestyle — none to savings or investments. The financial position barely improves.'
   ),
   mc('u1-3-l7', 2, 'The best way to counter lifestyle inflation is to:',
-    ['Save or invest a portion of every raise before upgrading your lifestyle', 'Never spend money on fun', 'Track every purchase', 'Earn more money'],
+    ['Set aside part of each raise before increasing spending', 'Refuse to spend any money on personal enjoyment', 'Record every single purchase in a detailed budget log', 'Focus on finding ways to increase your total income'],
     0, 'Automate savings from raises first. What you don\'t see, you don\'t spend. Then enjoy some of the rest guilt-free.'
   ),
   mc('u1-3-l7', 3, 'Lifestyle inflation is dangerous for long-term wealth because:',
@@ -676,7 +676,7 @@ const questions = [
     0, 'Someone earning $100k but spending $100k is no more financially secure than someone earning $50k and spending $50k.'
   ),
   mc('u1-3-l7', 4, '"Keeping up with the Joneses" means:',
-    ['Spending to match or exceed the perceived lifestyle of those around you', 'Being neighbourly', 'Negotiating your salary', 'Saving like your neighbours'],
+    ['Buying things to match what your peers have', 'Being a friendly and considerate neighbour', 'Negotiating your salary to match coworker pay', 'Copying your neighbours\' savings and budget habits'],
     0, 'Social comparison drives much lifestyle inflation. We buy things to signal status or fit in, not because we truly need them.'
   ),
   mc('u1-3-l7', 5, 'You get a $300/month raise and save $200 of it. You:',
@@ -686,7 +686,7 @@ const questions = [
 
   // l8: Delayed Gratification
   mc('u1-3-l8', 0, 'Delayed gratification means:',
-    ['Resisting an immediate reward for a larger or better future reward', 'Saving money until the last minute', 'Waiting for sales', 'Postponing all purchases indefinitely'],
+    ['Choosing a bigger future reward over a smaller one now', 'Holding onto money until prices drop at a sale', 'Waiting for the best possible deal before buying', 'Deferring all personal spending until retirement age'],
     0, 'Classic example: skipping the $5 daily coffee to invest that $1,825/year and build long-term wealth.'
   ),
   mc('u1-3-l8', 1, 'The famous "marshmallow test" measured children\'s ability to:',
@@ -698,7 +698,7 @@ const questions = [
     0, 'Saving first = delayed gratification. Buying on credit = the opposite — you get it now and suffer the cost later.'
   ),
   mc('u1-3-l8', 3, 'Delayed gratification is especially powerful in finance because:',
-    ['Compound interest rewards patience with exponentially more wealth over time', 'Banks pay you for waiting', 'Prices always drop over time', 'It impresses employers'],
+    ['Savings grow exponentially when given enough time', 'Banks reward waiting customers with direct cash bonuses', 'Consumer prices consistently fall as technology improves', 'Employers value and promote employees who wait to spend'],
     0, '$1,000 saved at 20 vs. 30 makes a massive difference by retirement — time is the most powerful variable in compounding.'
   ),
   mc('u1-3-l8', 4, 'A student skips eating out ($10/day) for a month to save $300 for concert tickets. This shows:',
@@ -714,7 +714,7 @@ const questions = [
 
   // l1: Why Save
   mc('u1-4-l1', 0, 'The primary reason to save money is:',
-    ['To have funds available for future goals and unexpected expenses', 'To impress others', 'To avoid paying taxes', 'To keep money away from banks'],
+    ['To fund future goals and handle unexpected costs', 'To signal wealth and financial success to others', 'To legally reduce the taxes you owe each year', 'To keep your money outside the banking system'],
     0, 'Saving builds financial security and enables future goals — from vacations to emergencies to retirement.'
   ),
   mc('u1-4-l1', 1, 'Which is a SHORT-term savings goal (under 1 year)?',
@@ -748,7 +748,7 @@ const questions = [
     0, 'Emergency = unexpected, necessary, urgent. Planned events should have their own savings bucket.'
   ),
   mc('u1-4-l2', 2, 'Where should you keep your emergency fund?',
-    ['A high-yield savings account — accessible but earning interest', 'Invested in stocks for growth', 'Under your mattress', 'In a retirement account'],
+    ['A high-yield savings account with easy access', 'A stock brokerage account for maximum growth', 'Hidden at home where only you can find it', 'A retirement account like a 401k or IRA'],
     0, 'Emergency funds need to be accessible immediately and safe. Stocks can lose value right when you need the cash.'
   ),
   mc('u1-4-l2', 3, 'Your monthly expenses are $2,000. A fully funded 3-month emergency fund is:',
@@ -766,7 +766,7 @@ const questions = [
 
   // l3: Savings Accounts
   mc('u1-4-l3', 0, 'What is APY?',
-    ['Annual Percentage Yield — your real return including compounding', 'A type of savings account', 'Annual Payment Yield — money you owe', 'The monthly fee on an account'],
+    ['The annual return rate including compound interest effects', 'A special type of high-interest savings account', 'The yearly amount owed on a loan or debt balance', 'The monthly maintenance fee charged by the bank'],
     0, 'APY reflects actual annual earnings after compounding. Higher APY = more interest earned on your deposits.'
   ),
   mc('u1-4-l3', 1, 'A high-yield savings account (HYSA) is better than a traditional savings account mainly because:',
@@ -802,7 +802,7 @@ const questions = [
     0, 'I = $1,000 × 0.05 × 3 = $150. Simple interest is calculated only on the original principal.'
   ),
   mc('u1-4-l4', 2, 'Simple interest is calculated on:',
-    ['The original principal only — never on earned interest', 'The total balance including interest', 'The average balance', 'Whatever the bank decides'],
+    ['Only the original principal, not on earned interest', 'The total balance including all accumulated interest', 'The running average of your account balance', 'An amount calculated individually by each bank'],
     0, 'This is the key difference from compound interest. Simple: interest stays separate. Compound: interest earns interest.'
   ),
   mc('u1-4-l4', 3, 'The "principal" in an interest calculation is:',
@@ -820,7 +820,7 @@ const questions = [
 
   // l5: Compound Interest
   mc('u1-4-l5', 0, 'Compound interest is interest earned on:',
-    ['Both the original principal AND previously earned interest', 'Only the original principal', 'Only the interest', 'The bank\'s total assets'],
+    ['The principal plus any previously earned interest', 'Only the original starting principal amount', 'Only the interest that has already been earned', 'The bank\'s total combined asset base'],
     0, 'This is the magic: earned interest joins the principal, so next period you earn interest on a bigger amount.'
   ),
   mc('u1-4-l5', 1, 'You invest $1,000 at 10% compound interest annually. After 2 years you have:',
@@ -828,7 +828,7 @@ const questions = [
     0, 'Year 1: $1,000 × 1.10 = $1,100. Year 2: $1,100 × 1.10 = $1,210. The $10 of Year 1 interest also earned interest.'
   ),
   mc('u1-4-l5', 2, 'What has the BIGGEST impact on compound interest growth?',
-    ['Time — starting early makes a far bigger difference than earning a slightly higher rate', 'The interest rate only', 'The bank you choose', 'How often you check the account'],
+    ['Starting early, since time amplifies compounding growth', 'The interest rate, which determines all of the growth', 'The specific bank you choose to deposit with', 'How frequently you log in to check the account'],
     0, 'The "eighth wonder of the world" effect kicks in over decades. Starting 10 years earlier can double your outcome.'
   ),
   mc('u1-4-l5', 3, '$2,000 at 7% annual compound interest for 10 years (no extra deposits) grows to approximately:',
@@ -840,7 +840,7 @@ const questions = [
     0, 'Credit card debt compounds daily. A $1,000 balance at 22% APR grows to $1,246 in a year without payments.'
   ),
   mc('u1-4-l5', 5, 'The "Rule of 72" tells you:',
-    ['How many years it takes to double money: divide 72 by the interest rate', 'The maximum safe investment percentage', 'Your monthly payment on a loan', 'How much to save for retirement'],
+    ['How many years it takes to double your money', 'The safest percentage of income to invest annually', 'The monthly payment amount on any given loan', 'The exact amount needed to retire comfortably'],
     0, 'At 6%, 72÷6 = 12 years to double. At 9%, 72÷9 = 8 years. Quick mental math for compounding.'
   ),
 
@@ -859,11 +859,11 @@ const questions = [
     0, '$600 ÷ 6 months = $100/month.'
   ),
   mc('u1-4-l6', 3, 'Which is a SMART savings goal?',
-    ['"I will save $1,200 for an emergency fund over 12 months by saving $100/month"', '"I will save more money this year"', '"I want to have lots of savings"', '"I\'ll try to spend less"'],
+    ['"Save $1,200 for emergencies over 12 months at $100/month"', '"Put away more money toward savings this year"', '"Build up a large savings balance as soon as possible"', '"Try to cut down on unnecessary spending this year"'],
     0, 'It\'s Specific ($1,200), Measurable ($100/month), Achievable (reasonable), Relevant (emergency fund), Time-bound (12 months).'
   ),
   mc('u1-4-l6', 4, 'Long-term savings goals (10+ years) often benefit most from:',
-    ['Investment accounts (stocks, index funds) that outpace inflation', 'A regular savings account', 'Keeping cash at home', 'Certificates of deposit (CDs) only'],
+    ['Stock market index funds that outpace inflation', 'A standard bank savings account for safety', 'Physical cash stored securely at home', 'Certificates of deposit with fixed interest rates'],
     0, 'Long time horizons allow you to ride out market volatility. Stocks historically return ~7% annually vs. 4% for HYSAs.'
   ),
   mc('u1-4-l6', 5, 'What is the main advantage of setting a specific savings target date?',
@@ -873,7 +873,7 @@ const questions = [
 
   // l7: Pay Yourself First
   mc('u1-4-l7', 0, '"Pay yourself first" means:',
-    ['Automatically saving a set amount before spending anything else', 'Buying what you want before bills', 'Keeping all your money in cash', 'Avoiding taxes by spending less'],
+    ['Saving a fixed amount from each paycheck before spending', 'Buying personal wants before paying any bills', 'Holding all your earnings in physical cash form', 'Reducing taxes by cutting down on all purchases'],
     0, 'Money goes to savings the moment you\'re paid — before rent, groceries, or entertainment. You live on what\'s left.'
   ),
   mc('u1-4-l7', 1, 'The best way to implement "pay yourself first" is:',
@@ -899,7 +899,7 @@ const questions = [
 
   // l8: Inflation vs Savings
   mc('u1-4-l8', 0, 'If inflation is 4% and your savings account earns 1%, your money\'s purchasing power:',
-    ['Decreases — you\'re losing 3% in real value each year', 'Increases — 1% is still positive', 'Stays the same', 'Doubles faster'],
+    ['Decreases by about 3% in real terms each year', 'Increases, since earning 1% is still positive growth', 'Stays the same since interest offsets inflation', 'Doubles faster as both rates compound together'],
     0, 'Real return = nominal return − inflation = 1% − 4% = −3%. Your money buys less each year despite earning interest.'
   ),
   mc('u1-4-l8', 1, '"Real return" means:',
@@ -931,7 +931,7 @@ const questions = [
     0, 'Checking = transaction account. Debit card, bill pay, transfers — high activity, usually little to no interest.'
   ),
   mc('u2-1-l1', 1, 'What is overdraft protection?',
-    ['A service that covers transactions when your balance is too low, usually for a fee', 'Free money from the bank', 'Insurance on your account', 'A way to earn extra interest'],
+    ['A service that covers transactions when your balance is low', 'Free emergency funds automatically provided by the bank', 'Insurance coverage that protects your deposit balance', 'A feature that earns bonus interest when funds run low'],
     0, 'Overdraft lets a transaction go through even when funds are insufficient, but banks typically charge $25–$35 per occurrence.'
   ),
   mc('u2-1-l1', 2, 'What happens if you spend more than your checking balance (no overdraft protection)?',
@@ -939,7 +939,7 @@ const questions = [
     0, 'Without overdraft protection, a transaction that exceeds your balance is simply declined at point of sale.'
   ),
   mc('u2-1-l1', 3, 'Why do checking accounts earn little or no interest?',
-    ['They\'re designed for frequent transactions, not holding money long-term', 'Banks don\'t profit from checking accounts', 'It\'s illegal to pay interest on checking', 'Customers don\'t want interest'],
+    ['Checking funds move too often to lend out profitably', 'Banks earn no profit from operating checking accounts', 'Federal law bans interest payments on checking accounts', 'Most customers prefer not to earn any interest'],
     0, 'Checking account funds move in and out constantly, making them less useful for lending — so banks pay little interest.'
   ),
   mc('u2-1-l1', 4, 'Which is a good reason to use a checking account?',
@@ -995,15 +995,15 @@ const questions = [
     0, 'Members are both customers and owners. Profits go back to members through better rates and lower fees.'
   ),
   mc('u2-1-l3', 2, 'Who can typically join a credit union?',
-    ['People who meet specific criteria — same employer, region, or association', 'Anyone at any time', 'Only business owners', 'Only people with perfect credit'],
+    ['Those who meet a defined eligibility requirement', 'Any adult who walks in and applies at any time', 'Business owners with an established company only', 'Individuals who have a perfect credit history'],
     0, 'Credit unions serve a defined "field of membership" — you must qualify (work, live, or belong somewhere specific).'
   ),
   mc('u2-1-l3', 3, 'Credit unions often offer:',
-    ['Lower loan interest rates and higher savings rates than big banks', 'More branches nationwide', 'Always better technology', 'Higher fees'],
+    ['Better interest rates on loans and savings accounts', 'More branch locations across the country', 'Superior mobile apps and online banking tools', 'Faster loan approval times than commercial banks'],
     0, 'Without a profit motive, credit unions can offer better financial terms. The tradeoff is usually fewer locations.'
   ),
   mc('u2-1-l3', 4, 'Credit union deposits are insured by:',
-    ['NCUA — National Credit Union Administration (up to $250,000)', 'FDIC', 'The Federal Reserve', 'No government agency'],
+    ['The NCUA, with the same $250,000 coverage limit', 'The FDIC, just like standard commercial banks', 'The Federal Reserve as their central regulator', 'No agency, as credit unions are fully uninsured'],
     0, 'NCUA for credit unions, FDIC for banks. Both provide the same $250,000 per depositor coverage.'
   ),
   mc('u2-1-l3', 5, 'A potential downside of credit unions is:',
@@ -1013,11 +1013,11 @@ const questions = [
 
   // l4: Online Banks
   mc('u2-1-l4', 0, 'Online banks can offer higher savings rates than traditional banks mainly because:',
-    ['No physical branches = lower operating costs, which they pass on to customers', 'They take more investment risk', 'They\'re not regulated', 'They don\'t pay employees'],
+    ['They have lower overhead with no physical branches', 'They accept higher investment risks for better returns', 'They operate without any banking regulations', 'They pay significantly lower wages to employees'],
     0, 'No rent, no tellers, no branch upkeep. Online banks redirect those savings into better rates for customers.'
   ),
   mc('u2-1-l4', 1, 'A potential disadvantage of an online bank:',
-    ['No physical branches — you can\'t deposit cash or get in-person help', 'They charge higher fees always', 'Deposits aren\'t insured', 'They can\'t offer debit cards'],
+    ['No physical locations for cash deposits or in-person help', 'They consistently charge higher fees than big banks', 'Deposits are not covered by any federal insurance', 'They are unable to issue any debit or ATM cards'],
     0, 'If you need to deposit cash or deal with a complex issue face-to-face, an online-only bank can frustrate.'
   ),
   mc('u2-1-l4', 2, 'Online bank deposits are FDIC insured (if the bank is FDIC-member):',
@@ -1029,7 +1029,7 @@ const questions = [
     0, 'Tech-comfortable users who mostly transact digitally gain the most from online banks\' better rates and lower fees.'
   ),
   mc('u2-1-l4', 4, 'The main way to deposit cash into an online bank account is:',
-    ['Buy a money order and mail it, or use a Green Dot retailer — cash deposits are limited', 'Drop it in a branch ATM', 'Call the bank and they send a courier', 'Deposit at any ATM for free'],
+    ['Use a Green Dot retailer or mail a money order', 'Visit a nearby branch and use their ATM machine', 'Call the bank and schedule a courier cash pickup', 'Use any ATM network to deposit cash for free'],
     0, 'Cash deposits are the biggest friction point with online banks. Most customers use them alongside a local bank for cash.'
   ),
   mc('u2-1-l4', 5, 'If you want to maximize interest on your emergency fund with minimal risk, you should consider:',
@@ -1039,7 +1039,7 @@ const questions = [
 
   // l5: How Banks Make Money
   mc('u2-1-l5', 0, 'The main way banks make money is:',
-    ['Lending depositors\' money at higher interest rates than they pay savers', 'Charging ATM fees only', 'Investing in the stock market with your deposits', 'Printing their own currency'],
+    ['Charging borrowers more interest than they pay savers', 'Charging fees on ATM use and account maintenance', 'Investing your deposits directly in the stock market', 'Printing and issuing their own branded currency'],
     0, 'The interest rate spread is the core of banking profit: borrow from depositors at 2%, lend to borrowers at 7% = 5% spread.'
   ),
   mc('u2-1-l5', 1, 'If a bank pays you 2% on savings and charges 7% on car loans, the bank\'s spread is:',
@@ -1051,7 +1051,7 @@ const questions = [
     0, 'Non-interest income (fees) is an increasingly important revenue stream for banks.'
   ),
   mc('u2-1-l5', 3, 'When you deposit $1,000 in a bank, the bank:',
-    ['Lends most of it out to borrowers and pays you interest for using your money', 'Puts it in a vault untouched', 'Invests it in the stock market', 'Sends it to the Federal Reserve'],
+    ['Lends most of it out and pays you interest in return', 'Stores the full amount untouched in a secure vault', 'Invests all of it directly in the stock market', 'Transfers the full amount to the Federal Reserve'],
     0, 'This is fractional reserve banking. Your $1,000 becomes a $900 loan to someone else while you keep "access" to $1,000.'
   ),
   mc('u2-1-l5', 4, 'What is fractional reserve banking?',
@@ -1075,7 +1075,7 @@ const questions = [
     0, 'Created by the Banking Act of 1933 after thousands of bank failures during the Great Depression.'
   ),
   mc('u2-1-l6', 2, 'Your bank fails. You have $200,000 in a savings account. Under FDIC:',
-    ['You get all $200,000 back — it\'s under the $250,000 limit', 'You lose everything', 'You get $100,000 back', 'You wait years for reimbursement'],
+    ['You get the full $200,000 back, completely covered', 'You lose the entire $200,000 with no recovery', 'You receive exactly $100,000 and lose the rest', 'You eventually recover it after years of waiting'],
     0, 'FDIC reimburses insured deposits promptly — often the next business day after a bank failure.'
   ),
   mc('u2-1-l6', 3, 'FDIC insurance does NOT cover:',
@@ -1124,7 +1124,7 @@ const questions = [
     0, 'Modern banking apps let you do almost everything without visiting a branch.'
   ),
   mc('u2-1-l8', 1, 'Best security practice for mobile banking:',
-    ['Use a strong unique password and enable two-factor authentication (2FA)', 'Use the same password as email for convenience', 'Save your password in a text file on your phone', 'Disable notifications to prevent phishing'],
+    ['Use a strong password and enable two-factor authentication', 'Reuse your email password for easy remembering', 'Save your login credentials in a phone notes file', 'Turn off all banking notifications to block phishing'],
     0, '2FA means a hacker needs both your password AND your phone to access your account. Essential for banking apps.'
   ),
   mc('u2-1-l8', 2, 'Mobile check deposit works by:',
@@ -1136,7 +1136,7 @@ const questions = [
     0, 'Use cellular data or a VPN for financial transactions on public networks. "Man in the middle" attacks are real threats.'
   ),
   mc('u2-1-l8', 4, 'If you lose your phone that has your banking app, you should:',
-    ['Contact your bank immediately and use device management to remotely lock it', 'Wait a few days to see if someone returns it', 'Create a new account', 'Nothing — apps require Face ID'],
+    ['Report it to your bank and remotely lock the device', 'Wait a few days to see if someone returns it', 'Open an entirely new account at a different bank', 'Do nothing since Face ID blocks all transactions'],
     0, 'Act immediately. Remote lock or wipe prevents access even if the phone is found. Report to your bank to freeze mobile access.'
   ),
   mc('u2-1-l8', 5, 'Mobile banking most reduces the need for:',
@@ -1148,7 +1148,7 @@ const questions = [
 
   // l1: Debit Cards
   mc('u2-2-l1', 0, 'When you pay with a debit card, money is drawn:',
-    ['Directly from your checking account — immediately', 'From a line of credit', 'From your savings account', 'From the bank\'s funds, paid back later'],
+    ['Directly and immediately from your checking account', 'From a revolving line of credit you repay later', 'Transferred automatically from your savings account', 'From the bank\'s own funds, repaid at month-end'],
     0, 'Debit = immediate subtraction from your checking balance. No credit, no debt — just your own money.'
   ),
   mc('u2-2-l1', 1, 'What happens when you use a debit card for more than your account balance (no overdraft)?',
@@ -1160,11 +1160,11 @@ const questions = [
     0, 'PIN (Personal Identification Number) proves you\'re the account owner when swiping or inserting at a terminal.'
   ),
   mc('u2-2-l1', 3, 'An advantage of a debit card over cash:',
-    ['Easier to track spending and safer than carrying large amounts of cash', 'You can spend more than you have', 'It builds credit history', 'It earns rewards automatically'],
+    ['Every transaction is recorded and easy to review', 'You can spend more than your current balance allows', 'It builds a strong credit history over time', 'You automatically earn cashback rewards on purchases'],
     0, 'Every debit transaction shows in your statement, making it easy to review spending. Cash transactions leave no record.'
   ),
   mc('u2-2-l1', 4, 'A disadvantage of debit cards compared to credit cards:',
-    ['Less fraud protection — money leaves your account immediately when stolen', 'Lower acceptance at stores', 'They charge annual fees', 'You can\'t use them online'],
+    ['Stolen funds leave your account immediately and directly', 'Fewer stores and merchants accept debit cards overall', 'Most debit cards carry an annual fee to maintain', 'Debit cards cannot be used for any online purchases'],
     0, 'Credit card fraud = no money lost until investigation. Debit card fraud = your cash is gone while you dispute.'
   ),
   mc('u2-2-l1', 5, 'Debit cards are safest when:',
@@ -1178,11 +1178,11 @@ const questions = [
     0, 'Credit = borrowed money. You must repay the card issuer — with interest if you don\'t pay in full by the due date.'
   ),
   mc('u2-2-l2', 1, 'To avoid paying interest on a credit card:',
-    ['Pay your full statement balance before the due date each month', 'Pay just the minimum payment', 'Never use the card', 'Set up autopay for any amount'],
+    ['Pay the full statement balance by the due date', 'Pay only the minimum amount listed on your bill', 'Avoid using the card entirely to prevent charges', 'Set up autopay for any partial amount you choose'],
     0, 'Pay in full = no interest ever. Even one dollar short means you pay interest on the entire balance in many cases.'
   ),
   mc('u2-2-l2', 2, 'The "grace period" on a credit card is:',
-    ['Time between statement close and payment due date — no interest if paid in full', 'Extra time to pay after you\'re late', 'A period where rewards are doubled', 'A 30-day interest freeze'],
+    ['The window between statement close and payment due date', 'Extra time given after your payment becomes overdue', 'A promotional period when reward points are doubled', 'A fixed 30-day period when no interest can accumulate'],
     0, 'Typically 21–25 days. Pay your full statement balance within this window and you pay zero interest.'
   ),
   mc('u2-2-l2', 3, 'A credit card with 22% APR on a $500 balance held for one year accumulates about:',
@@ -1190,7 +1190,7 @@ const questions = [
     0, '$500 × 0.22 = $110. High APR + carrying a balance = expensive money. Always pay in full when possible.'
   ),
   mc('u2-2-l2', 4, 'Which is a benefit of paying with a credit card (used responsibly)?',
-    ['Stronger fraud protection, rewards, and credit history building', 'Free money — you never have to pay back', 'No credit check required', 'Higher spending limits are permanent'],
+    ['Fraud protection, rewards points, and credit building', 'Borrowed money that you are never required to repay', 'No credit check or approval process is required', 'Permanently higher limits granted on all future purchases'],
     0, 'Credit cards offer chargeback rights (disputing fraud or bad purchases), cashback/points, and help build credit.'
   ),
   mc('u2-2-l2', 5, 'Your credit limit is:',
@@ -1204,15 +1204,15 @@ const questions = [
     0, 'You literally cannot spend more than you have with cash. This natural limit prevents overspending.'
   ),
   mc('u2-2-l3', 1, 'A personal check is:',
-    ['A written order to your bank to pay a specific amount to a named person', 'Digital currency', 'A type of debit card', 'A bank\'s guarantee of payment'],
+    ['A written instruction to your bank to pay someone', 'A form of digital currency stored on your phone', 'A type of debit card linked to your checking account', 'A guarantee from the bank to cover a payment itself'],
     0, 'Checks authorise your bank to transfer funds from your account to the payee\'s account.'
   ),
   mc('u2-2-l3', 2, 'A "bounced check" means:',
-    ['The writer\'s account had insufficient funds — the bank rejected payment', 'The check arrived late in the mail', 'The signature was invalid', 'The check was stolen'],
+    ['The check writer had insufficient funds to cover it', 'The check was mailed too late to arrive in time', 'The signature on the check did not match records', 'The physical check was intercepted and stolen'],
     0, 'NSF (Non-Sufficient Funds) results in the check bouncing. Both parties may face fees, and it damages trust.'
   ),
   mc('u2-2-l3', 3, 'Which information is required on a personal check?',
-    ['Payee name, dollar amount (numbers and words), your signature, and date', 'Just your signature and amount', 'Only the account number', 'Payee name and date only'],
+    ['Payee name, amount, date, and your signature', 'Only your signature and the dollar amount', 'Just the account and routing numbers only', 'Only the payee name and the current date'],
     0, 'All four elements are legally required for a valid check. Missing any can cause it to be rejected.'
   ),
   mc('u2-2-l3', 4, 'Why are checks becoming less common?',
@@ -1226,7 +1226,7 @@ const questions = [
 
   // l4: Wire Transfers & ACH
   mc('u2-2-l4', 0, 'A wire transfer is:',
-    ['An electronic bank-to-bank transfer that typically settles the same day', 'A physical wire carrying cash', 'A monthly automated payment', 'A type of check'],
+    ['A direct electronic transfer that settles the same day', 'A physical wire that carries cash between branches', 'A recurring monthly automated payment system', 'A digitally enhanced version of a paper check'],
     0, 'Wire transfers are direct, fast, and final. Used for large amounts (real estate, international payments) where speed matters.'
   ),
   mc('u2-2-l4', 1, 'ACH (Automated Clearing House) is most commonly used for:',
@@ -1242,7 +1242,7 @@ const questions = [
     0, 'Same-day ACH is now available for a fee, but standard ACH takes 1–3 business days to clear.'
   ),
   mc('u2-2-l4', 4, 'Why are wire transfers hard to reverse once sent?',
-    ['They\'re final once processed — funds move directly between banks with no intermediary hold', 'Banks lose the records', 'They\'re encrypted and can\'t be read back', 'It\'s a legal requirement'],
+    ['They settle immediately and cannot be recalled', 'Bank systems automatically delete wire transfer records', 'The encryption makes the transfer impossible to reverse', 'Federal law prohibits reversing any completed wire'],
     0, 'This finality is why wire fraud scams are devastating — once sent, the money is almost impossible to recover.'
   ),
   mc('u2-2-l4', 5, 'Best payment method for sending $50,000 for a home down payment that must arrive today:',
@@ -1256,7 +1256,7 @@ const questions = [
     0, 'Zelle transfers go bank-to-bank instantly. Venmo and Cash App hold funds in an app balance unless you transfer out.'
   ),
   mc('u2-2-l5', 1, 'A major risk when using peer-to-peer payment apps:',
-    ['Sending money to the wrong person — often instant and irreversible', 'The apps charge 10% fees', 'Transactions are public by default', 'The money disappears'],
+    ['Accidentally sending money to the wrong recipient', 'The apps charge up to 10% on every transfer', 'All transactions are publicly visible by default', 'Funds can randomly disappear due to app glitches'],
     0, 'One wrong digit in a username or phone number sends money to a stranger. Recoveries are difficult and not guaranteed.'
   ),
   mc('u2-2-l5', 2, 'Safest practice when using Venmo or Cash App:',
@@ -1264,7 +1264,7 @@ const questions = [
     0, 'Peer-to-peer apps have minimal fraud protection compared to credit cards. Treat them like handing over cash.'
   ),
   mc('u2-2-l5', 3, 'A common scam on peer-to-peer payment apps involves:',
-    ['Strangers claiming you owe them money or asking you to "refund" an accidental payment', 'Apps charging too much interest', 'Banks closing your account', 'Apps requiring your Social Security number'],
+    ['Fake "accidental payment" requests asking for a refund', 'Apps charging excessive hidden monthly interest fees', 'Banks closing accounts that use these payment apps', 'Apps harvesting your Social Security number at signup'],
     0, 'Scammers send money "by mistake" then ask for it back via a different method — often after their original payment reverses.'
   ),
   mc('u2-2-l5', 4, 'Zelle transfers are typically:',
@@ -1272,7 +1272,7 @@ const questions = [
     0, 'Zelle is integrated into most US bank apps and uses existing bank-to-bank rails for fast, free transfers.'
   ),
   mc('u2-2-l5', 5, 'Why should you avoid keeping large balances in apps like Venmo or Cash App?',
-    ['App balances may have less FDIC protection than bank accounts, and aren\'t easily accessible', 'Apps charge monthly storage fees', 'The money earns no interest anywhere', 'It slows down the app'],
+    ['App balances have weaker protections than bank deposits', 'Apps charge high monthly fees to store any balance', 'Your money earns zero interest no matter the amount', 'A large balance causes the app to run much slower'],
     0, 'App balances exist in regulatory grey areas. For safety, transfer app balances to your bank regularly.'
   ),
 
@@ -1282,7 +1282,7 @@ const questions = [
     0, 'NFC allows devices within a few centimetres to exchange data. Tap your phone or card near the terminal = payment made.'
   ),
   mc('u2-2-l6', 1, 'Apple Pay and Google Pay are more secure than swiping a physical card because:',
-    ['They generate a unique transaction token instead of transmitting your actual card number', 'They require a PIN every time', 'They\'re encrypted with government-level security', 'They\'re backed by FDIC'],
+    ['They use a unique token per transaction, not your real number', 'They require a PIN to be entered for every purchase', 'They use government-certified military-grade encryption', 'They are directly backed and insured by the FDIC'],
     0, 'Tokenisation means merchants never receive your real card number — even if they\'re hacked, your card data is safe.'
   ),
   mc('u2-2-l6', 2, 'To make a contactless payment:',
@@ -1298,13 +1298,13 @@ const questions = [
     0, 'Tap is typically the fastest payment method — no insert wait, no PIN for small purchases, no signature.'
   ),
   mc('u2-2-l6', 5, 'If your phone is stolen with Apple Pay enabled, you can:',
-    ['Remotely disable Apple Pay through your Apple ID / Find My account', 'Do nothing — Face ID makes it safe', 'Call the store where it was used', 'Cancel your bank account'],
+    ['Disable Apple Pay remotely using your Apple ID', 'Do nothing since Face ID prevents all transactions', 'Call the store and ask them to block the device', 'Cancel your entire bank account and reopen it'],
     0, 'Apple ID\'s Find My and Google\'s account management let you remotely lock or erase your device, disabling all payments.'
   ),
 
   // l7: Direct Deposit
   mc('u2-2-l7', 0, 'Direct deposit means:',
-    ['Your employer sends your paycheck electronically straight to your bank account', 'You pick up a paper check from HR', 'The bank deposits your cash for you', 'You get paid in cryptocurrency'],
+    ['Your paycheck is sent electronically to your bank account', 'You collect a paper check from HR or payroll', 'The bank receives and deposits physical cash for you', 'Your employer pays you in a chosen cryptocurrency'],
     0, 'Direct deposit via ACH is how most employees receive pay — automatic, paperless, and typically faster than checks.'
   ),
   mc('u2-2-l7', 1, 'To set up direct deposit, you give your employer:',
@@ -1320,17 +1320,17 @@ const questions = [
     0, 'Many online and fintech banks release direct deposits as soon as they receive the ACH file — often 1–2 days early.'
   ),
   mc('u2-2-l7', 4, 'Direct deposit is safer than a paper check because:',
-    ['It can\'t be lost, stolen, or damaged — it goes straight to your account', 'Banks insure checks but not deposits', 'Paper checks can be forged more easily', 'Direct deposit is guaranteed by law'],
+    ['It goes directly to your account without a physical check', 'Bank insurance covers paper checks but not deposits', 'Paper checks are far easier to forge or alter', 'Employers are legally required to use direct deposit'],
     0, 'Paper checks can be intercepted, lost in mail, or forged. Electronic deposits eliminate those physical risks.'
   ),
   mc('u2-2-l7', 5, 'Many banks waive monthly fees if you set up direct deposit because:',
-    ['You become a more engaged, long-term customer using the account regularly', 'Direct deposit is required by law', 'It reduces their processing costs only', 'Employers pay banks a bonus'],
+    ['Customers with direct deposit use accounts more actively', 'Federal law mandates this fee waiver for all banks', 'It cuts their internal payment processing costs only', 'Employers pay banks a bonus for each setup completed'],
     0, 'Banks want direct deposit customers — they use the account more, maintain higher balances, and rarely switch banks.'
   ),
 
   // l8: Choosing the Right Payment Method
   mc('u2-2-l8', 0, 'You\'re buying something from an unknown online seller and want maximum protection if it doesn\'t arrive. Best method:',
-    ['Credit card — offers chargeback rights and purchase protection', 'Wire transfer', 'Zelle', 'Cash'],
+    ['Credit card, with chargeback and dispute rights', 'Wire transfer for a guaranteed same-day payment', 'Zelle for an instant peer-to-peer bank transfer', 'Cash, which is untraceable and always accepted'],
     0, 'Credit card chargebacks let you dispute charges and get refunded if goods aren\'t delivered. Wire/Zelle/cash have no such protection.'
   ),
   mc('u2-2-l8', 1, 'You need to split a dinner bill five ways with friends instantly. Best method:',
@@ -1346,11 +1346,11 @@ const questions = [
     0, 'Small vendors may not have card terminals. Cash is the universal fallback that always works.'
   ),
   mc('u2-2-l8', 4, 'You need to send $15,000 for a car purchase today. Best method:',
-    ['Wire transfer — fast, handles large amounts, and is finalized same day', 'Venmo', 'Personal check only', 'ACH transfer next week'],
+    ['Wire transfer, which finalizes same day for large sums', 'Venmo, which handles large same-day payments easily', 'A personal check written and handed over in person', 'An ACH transfer, which arrives in a few business days'],
     0, 'Wire transfers are the standard for large, time-sensitive transfers. The $25–50 fee is worth the certainty.'
   ),
   mc('u2-2-l8', 5, 'Which payment method gives you the most consumer protections overall?',
-    ['Credit card — chargebacks, fraud liability limits, and purchase protection', 'Debit card', 'Cash App', 'Wire transfer'],
+    ['Credit card, due to chargebacks and fraud protections', 'Debit card, which has similar federal protections', 'Cash App, which has robust consumer dispute tools', 'Wire transfer, with guaranteed federal consumer rights'],
     0, 'Federal law limits credit card fraud liability to $50 (often $0 in practice). Debit card protections are weaker; cash has none.'
   ),
 ]
