@@ -323,7 +323,11 @@
 .lesson-feedback {
   padding: 24px 28px; border: var(--border-width) solid var(--foreground);
   border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 12px;
-  box-shadow: var(--shadow-pop); animation: pop-in 0.3s var(--ease-bounce) both;
+  box-shadow: var(--shadow-pop); animation: feedback-slide 0.32s ease both;
+}
+@keyframes feedback-slide {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .feedback-correct { background: #ECFDF5; }
 .feedback-wrong   { background: #FFF4F3; }
@@ -729,6 +733,12 @@
 .order-item:hover:not(.order-item--correct):not(.order-item--wrong) { transform: translate(-2px,-2px); box-shadow: var(--shadow-pop); }
 .order-item--correct { border-color: var(--secondary); background: rgba(13,148,136,0.08); cursor: default; }
 .order-item--wrong   { border-color: var(--accent);    background: rgba(255,111,97,0.08);  cursor: default; }
+.order-item--snap    { animation: order-snap 0.35s var(--ease-bounce) both; }
+@keyframes order-snap {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.03) translateY(-3px); box-shadow: var(--shadow-pop); }
+  100% { transform: scale(1) translateY(0); }
+}
 
 .order-handle { color: var(--muted-foreground); font-size: 1.1rem; flex-shrink: 0; }
 .order-num { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--muted); border: var(--border-width) solid var(--border); font-family: var(--font-heading); font-size: var(--text-xs); font-weight: 800; flex-shrink: 0; }
