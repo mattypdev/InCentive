@@ -76,6 +76,7 @@ function fisherYates(arr) {
 
 function shuffleOptions(questions) {
   return questions.map(q => {
+    if (!q.options?.length) return q  // numberline/slider: empty options, no shuffle needed
     const correct = q.options[q.correct]
     const opts    = fisherYates(q.options)
     return { ...q, options: opts, correct: opts.indexOf(correct) }
@@ -386,9 +387,9 @@ export default function UnitPage() {
               <span className="unit-lesson-badge" style={{ '--badge-color': color }}>
                 Lesson {lessonNum} of {lessons.length}
               </span>
-              {q?.type && !['multiple-choice','fill-blank'].includes(q.type) && (
+              {q?.type && q.type !== 'multiple-choice' && (
                 <span className="fill-blank-tag">
-                  {{ sort: 'Sort it', order: 'Put in order', wordbank: 'Word bank' }[q.type]}
+                  {{ 'fill-blank': 'Fill in the blank', sort: 'Sort it', order: 'Put in order', wordbank: 'Word bank', numberline: 'Number line', slider: 'Slider' }[q.type]}
                 </span>
               )}
             </div>

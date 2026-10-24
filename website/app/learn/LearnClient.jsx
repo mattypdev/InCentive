@@ -105,6 +105,7 @@ function fisherYates(arr) {
 
 function shuffleOptions(questions) {
   return questions.map(q => {
+    if (!q.options?.length) return q  // numberline/slider: empty options, no shuffle needed
     const correct = q.options[q.correct]
     const opts    = fisherYates(q.options)
     return { ...q, options: opts, correct: opts.indexOf(correct) }
@@ -390,7 +391,7 @@ export default function LearnClient() {
     const pct       = (qIndex / shuffledQs.length) * 100
     const isTest    = activeUnit.isChapterTest || activeUnit.isCapstone
     const threshold = activeUnit.isCapstone ? 35 : 7
-    const typeBadge = { 'fill-blank': 'Fill in the blank', sort: 'Sort it', order: 'Put in order', wordbank: 'Word bank' }[q?.type]
+    const typeBadge = { 'fill-blank': 'Fill in the blank', sort: 'Sort it', order: 'Put in order', wordbank: 'Word bank', numberline: 'Number line', slider: 'Slider' }[q?.type]
     return (
       <main className="learn-page">
         <section className="section"><div className="container">

@@ -26,11 +26,13 @@ export async function fetchQuestionsMap() {
       explanation: row.explanation,
       meta: row.meta ?? null,
     }
-    if (row.type === 'fill-blank') {
-      fillBlanks[row.unit_id] = q
-    } else if (row.lesson_id) {
+    if (row.lesson_id) {
+      // Lesson-scoped question — always goes to byLesson regardless of type
       if (!byLesson[row.lesson_id]) byLesson[row.lesson_id] = []
       byLesson[row.lesson_id].push(q)
+    } else if (row.type === 'fill-blank' && row.unit_id) {
+      // Legacy unit-level fill-blank (no lesson_id) — used by chapter tests
+      fillBlanks[row.unit_id] = q
     }
   }
 

@@ -340,14 +340,163 @@ function WordBankQuestion({ q, showFeedback, selected, onAnswer }) {
   )
 }
 
+// ─── Number-line ──────────────────────────────────────────────────────────
+
+function fmtVal(v, format) {
+  const n = Math.round(v * 100) / 100
+  if (format === 'dollar')   return n % 1 === 0 ? `$${n.toLocaleString()}` : `$${n.toFixed(2)}`
+  if (format === 'dollar_k') return `$${n}K`
+  if (format === 'percent')  return `${n}%`
+  if (format === 'hours')    return `${n} hrs`
+  return String(n)
+}
+
+function NumberLineQuestion({ q, showFeedback, selected, onAnswer }) {
+  const { min, max, step, answer, tolerance, format, labels } = q.meta
+  const [picked, setPicked]   = useState(null)
+  const [dragging, setDragging] = useState(false)
+  const trackRef = useRef(null)
+
+  function clampSnap(clientX) {
+    const rect = trackRef.current.getBoundingClientRect()
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+    const raw   = min + ratio * (max - min)
+    return Math.max(min, Math.min(max, Math.round(raw / step) * step))
+  }
+
+  function handlePointerDown(e) {
+    if (showFeedback) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    setDragging(true)
+    setPicked(clampSnap(e.clientX))
+  }
+  function handlePointerMove(e) {
+    if (!dragging || showFeedback) return
+    setPicked(clampSnap(e.clientX))
+  }
+  function handlePointerUp() { setDragging(false) }
+
+  function toPercent(v) { return ((v - min) / (max - min)) * 100 }
+
+  const tickLabels = labels ?? [min, max]
+  const numTicks   = Math.round((max - min) / step) + 1
+  const ticks      = Array.from({ length: numTicks }, (_, i) => min + i * step)
+  const isCorrect  = picked !== null && Math.abs(picked - answer) <= tolerance
+
+  return (
+    <div className="q-numberline">
+      <p className="lesson-prompt">{q.prompt}</p>
+
+      <div className="nl-wrap">
+        <div
+          ref={trackRef}
+          className={`nl-track${showFeedback ? ' nl-track--done' : ''}`}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+        >
+          {ticks.map(t => <div key={t} className="nl-tick" style={{ left: `${toPercent(t)}%` }} />)}
+
+          {picked !== null && (
+            <div
+              className={`nl-marker nl-marker--pick${showFeedback ? (isCorrect ? ' nl-marker--ok' : ' nl-marker--bad') : ''}`}
+              style={{ left: `${toPercent(picked)}%` }}
+            >
+              <div className="nl-pin" />
+              <div className="nl-pin-label">{fmtVal(picked, format)}</div>
+            </div>
+          )}
+
+          {showFeedback && !isCorrect && (
+            <div className="nl-marker nl-marker--answer" style={{ left: `${toPercent(answer)}%` }}>
+              <div className="nl-pin nl-pin--answer" />
+              <div className="nl-pin-label nl-pin-label--answer">{fmtVal(answer, format)}</div>
+            </div>
+          )}
+        </div>
+
+        <div className="nl-axis">
+          {tickLabels.map(t => (
+            <div key={t} className="nl-axis-label" style={{ left: `${toPercent(t)}%` }}>
+              {fmtVal(t, format)}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {!showFeedback && (
+        <button className="btn btn-primary q-check-btn" onClick={() => onAnswer(isCorrect ? 0 : 1)} disabled={picked === null}>
+          <span className="btn-label">Check answer</span>
+        </button>
+      )}
+    </div>
+  )
+}
+
+// ─── Slider ───────────────────────────────────────────────────────────────
+
+function SliderQuestion({ q, showFeedback, selected, onAnswer }) {
+  const { min, max, step, answer, tolerance, format } = q.meta
+  const [value, setValue] = useState(min)
+
+  function handleCheck() {
+    onAnswer(Math.abs(value - answer) <= tolerance ? 0 : 1)
+  }
+
+  const pct       = ((value - min) / (max - min)) * 100
+  const answerPct = ((answer - min) / (max - min)) * 100
+  const isCorrect = Math.abs(value - answer) <= tolerance
+
+  return (
+    <div className="q-slider">
+      <p className="lesson-prompt">{q.prompt}</p>
+
+      <div className="sl-display">
+        <span className={`sl-value${showFeedback ? (isCorrect ? ' sl-value--ok' : ' sl-value--bad') : ''}`}>
+          {fmtVal(value, format)}
+        </span>
+      </div>
+
+      <div className="sl-track-wrap">
+        <input
+          type="range" min={min} max={max} step={step} value={value}
+          disabled={showFeedback}
+          onChange={e => setValue(Number(e.target.value))}
+          className="sl-range"
+          style={{ '--pct': `${pct}%` }}
+        />
+        {showFeedback && (
+          <div className="sl-answer-flag" style={{ left: `${answerPct}%` }}>
+            <div className="sl-answer-line" />
+            <div className="sl-answer-label">{fmtVal(answer, format)}</div>
+          </div>
+        )}
+      </div>
+
+      <div className="sl-bounds">
+        <span>{fmtVal(min, format)}</span>
+        <span>{fmtVal(max, format)}</span>
+      </div>
+
+      {!showFeedback && (
+        <button className="btn btn-primary q-check-btn" onClick={handleCheck}>
+          <span className="btn-label">Check answer</span>
+        </button>
+      )}
+    </div>
+  )
+}
+
 // ─── Dispatcher ───────────────────────────────────────────────────────────
 
 export default function QuestionRenderer({ q, showFeedback, selected, onAnswer }) {
   if (!q) return null
   switch (q.type) {
-    case 'sort':      return <SortQuestion     q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
-    case 'order':     return <OrderQuestion    q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
-    case 'wordbank':  return <WordBankQuestion q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
-    default:          return <MCQuestion       q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
+    case 'sort':       return <SortQuestion       q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
+    case 'order':      return <OrderQuestion      q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
+    case 'wordbank':   return <WordBankQuestion   q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
+    case 'numberline': return <NumberLineQuestion q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
+    case 'slider':     return <SliderQuestion     q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
+    default:           return <MCQuestion         q={q} showFeedback={showFeedback} selected={selected} onAnswer={onAnswer} />
   }
 }
