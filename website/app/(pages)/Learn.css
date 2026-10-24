@@ -656,12 +656,12 @@
    INTERACTIVE QUESTION TYPES
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.q-type-hint { font-size: var(--text-sm); color: var(--muted-foreground); margin: -20px 0 0; }
+.q-type-hint { font-size: var(--text-sm); color: var(--muted-foreground); margin: 0; }
 
 .q-check-btn { align-self: flex-start; }
 
 /* ── Sort ─────────────────────────────────────────────────────────────── */
-.lesson-prompt--sort { margin-bottom: 0; }
+.q-sort { display: flex; flex-direction: column; gap: 16px; }
 
 .sort-buckets {
   display: grid;

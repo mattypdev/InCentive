@@ -393,19 +393,21 @@ export default function UnitPage() {
                 </span>
               )}
             </div>
-            <QuestionRenderer key={qIndex} q={q} showFeedback={showFeedback} selected={selected} onAnswer={handleAnswer} />
-            {showFeedback && (
-              <div className={`lesson-feedback ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`}>
-                <p className="feedback-label">{isCorrect ? 'Correct' : 'Not quite'}</p>
-                <p className="feedback-explain">{q?.explanation}</p>
-                <button className="btn btn-primary" onClick={handleNext}>
-                  <span className="btn-label">{qIndex+1 < shuffledQs.length ? 'Next' : 'Finish'}</span>
-                  <span className="btn-icon-badge">
-                    <ArrowLeft size={18} strokeWidth={2.5} style={{ transform:'rotate(180deg)' }}/>
-                  </span>
-                </button>
-              </div>
-            )}
+            <div className="lesson-q-area">
+              <QuestionRenderer key={qIndex} q={q} showFeedback={showFeedback} selected={selected} onAnswer={handleAnswer} />
+              {showFeedback && (
+                <div className={`lesson-feedback ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`}>
+                  <p className="feedback-label">{isCorrect ? 'Correct' : 'Not quite'}</p>
+                  <p className="feedback-explain">{q?.explanation}</p>
+                  <button className="btn btn-primary" onClick={handleNext}>
+                    <span className="btn-label">{qIndex+1 < shuffledQs.length ? 'Next' : 'Finish'}</span>
+                    <span className="btn-icon-badge">
+                      <ArrowLeft size={18} strokeWidth={2.5} style={{ transform:'rotate(180deg)' }}/>
+                    </span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div></section>
       </main>
