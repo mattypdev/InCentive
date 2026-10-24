@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo, useEffect } from 'react'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────
 
@@ -173,19 +173,28 @@ function OrderQuestion({ q, showFeedback, selected, onAnswer }) {
   const correctItems = q.meta.items
   const initialOrder = useMemo(() => shuffle(correctItems.map((_, i) => i)), [q.id])
   const [order, setOrder] = useState(initialOrder)
+  const [snappingOrigIdx, setSnappingOrigIdx] = useState(null)
   const dragIdx     = useRef(null)
   const dragOverIdx = useRef(null)
 
   const isCorrect = selected === q.correct
+
+  useEffect(() => {
+    if (snappingOrigIdx === null) return
+    const t = setTimeout(() => setSnappingOrigIdx(null), 400)
+    return () => clearTimeout(t)
+  }, [snappingOrigIdx])
 
   function dragStart(i) { dragIdx.current = i }
   function dragOver(e, i) { e.preventDefault(); dragOverIdx.current = i }
   function drop() {
     const from = dragIdx.current, to = dragOverIdx.current
     if (from === null || to === null || from === to) return
+    const movedOrigIdx = order[from]
     const next = [...order]
     next.splice(to, 0, next.splice(from, 1)[0])
     setOrder(next)
+    setSnappingOrigIdx(movedOrigIdx)
     dragIdx.current = null; dragOverIdx.current = null
   }
 
@@ -201,10 +210,11 @@ function OrderQuestion({ q, showFeedback, selected, onAnswer }) {
       <ol className="order-list">
         {order.map((origIdx, pos) => {
           const inPlace = showFeedback ? origIdx === pos : null
+          const isSnapping = !showFeedback && origIdx === snappingOrigIdx
           return (
             <li
               key={origIdx}
-              className={`order-item${inPlace === true ? ' order-item--correct' : inPlace === false ? ' order-item--wrong' : ''}`}
+              className={`order-item${inPlace === true ? ' order-item--correct' : inPlace === false ? ' order-item--wrong' : ''}${isSnapping ? ' order-item--snap' : ''}`}
               draggable={!showFeedback}
               onDragStart={() => dragStart(pos)}
               onDragOver={e => dragOver(e, pos)}
