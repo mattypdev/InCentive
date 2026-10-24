@@ -33,7 +33,7 @@ function FillBlankPrompt({ prompt, selectedOption, correctIndex, selectedIndex, 
 function MCQuestion({ q, showFeedback, selected, onAnswer }) {
   const isFill = q.type === 'fill-blank'
   return (
-    <>
+    <div className={`mc-question${isFill ? ' mc-question--fill' : ''}`}>
       {isFill ? (
         <FillBlankPrompt
           prompt={q.prompt}
@@ -57,7 +57,7 @@ function MCQuestion({ q, showFeedback, selected, onAnswer }) {
           )
         })}
       </ul>
-    </>
+    </div>
   )
 }
 
@@ -172,23 +172,33 @@ function SortQuestion({ q, showFeedback, selected, onAnswer }) {
 function OrderQuestion({ q, showFeedback, selected, onAnswer }) {
   const correctItems = q.meta.items
   const initialOrder = useMemo(() => shuffle(correctItems.map((_, i) => i)), [q.id])
-  const [order, setOrder] = useState(initialOrder)
+  const [order, setOrder]           = useState(initialOrder)
+  const [draggingPos, setDraggingPos] = useState(null)   // position being dragged
+  const [overPos, setOverPos]         = useState(null)   // position being hovered over
   const [snappingOrigIdx, setSnappingOrigIdx] = useState(null)
   const dragIdx     = useRef(null)
   const dragOverIdx = useRef(null)
 
-  const isCorrect = selected === q.correct
-
   useEffect(() => {
     if (snappingOrigIdx === null) return
-    const t = setTimeout(() => setSnappingOrigIdx(null), 400)
+    const t = setTimeout(() => setSnappingOrigIdx(null), 420)
     return () => clearTimeout(t)
   }, [snappingOrigIdx])
 
-  function dragStart(i) { dragIdx.current = i }
-  function dragOver(e, i) { e.preventDefault(); dragOverIdx.current = i }
-  function drop() {
+  function handleDragStart(pos) {
+    dragIdx.current = pos
+    setDraggingPos(pos)
+  }
+  function handleDragOver(e, pos) {
+    e.preventDefault()
+    dragOverIdx.current = pos
+    setOverPos(pos)
+  }
+  function handleDragLeave() { setOverPos(null) }
+  function handleDrop(e) {
+    e.preventDefault()
     const from = dragIdx.current, to = dragOverIdx.current
+    setDraggingPos(null); setOverPos(null)
     if (from === null || to === null || from === to) return
     const movedOrigIdx = order[from]
     const next = [...order]
@@ -197,6 +207,7 @@ function OrderQuestion({ q, showFeedback, selected, onAnswer }) {
     setSnappingOrigIdx(movedOrigIdx)
     dragIdx.current = null; dragOverIdx.current = null
   }
+  function handleDragEnd() { setDraggingPos(null); setOverPos(null) }
 
   function handleCheck() {
     const correct = order.every((origIdx, pos) => origIdx === pos)
@@ -209,16 +220,26 @@ function OrderQuestion({ q, showFeedback, selected, onAnswer }) {
       <p className="q-type-hint">Drag to reorder — first item at the top</p>
       <ol className="order-list">
         {order.map((origIdx, pos) => {
-          const inPlace = showFeedback ? origIdx === pos : null
-          const isSnapping = !showFeedback && origIdx === snappingOrigIdx
+          const inPlace   = showFeedback ? origIdx === pos : null
+          const isSnap    = !showFeedback && origIdx === snappingOrigIdx
+          const isDragging = !showFeedback && pos === draggingPos
+          const isOver     = !showFeedback && pos === overPos && pos !== draggingPos
+          let cls = 'order-item'
+          if (inPlace === true)  cls += ' order-item--correct'
+          if (inPlace === false) cls += ' order-item--wrong'
+          if (isSnap)            cls += ' order-item--snap'
+          if (isDragging)        cls += ' order-item--dragging'
+          if (isOver)            cls += ' order-item--over'
           return (
             <li
               key={origIdx}
-              className={`order-item${inPlace === true ? ' order-item--correct' : inPlace === false ? ' order-item--wrong' : ''}${isSnapping ? ' order-item--snap' : ''}`}
+              className={cls}
               draggable={!showFeedback}
-              onDragStart={() => dragStart(pos)}
-              onDragOver={e => dragOver(e, pos)}
-              onDrop={drop}
+              onDragStart={() => handleDragStart(pos)}
+              onDragOver={e => handleDragOver(e, pos)}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onDragEnd={handleDragEnd}
             >
               <span className="order-handle">⠿</span>
               <span className="order-num">{pos + 1}</span>
