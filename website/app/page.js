@@ -35,14 +35,6 @@ export const metadata = {
 
 const lessonCount = allUnits.reduce((sum, u) => sum + (u.lessons?.length ?? 0), 0)
 
-const stats = [
-  { value: levels.length, label: 'Learning levels' },
-  { value: lessonCount, label: 'Bite-sized lessons' },
-  { value: 3, label: 'Money calculators' },
-  { value: chapters.length, label: 'Student chapters' },
-  { value: '100%', label: 'Free, forever' },
-]
-
 const steps = [
   {
     icon: Layers,
@@ -116,18 +108,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-
-      {/* ===== Stats strip ===== */}
-      <section className="home-stats" aria-label="incentive at a glance">
-        <div className="home-stats-inner container">
-          {stats.map(s => (
-            <div className="home-stat" key={s.label}>
-              <span className="home-stat-value">{s.value}</span>
-              <span className="home-stat-label">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <Features />
 
