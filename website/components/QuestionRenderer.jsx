@@ -352,80 +352,65 @@ function fmtVal(v, format) {
 }
 
 function NumberLineQuestion({ q, showFeedback, selected, onAnswer }) {
-  const { min, max, step, answer, tolerance, format, labels } = q.meta
-  const [picked, setPicked]   = useState(null)
-  const [dragging, setDragging] = useState(false)
-  const trackRef = useRef(null)
+  const { min, max, step, answer, tolerance, format } = q.meta
+  const mid = parseFloat((min + Math.round(((max - min) / 2) / step) * step).toFixed(10))
+  const [value, setValue] = useState(mid)
 
-  function clampSnap(clientX) {
-    const rect = trackRef.current.getBoundingClientRect()
-    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
-    const raw   = min + ratio * (max - min)
-    return Math.max(min, Math.min(max, Math.round(raw / step) * step))
-  }
+  const pct       = ((value - min) / (max - min)) * 100
+  const bubblePct = Math.max(4, Math.min(96, pct))
+  const isCorrect = Math.abs(value - answer) <= tolerance
 
-  function handlePointerDown(e) {
-    if (showFeedback) return
-    e.currentTarget.setPointerCapture(e.pointerId)
-    setDragging(true)
-    setPicked(clampSnap(e.clientX))
-  }
-  function handlePointerMove(e) {
-    if (!dragging || showFeedback) return
-    setPicked(clampSnap(e.clientX))
-  }
-  function handlePointerUp() { setDragging(false) }
-
-  function toPercent(v) { return ((v - min) / (max - min)) * 100 }
-
-  const tickLabels = labels ?? [min, max]
-  const numTicks   = Math.round((max - min) / step) + 1
-  const ticks      = Array.from({ length: numTicks }, (_, i) => min + i * step)
-  const isCorrect  = picked !== null && Math.abs(picked - answer) <= tolerance
+  // 5 equally-spaced tick values
+  const ticks = Array.from({ length: 5 }, (_, i) =>
+    parseFloat((min + (max - min) * i / 4).toFixed(10))
+  )
 
   return (
     <div className="q-numberline">
       <p className="lesson-prompt">{q.prompt}</p>
-
       <div className="nl-wrap">
-        <div
-          ref={trackRef}
-          className={`nl-track${showFeedback ? ' nl-track--done' : ''}`}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-        >
-          {ticks.map(t => <div key={t} className="nl-tick" style={{ left: `${toPercent(t)}%` }} />)}
-
-          {picked !== null && (
-            <div
-              className={`nl-marker nl-marker--pick${showFeedback ? (isCorrect ? ' nl-marker--ok' : ' nl-marker--bad') : ''}`}
-              style={{ left: `${toPercent(picked)}%` }}
-            >
-              <div className="nl-pin" />
-              <div className="nl-pin-label">{fmtVal(picked, format)}</div>
-            </div>
-          )}
-
-          {showFeedback && !isCorrect && (
-            <div className="nl-marker nl-marker--answer" style={{ left: `${toPercent(answer)}%` }}>
-              <div className="nl-pin nl-pin--answer" />
-              <div className="nl-pin-label nl-pin-label--answer">{fmtVal(answer, format)}</div>
-            </div>
-          )}
+        <div className="nl-bubble-row">
+          <div
+            className={`nl-bubble${showFeedback ? (isCorrect ? ' nl-bubble--ok' : ' nl-bubble--bad') : ''}`}
+            style={{ left: `${bubblePct}%` }}
+          >
+            {fmtVal(value, format)}
+          </div>
         </div>
-
-        <div className="nl-axis">
-          {tickLabels.map(t => (
-            <div key={t} className="nl-axis-label" style={{ left: `${toPercent(t)}%` }}>
-              {fmtVal(t, format)}
-            </div>
-          ))}
+        <input
+          type="range" min={min} max={max} step={step} value={value}
+          disabled={showFeedback}
+          onChange={e => setValue(Number(e.target.value))}
+          className={`nl-range${showFeedback ? (isCorrect ? ' nl-range--ok' : ' nl-range--bad') : ''}`}
+          style={{ '--nl-pct': `${pct}%` }}
+        />
+        <div className="nl-ticks">
+          {ticks.map((t, i) => {
+            const isFirst = i === 0
+            const isLast  = i === 4
+            return (
+              <span
+                key={i}
+                className="nl-tick-label"
+                style={{
+                  left:      isFirst ? 0 : isLast ? 'auto' : `${i * 25}%`,
+                  right:     isLast ? 0 : 'auto',
+                  transform: (isFirst || isLast) ? 'none' : 'translateX(-50%)',
+                }}
+              >
+                {fmtVal(t, format)}
+              </span>
+            )
+          })}
         </div>
+        {showFeedback && !isCorrect && (
+          <p className="nl-answer-note">
+            Correct answer: <strong>{fmtVal(answer, format)}</strong>
+          </p>
+        )}
       </div>
-
       {!showFeedback && (
-        <button className="btn btn-primary q-check-btn" onClick={() => onAnswer(isCorrect ? 0 : 1)} disabled={picked === null}>
+        <button className="btn btn-primary q-check-btn" onClick={() => onAnswer(isCorrect ? 0 : 1)}>
           <span className="btn-label">Check answer</span>
         </button>
       )}
