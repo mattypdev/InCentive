@@ -57,10 +57,6 @@ export default function CTA() {
               <span className="btn-label">Explore Lessons</span>
               <span className="btn-icon-badge"><BookOpen size={18} strokeWidth={2.5} /></span>
             </Link>
-            <Link href="/login" className="btn btn-secondary cta-btn-secondary">
-              <span className="btn-label">Log in</span>
-              <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
-            </Link>
           </div>
         </div>
       </div>

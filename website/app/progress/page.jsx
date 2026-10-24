@@ -1,6 +1,5 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
 import { getStoredProgress } from '@/lib/guestProgress'
@@ -119,7 +118,7 @@ function buildCertHtml({ name, lessonsCount, testsCount, coins, date }) {
 }
 
 export default function Progress() {
-  const { currentUser, profile } = useAuth()
+  const { currentUser, profile, openLogin } = useAuth()
   const [completedIds, setCompletedIds] = useState(() =>
     currentUser ? new Set() : getStoredProgress()
   )
@@ -211,10 +210,10 @@ export default function Progress() {
         <div className="progress-header">
           <h1 className="progress-title">Progress</h1>
           {!currentUser && (
-            <Link href="/login" className="btn btn-primary">
+            <button type="button" className="btn btn-primary" onClick={openLogin}>
               <span className="btn-label">Log in to track</span>
               <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5} /></span>
-            </Link>
+            </button>
           )}
         </div>
 

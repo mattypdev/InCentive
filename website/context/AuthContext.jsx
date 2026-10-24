@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { allUnits } from '@/data/levels'
 import { clearStoredProgress } from '@/lib/guestProgress'
@@ -58,6 +58,10 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [profile,     setProfile]     = useState(null)
   const [loading,     setLoading]     = useState(true)
+  // Login modal visibility, so any component can open it
+  const [loginOpen,   setLoginOpen]   = useState(false)
+  const openLogin  = useCallback(() => setLoginOpen(true), [])
+  const closeLogin = useCallback(() => setLoginOpen(false), [])
   const supabase = createClient()
 
   // Restore cached state before the browser paints so the UI is immediately
@@ -161,7 +165,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ currentUser, profile, loading, signUp, logIn, logOut, signInWithGoogle, refreshProfile, bumpXP, setXP }}>
+    <AuthContext.Provider value={{ currentUser, profile, loading, signUp, logIn, logOut, signInWithGoogle, refreshProfile, bumpXP, setXP, loginOpen, openLogin, closeLogin }}>
       {children}
     </AuthContext.Provider>
   )

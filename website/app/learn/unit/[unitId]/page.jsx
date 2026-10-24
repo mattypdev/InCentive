@@ -102,7 +102,7 @@ function SparkleEffect({ color }) {
 export default function UnitPage() {
   const { unitId } = useParams()
   const router     = useRouter()
-  const { currentUser, bumpXP, refreshProfile } = useAuth()
+  const { currentUser, bumpXP, refreshProfile, openLogin } = useAuth()
   const sectionIndex = typeof window !== 'undefined'
     ? (parseInt(new URLSearchParams(window.location.search).get('section') ?? '0') || 0)
     : 0
@@ -302,10 +302,10 @@ export default function UnitPage() {
             {!currentUser && (
               <div className="done-guest-cta">
                 <p>Log in to save your progress and keep those cents.</p>
-                <Link href="/login" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={openLogin}>
                   <span className="btn-label">Log in to save</span>
                   <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5}/></span>
-                </Link>
+                </button>
               </div>
             )}
             <button className="btn btn-secondary" onClick={exitLesson}>

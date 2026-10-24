@@ -25,7 +25,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [checkinOpen, setCheckinOpen] = useState(false)
   const [spent, setSpent] = useState(getSpent)
-  const { currentUser, profile, logOut } = useAuth()
+  const { currentUser, profile, logOut, openLogin } = useAuth()
   const router = useRouter()
   const dropdownRef = useRef(null)
 
@@ -117,7 +117,7 @@ export default function Navbar() {
                 <CoinBadge size={24} drop="1px 1px 0" />
                 <span className="navbar-cents-count">0</span>
               </div>
-              <button className="btn btn-secondary navbar-logout" onClick={() => router.push('/login')}>
+              <button className="btn btn-secondary navbar-logout" onClick={openLogin}>
                 <span className="btn-label">Log in</span>
                 <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5} /></span>
               </button>
@@ -179,7 +179,7 @@ export default function Navbar() {
               </button>
             </div>
           ) : (
-            <button className="btn btn-secondary" onClick={() => { router.push('/login'); setOpen(false) }} style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
+            <button className="btn btn-secondary" onClick={() => { setOpen(false); openLogin() }} style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
               <span className="btn-label">Log in</span>
               <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5} /></span>
             </button>

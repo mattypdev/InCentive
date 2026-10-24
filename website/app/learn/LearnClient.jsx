@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
@@ -137,7 +136,7 @@ const ALL_SPRITES = [
 ]
 
 export default function LearnClient() {
-  const { currentUser, profile, refreshProfile, bumpXP } = useAuth()
+  const { currentUser, profile, refreshProfile, bumpXP, openLogin } = useAuth()
   const router = useRouter()
   const [completedIds,  setCompletedIds]  = useState(() => currentUser ? getStoredProgress() : new Set())
   const [activeUnit,    setActiveUnit]    = useState(null)
@@ -368,10 +367,10 @@ export default function LearnClient() {
             {!currentUser && (
               <div className="done-guest-cta">
                 <p>Log in to save your progress and keep those cents.</p>
-                <Link href="/login" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={openLogin}>
                   <span className="btn-label">Log in to save</span>
                   <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5}/></span>
-                </Link>
+                </button>
               </div>
             )}
             <button className="btn btn-secondary" onClick={exitLesson}>

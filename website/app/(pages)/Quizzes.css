@@ -58,6 +58,10 @@
 .quiz-guest-link {
   color: var(--accent);
   font-weight: 600;
+  font-size: inherit;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* My quizzes list */

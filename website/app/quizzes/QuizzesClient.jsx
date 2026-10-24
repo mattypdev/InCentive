@@ -12,7 +12,7 @@ export default function QuizzesClient() {
   const [error, setError]     = useState('')
   const [myQuizzes, setMyQuizzes] = useState([])
   const [copied, setCopied]   = useState(null)
-  const { currentUser }       = useAuth()
+  const { currentUser, openLogin } = useAuth()
   const router                = useRouter()
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export default function QuizzesClient() {
       ) : (
         <div className="quiz-create-section quiz-create-section--guest">
           <p className="quiz-guest-text">
-            <Link href="/login" className="quiz-guest-link">Log in</Link> to create and share your own quizzes.
+            <button type="button" className="quiz-guest-link" onClick={openLogin}>Log in</button> to create and share your own quizzes.
           </p>
         </div>
       )}

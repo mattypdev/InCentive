@@ -1,67 +1,17 @@
-.login-page {
-  position: relative;
-  overflow: hidden;
-  min-height: calc(100vh - 72px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--section-spacing) var(--container-padding);
-}
-
-/* ===== Decorative Shapes ===== */
-
-.login-shapes {
-  position: absolute;
+.login-overlay {
+  position: fixed;
   inset: 0;
-  pointer-events: none;
-  z-index: 0;
+  z-index: 1000;
+  display: flex;
+  padding: var(--container-padding);
+  background-color: rgba(30, 41, 59, 0.55);
+  overflow-y: auto;
+  animation: login-fade 180ms ease;
 }
 
-.login-shape {
-  position: absolute;
-  opacity: 0.12;
-}
-
-.login-shape--circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: var(--accent);
-  top: 8%;
-  right: 10%;
-  animation: float 4s ease-in-out infinite;
-}
-
-.login-shape--triangle {
-  width: 0;
-  height: 0;
-  border-left: 40px solid transparent;
-  border-right: 40px solid transparent;
-  border-bottom: 70px solid var(--secondary);
-  bottom: 15%;
-  left: 8%;
-  animation: float 5s ease-in-out infinite 0.5s;
-}
-
-.login-shape--square {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-sm);
-  background-color: var(--tertiary);
-  top: 20%;
-  left: 5%;
-  transform: rotate(15deg);
-  animation: spin-slow 20s linear infinite;
-}
-
-.login-shape--pill {
-  width: 80px;
-  height: 32px;
-  border-radius: var(--radius-full);
-  background-color: var(--quaternary);
-  bottom: 20%;
-  right: 7%;
-  animation: float 6s ease-in-out infinite 1s;
+@keyframes login-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ===== Card ===== */
@@ -76,6 +26,30 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-pop);
   padding: 48px 40px;
+  margin: auto;
+  animation: pop-in 320ms var(--ease-bounce);
+}
+
+.login-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: var(--border-width) solid var(--foreground);
+  background: var(--card);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color 200ms ease, transform var(--transition-base);
+}
+
+.login-close:hover {
+  background-color: var(--tertiary);
+  transform: rotate(90deg);
 }
 
 /* ===== Header ===== */
@@ -85,7 +59,7 @@
 }
 
 .login-brand {
-  display: inline-block;
+  display: block;
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: var(--text-xl);
@@ -99,7 +73,7 @@
 }
 
 
-.login-header h1 {
+.login-header h2 {
   font-size: var(--text-2xl);
   margin-bottom: 8px;
 }
@@ -252,9 +226,40 @@
     padding: 32px 24px;
     border-radius: var(--radius-md);
   }
+}
 
-  .login-shape--circle {
-    width: 80px;
-    height: 80px;
-  }
+/* ===== Email confirmation ===== */
+
+.login-email-sent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding-top: 8px;
+}
+
+.login-email-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FFF3F0;
+  border: var(--border-width) solid var(--foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.login-email-sent h2 {
+  font-size: var(--text-2xl);
+}
+
+.login-email-sent p {
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.login-email-sent strong {
+  color: var(--foreground);
 }

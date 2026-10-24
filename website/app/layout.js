@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import AuthProvider from '@/context/AuthContext'
 import AppShell from '@/components/AppShell'
+import LoginModal from '@/components/LoginModal'
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
           <Footer />
+          <LoginModal />
         </AuthProvider>
       </body>
     </html>
