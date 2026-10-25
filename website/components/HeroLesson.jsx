@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Star } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import CoinBadge from '@/components/CoinBadge'
 import '@/app/(pages)/Learn.css'
 import './Button.css'
@@ -114,12 +114,10 @@ export default function HeroLesson() {
     const allCorrect = score === total
     return (
       <div className="hero-quiz hl-done-card">
-        <div className={`hl-done-icon${allCorrect ? ' hl-done-icon--gold' : ''}`}>
-          <Star size={26} strokeWidth={2.5} />
-        </div>
+        <div className={`hl-done-icon${allCorrect ? ' hl-done-icon--gold' : ''}`} />
         <h3 className="hl-done-heading">{allCorrect ? 'Perfect score!' : 'Nice work!'}</h3>
         <p className="hl-done-sub">
-          You earned <strong>¢{score}</strong> — that's real money in the actual app.
+          You earned <strong>¢{score}</strong> — create an account to save your progress and keep earning.
         </p>
         <Link href="/learn" className="btn btn-primary hl-cta-btn">
           <span className="btn-label">Start for real</span>
