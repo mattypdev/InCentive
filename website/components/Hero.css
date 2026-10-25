@@ -187,10 +187,11 @@
 }
 
 .hero-nudge-arrow {
-  width: 48px;
-  height: 64px;
+  width: 130px;
+  height: auto;
   flex-shrink: 0;
-  margin-left: 12px;
+  margin-left: 4px;
+  mix-blend-mode: multiply;
 }
 
 .hero-quiz {
