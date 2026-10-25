@@ -10,11 +10,12 @@
 .hero-inner {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 56px;
-  min-height: calc(100dvh - 72px - 176px);
+  text-align: center;
+  max-width: 740px;
+  margin-inline: auto;
 }
 
 /* ===== Copy ===== */
@@ -71,7 +72,7 @@
   font-size: var(--text-md);
   color: var(--muted-foreground);
   line-height: 1.7;
-  margin: 0 0 36px;
+  margin: 0 auto 36px;
   max-width: 480px;
 }
 
@@ -79,6 +80,7 @@
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* ===== Decorative shapes ===== */
@@ -260,24 +262,6 @@
     padding-block: 56px 64px;
   }
 
-  .hero-inner {
-    grid-template-columns: 1fr;
-    gap: 48px;
-    min-height: unset;
-  }
-
-  .hero-content {
-    text-align: center;
-  }
-
-  .hero-subtitle {
-    margin-inline: auto;
-  }
-
-  .hero-actions {
-    justify-content: center;
-  }
-
   .hero-shape--circle {
     width: 320px;
     height: 320px;
@@ -307,8 +291,21 @@
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding-block: 40px 48px;
+  }
+
   .hero-title {
     font-size: clamp(2rem, 10vw, 2.6rem);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .hero-quiz {
@@ -317,6 +314,15 @@
   }
 
   .hero-quiz-prompt {
+    font-size: var(--text-md);
+  }
+
+  .hl-intro-banner {
+    margin: -18px -18px 0;
+    padding: 18px;
+  }
+
+  .hero-quiz .lesson-prompt {
     font-size: var(--text-md);
   }
 }

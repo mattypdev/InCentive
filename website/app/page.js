@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import Hero from '@/components/Hero'
 import Features from '@/components/Features'
+import HeroLesson from '@/components/HeroLesson'
 import CTA from '@/components/CTA'
 import FAQ from '@/components/FAQ'
 import { levels, allUnits } from '@/data/levels'
@@ -229,6 +230,27 @@ export default function Home() {
               <span className="btn-label">Meet the team</span>
               <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Try a lesson ===== */}
+      <section className="home-try section">
+        <div className="home-try-inner container">
+          <div className="home-try-copy">
+            <p className="home-eyebrow">See it in action</p>
+            <h2>Curious how the lessons work?</h2>
+            <p>Answer a few questions and see exactly how incentive teaches — no account needed.</p>
+          </div>
+          <div className="home-try-right">
+            <div className="home-try-nudge" aria-hidden="true">
+              <span className="home-try-nudge-label">Try it out!</span>
+              <svg className="home-try-nudge-arrow" viewBox="0 0 40 48" fill="none">
+                <path d="M 8 4 C 4 20, 20 32, 32 44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                <path d="M 20 38 L 32 44 L 26 32" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <HeroLesson />
           </div>
         </div>
       </section>

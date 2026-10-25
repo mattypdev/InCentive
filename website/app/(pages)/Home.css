@@ -312,7 +312,65 @@
   border-radius: var(--radius-full);
 }
 
+/* ===== Try a lesson ===== */
+
+.home-try {
+  background-color: var(--background);
+}
+
+.home-try-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.home-try-copy h2 {
+  margin-bottom: 16px;
+}
+
+.home-try-copy > p:not(.home-eyebrow) {
+  font-size: var(--text-md);
+  max-width: 400px;
+}
+
+.home-try-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.home-try-nudge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  transform: rotate(-6deg);
+  transform-origin: left center;
+  margin-left: 24px;
+  margin-bottom: -4px;
+}
+
+.home-try-nudge-label {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.home-try-nudge-arrow {
+  width: 32px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
 /* ===== FAQ ===== */
+
+.home-faq {
+  background-color: var(--muted);
+  border-block: var(--border-width) solid var(--foreground);
+}
 
 .home-faq-inner {
   max-width: 800px;
@@ -339,18 +397,33 @@
 
 /* ===== Responsive ===== */
 
+@media (max-width: 900px) {
+  .home-steps-grid,
+  .home-tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 960px) {
-  .home-path-inner {
+  .home-path-inner,
+  .home-try-inner {
     grid-template-columns: 1fr;
     gap: 36px;
   }
 
-  .home-path-copy {
+  .home-path-copy,
+  .home-try-copy {
     text-align: center;
+    align-items: center;
   }
 
-  .home-path-copy > p:not(.home-eyebrow) {
+  .home-path-copy > p:not(.home-eyebrow),
+  .home-try-copy > p:not(.home-eyebrow) {
     margin-inline: auto;
+  }
+
+  .home-try-nudge {
+    display: none;
   }
 }
 
@@ -375,8 +448,38 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .home-step {
+    padding: 28px 20px 20px;
+  }
+
+  .home-tool {
+    padding: 20px;
+  }
+
   .home-panel {
     padding: 28px 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-section-header {
+    margin-bottom: 32px;
+  }
+
+  .home-step {
+    padding: 28px 16px 16px;
+  }
+
+  .home-tool {
+    padding: 16px;
+  }
+
+  .home-panel {
+    padding: 24px 18px;
+  }
+
+  .home-community-inner {
+    gap: 20px;
   }
 }
 

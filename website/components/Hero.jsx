@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ArrowRight, HandHeart } from 'lucide-react'
-import HeroLesson from './HeroLesson'
 import './Hero.css'
 import './Button.css'
 
@@ -27,42 +26,36 @@ export default function Hero() {
       </div>
 
       <div className="hero-inner container">
-        <div className="hero-content">
-          <h1 className="hero-title">
-            Learn Money
-            <br />
-            Build{' '}
-            <span className="hero-highlight">
-              Confidence
-              <Squiggle className="hero-squiggle" />
-            </span>
-          </h1>
+        <h1 className="hero-title">
+          Learn Money
+          <br />
+          Build{' '}
+          <span className="hero-highlight">
+            Confidence
+            <Squiggle className="hero-squiggle" />
+          </span>
+        </h1>
 
-          <p className="hero-subtitle">
-            incentive makes personal finance approachable, interactive,
-            and actually fun. Build real skills with courses designed for
-            the way you learn.
-          </p>
+        <p className="hero-subtitle">
+          incentive makes personal finance approachable, interactive,
+          and actually fun. Build real skills with courses designed for
+          the way you learn.
+        </p>
 
-          <div className="hero-actions">
-            <Link href="/learn" className="btn btn-primary">
-              <span className="btn-label">Start Learning Free</span>
-              <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
-            </Link>
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLScgWDzXExB0Xe86eI70V7-96cIr-A_0bcAXC41dGyyRl8JdXA/viewform?usp=dialog"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-secondary"
-            >
-              <span className="btn-label">Volunteer Today</span>
-              <span className="btn-icon-badge"><HandHeart size={18} strokeWidth={2.5} /></span>
-            </a>
-          </div>
-        </div>
-
-        <div className="hero-visual">
-          <HeroLesson />
+        <div className="hero-actions">
+          <Link href="/learn" className="btn btn-primary">
+            <span className="btn-label">Start Learning Free</span>
+            <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
+          </Link>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLScgWDzXExB0Xe86eI70V7-96cIr-A_0bcAXC41dGyyRl8JdXA/viewform?usp=dialog"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+          >
+            <span className="btn-label">Volunteer Today</span>
+            <span className="btn-icon-badge"><HandHeart size={18} strokeWidth={2.5} /></span>
+          </a>
         </div>
       </div>
     </section>
