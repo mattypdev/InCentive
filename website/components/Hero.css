@@ -11,7 +11,7 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 56px;
   min-height: calc(100dvh - 72px - 176px);
@@ -159,12 +159,12 @@
 }
 
 .hero-quiz {
-  width: min(400px, 100%);
+  width: min(520px, 100%);
   background: var(--card);
   border: var(--border-width) solid var(--foreground);
   border-radius: var(--radius-lg);
   box-shadow: 8px 8px 0 0 var(--foreground);
-  padding: 24px;
+  padding: 28px;
   rotate: -2deg;
   transition: rotate var(--transition-base), scale var(--transition-base);
 }
@@ -342,43 +342,17 @@
   gap: 14px;
 }
 
-/* Scale down the lesson typography and spacing to fit the card */
-.hero-quiz .lesson-prompt {
-  font-size: var(--text-lg);
-}
-
+/* Tighten spacing slightly so everything fits in one glance */
 .hero-quiz .mc-question {
-  gap: 16px;
+  gap: 20px;
 }
 
 .hero-quiz .lesson-q-area {
-  gap: 12px;
+  gap: 14px;
 }
 
 .hero-quiz .lesson-option {
-  padding: 11px 14px;
-  font-size: var(--text-sm);
-  gap: 10px;
-}
-
-.hero-quiz .option-letter {
-  width: 24px;
-  height: 24px;
-  font-size: var(--text-xs);
-  flex-shrink: 0;
-}
-
-.hero-quiz .lesson-feedback {
-  padding: 14px 16px;
-  gap: 6px;
-}
-
-.hero-quiz .feedback-label {
-  font-size: var(--text-base);
-}
-
-.hero-quiz .lesson-options--fill-blank .lesson-option {
-  padding: 14px 10px;
+  padding: 12px 16px;
 }
 
 /* Continue / Start button — full width in the card */
@@ -395,8 +369,8 @@
 }
 
 .hl-intro-banner {
-  margin: -24px -24px 0;
-  padding: 20px 24px;
+  margin: -28px -28px 0;
+  padding: 22px 28px;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   color: white;
 }
