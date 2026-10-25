@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { ArrowRight, Calculator, Check } from 'lucide-react'
+import { ArrowRight, Calculator } from 'lucide-react'
+import HeroLesson from './HeroLesson'
 import './Hero.css'
 import './Button.css'
 
@@ -12,18 +13,6 @@ function Squiggle({ className }) {
       />
     </svg>
   )
-}
-
-// Sample question shown in the hero preview card (from the Budgeting level)
-const sample = {
-  unit: 'Budgeting',
-  reward: 10,
-  prompt: 'In zero-based budgeting, what does "zero" refer to?',
-  options: [
-    { text: 'Every dollar of income is given a job', correct: true },
-    { text: 'You spend nothing on wants, only needs' },
-    { text: 'You target a zero balance in checking' },
-  ],
 }
 
 export default function Hero() {
@@ -74,28 +63,7 @@ export default function Hero() {
         </div>
 
         <div className="hero-visual">
-          <div className="hero-quiz" aria-label="Sample lesson question">
-            <div className="hero-quiz-top">
-              <span className="hero-quiz-unit">{sample.unit}</span>
-              <span className="hero-quiz-reward">
-                <span className="hero-quiz-coin">¢</span>+{sample.reward}
-              </span>
-            </div>
-            <p className="hero-quiz-prompt">{sample.prompt}</p>
-            <ul className="hero-quiz-options">
-              {sample.options.map(opt => (
-                <li
-                  key={opt.text}
-                  className={`hero-quiz-option${opt.correct ? ' hero-quiz-option--correct' : ''}`}
-                >
-                  {opt.correct && (
-                    <span className="hero-quiz-check"><Check size={14} strokeWidth={3} /></span>
-                  )}
-                  {opt.text}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <HeroLesson />
         </div>
       </div>
     </section>
