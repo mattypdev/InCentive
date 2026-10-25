@@ -54,10 +54,15 @@ export default function Hero() {
               <span className="btn-label">Start Learning Free</span>
               <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
             </Link>
-            <Link href="/about#volunteer" className="btn btn-secondary">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLScgWDzXExB0Xe86eI70V7-96cIr-A_0bcAXC41dGyyRl8JdXA/viewform?usp=dialog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary"
+            >
               <span className="btn-label">Volunteer Today</span>
               <span className="btn-icon-badge"><HandHeart size={18} strokeWidth={2.5} /></span>
-            </Link>
+            </a>
           </div>
         </div>
 
