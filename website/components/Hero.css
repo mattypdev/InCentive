@@ -4,6 +4,10 @@
   position: relative;
   overflow: hidden;
   padding-block: 160px;
+  min-height: calc(100vh - 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-bottom: var(--border-width) solid var(--foreground);
 }
 
@@ -294,6 +298,7 @@
 @media (max-width: 960px) {
   .hero {
     padding-block: 72px 80px;
+    min-height: calc(100vh - 60px);
   }
 
   .hero-inner {
