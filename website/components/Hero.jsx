@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Calculator } from 'lucide-react'
+import { ArrowRight, HandHeart } from 'lucide-react'
 import HeroLesson from './HeroLesson'
 import './Hero.css'
 import './Button.css'
@@ -55,9 +55,9 @@ export default function Hero() {
               <span className="btn-label">Start Learning Free</span>
               <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
             </Link>
-            <Link href="/resources" className="btn btn-secondary">
-              <span className="btn-label">Try the Calculators</span>
-              <span className="btn-icon-badge"><Calculator size={18} strokeWidth={2.5} /></span>
+            <Link href="/about#volunteer" className="btn btn-secondary">
+              <span className="btn-label">Volunteer Today</span>
+              <span className="btn-icon-badge"><HandHeart size={18} strokeWidth={2.5} /></span>
             </Link>
           </div>
         </div>
