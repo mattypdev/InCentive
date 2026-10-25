@@ -9,6 +9,31 @@ import { getSpent } from '@/lib/shop'
 import './Navbar.css'
 import './Button.css'
 
+function useCountUp(value, duration = 900) {
+  const [display, setDisplay] = useState(value)
+  const prevRef = useRef(value)
+  const rafRef  = useRef(null)
+
+  useEffect(() => {
+    const from = prevRef.current
+    const to   = value
+    prevRef.current = to
+    if (from === to) return
+    cancelAnimationFrame(rafRef.current)
+    const start = performance.now()
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - t, 3) // ease-out cubic
+      setDisplay(Math.round(from + (to - from) * eased))
+      if (t < 1) rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [value, duration])
+
+  return display
+}
+
 const links = [
   { label: 'Resources', href: '/resources' },
   { label: 'Articles', href: '/articles' },
@@ -46,8 +71,10 @@ export default function Navbar() {
     return () => window.removeEventListener('incentive:shop-update', refresh)
   }, [])
 
-  const coins = Math.max(0, (profile?.xp ?? 0) - spent)
-  const xp    = (profile?.xp ?? 0) * 2
+  const coins    = Math.max(0, (profile?.xp ?? 0) - spent)
+  const xp       = (profile?.xp ?? 0) * 2
+  const xpCount  = useCountUp(currentUser ? xp : 0)
+  const coinCount = useCountUp(currentUser ? coins : 0)
 
   async function handleLogOut() {
     await logOut()
@@ -97,11 +124,11 @@ export default function Navbar() {
             <>
               <div className="navbar-xp" data-tooltip="This is your XP, you earn it every time you complete a lesson">
                 <span className="navbar-xp-icon-wrap"></span>
-                <span className="navbar-xp-count">{xp}</span>
+                <span className="navbar-xp-count">{xpCount}</span>
               </div>
               <div className="navbar-cents" data-tooltip="This is how many cents you've earned">
                 <CoinBadge size={24} drop="1px 1px 0" />
-                <span className="navbar-cents-count">{coins}</span>
+                <span className="navbar-cents-count">{coinCount}</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={handleLogOut}>
                 <span className="btn-label">Log out</span>
@@ -129,11 +156,11 @@ export default function Navbar() {
         <div className="navbar-end">
           <div className={`navbar-xp navbar-xp--mobile${!currentUser ? ' navbar-xp--guest' : ''}`} title="Your XP" aria-hidden="true">
             <span className="navbar-xp-icon-wrap"></span>
-            <span className="navbar-xp-count">{currentUser ? xp : 0}</span>
+            <span className="navbar-xp-count">{xpCount}</span>
           </div>
           <div className={`navbar-cents navbar-cents--mobile${!currentUser ? ' navbar-cents--guest' : ''}`} title="Your cents" aria-hidden="true">
             <CoinBadge size={24} drop="1px 1px 0" />
-            <span className="navbar-cents-count">{currentUser ? coins : 0}</span>
+            <span className="navbar-cents-count">{coinCount}</span>
           </div>
           <button
             className="navbar-toggle"
