@@ -3,7 +3,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: 120px;
+  padding-block: 160px;
   border-bottom: var(--border-width) solid var(--foreground);
 }
 
@@ -166,27 +166,31 @@
 
 .hero-nudge {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
   color: var(--foreground);
-  transform: rotate(-6deg);
-  transform-origin: left center;
-  margin-left: 28px;
-  margin-bottom: -6px;
+  transform: rotate(-8deg);
+  transform-origin: left top;
+  margin-left: 20px;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-nudge-label {
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: var(--text-lg);
+  font-size: var(--text-2xl);
   letter-spacing: 0.01em;
   white-space: nowrap;
+  line-height: 1.1;
 }
 
 .hero-nudge-arrow {
-  width: 44px;
-  height: 52px;
+  width: 48px;
+  height: 64px;
   flex-shrink: 0;
+  margin-left: 12px;
 }
 
 .hero-quiz {
@@ -288,7 +292,7 @@
 
 @media (max-width: 960px) {
   .hero {
-    padding-block: 56px 64px;
+    padding-block: 72px 80px;
   }
 
   .hero-inner {
