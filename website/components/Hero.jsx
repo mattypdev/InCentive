@@ -66,8 +66,8 @@ export default function Hero() {
             <div className="hero-nudge" aria-hidden="true">
               <span className="hero-nudge-label">Try it out!</span>
               <svg className="hero-nudge-arrow" viewBox="0 0 40 48" fill="none">
-                <path d="M 8 4 C 4 20, 20 32, 32 44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                <path d="M 20 38 L 32 44 L 26 32" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M 8 4 C 4 20, 20 32, 32 44" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round"/>
+                <path d="M 20 38 L 32 44 L 26 32" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <HeroLesson />
