@@ -10,12 +10,10 @@
 .hero-inner {
   position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  text-align: center;
-  max-width: 740px;
-  margin-inline: auto;
+  gap: 56px;
 }
 
 /* ===== Copy ===== */
@@ -72,7 +70,7 @@
   font-size: var(--text-md);
   color: var(--muted-foreground);
   line-height: 1.7;
-  margin: 0 auto 36px;
+  margin: 0 0 36px;
   max-width: 480px;
 }
 
@@ -80,7 +78,6 @@
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 /* ===== Decorative shapes ===== */
@@ -153,11 +150,43 @@
   animation: spin-slow 20s linear infinite;
 }
 
-/* ===== Quiz preview card ===== */
+/* ===== Lesson card + nudge ===== */
 
 .hero-visual {
   display: flex;
   justify-content: center;
+}
+
+.hero-lesson-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: min(520px, 100%);
+}
+
+.hero-nudge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  transform: rotate(-6deg);
+  transform-origin: left center;
+  margin-left: 28px;
+  margin-bottom: -4px;
+}
+
+.hero-nudge-label {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.hero-nudge-arrow {
+  width: 32px;
+  height: 38px;
+  flex-shrink: 0;
 }
 
 .hero-quiz {
@@ -260,6 +289,27 @@
 @media (max-width: 960px) {
   .hero {
     padding-block: 56px 64px;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    margin-inline: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-nudge {
+    display: none;
   }
 
   .hero-shape--circle {
