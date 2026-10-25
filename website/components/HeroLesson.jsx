@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Check, LogIn } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
+import QuestionRenderer from '@/components/QuestionRenderer'
 import '@/app/(pages)/Learn.css'
 import './Button.css'
 
@@ -10,19 +12,32 @@ const UNIT_COLOR = '#FF6F61'
 
 const QUESTIONS = [
   {
+    id: 'hero-q1',
     type: 'mc',
     unit: 'Money Basics',
     reward: 10,
-    prompt: 'What is the main benefit of compound interest?',
+    prompt: 'What is compound interest?',
     options: [
-      'Your interest earns interest too',
-      'You pay less tax on savings',
-      'Banks pay you a sign-up bonus',
+      'Earning interest on both your principal and past interest',
+      'A fixed fee charged on top of a loan',
+      'Interest paid only on the original amount borrowed',
     ],
     correct: 0,
-    explanation: 'Compound interest means you earn interest on your principal AND on accumulated interest — your money snowballs over time.',
+    explanation: 'Compound interest means your interest earns interest — your money snowballs the longer it sits.',
   },
   {
+    id: 'hero-q2',
+    type: 'numberline',
+    unit: 'Investing',
+    reward: 10,
+    prompt: 'Drag to estimate: $1,000 invested at 7% annual return grows to about ___ after 10 years.',
+    options: [],
+    correct: 0,
+    meta: { min: 500, max: 3500, step: 50, answer: 1967, tolerance: 400, format: 'dollar' },
+    explanation: 'At 7% compounded annually, $1,000 becomes roughly $1,967 in 10 years.',
+  },
+  {
+    id: 'hero-q3',
     type: 'fill-blank',
     unit: 'Budgeting',
     reward: 10,
@@ -31,51 +46,25 @@ const QUESTIONS = [
     correct: 0,
     explanation: '50% goes to needs, 30% to wants, and 20% to savings or paying down debt.',
   },
-  {
-    type: 'mc',
-    unit: 'Investing',
-    reward: 10,
-    prompt: 'What does "diversifying" your portfolio mean?',
-    options: [
-      'Spreading money across different assets',
-      'Putting everything into one stock',
-      'Only buying government bonds',
-    ],
-    correct: 0,
-    explanation: 'Diversification spreads risk — if one investment drops, others may cushion the impact.',
-  },
 ]
 
-function FillBlankPrompt({ prompt, selectedOption, correctIndex, selectedIndex, showFeedback }) {
-  const parts = prompt.split('______')
-  if (parts.length < 2) return <p className="lesson-prompt">{prompt}</p>
-  let cls = 'fill-blank-gap'
-  if (selectedOption !== null && !showFeedback) cls += ' fill-blank-gap--pending'
-  if (showFeedback && selectedIndex === correctIndex) cls += ' fill-blank-gap--correct'
-  if (showFeedback && selectedIndex !== correctIndex) cls += ' fill-blank-gap--wrong'
-  return (
-    <p className="lesson-prompt lesson-prompt--fill-blank">
-      {parts[0]}<span className={cls}>{selectedOption ?? '______'}</span>{parts[1]}
-    </p>
-  )
-}
-
 export default function HeroLesson() {
-  const [phase, setPhase]           = useState('intro')
-  const [qIndex, setQIndex]         = useState(0)
-  const [selected, setSelected]     = useState(null)
+  const { currentUser, openLogin } = useAuth()
+  const [phase, setPhase]               = useState('intro')
+  const [qIndex, setQIndex]             = useState(0)
+  const [selected, setSelected]         = useState(null)
   const [showFeedback, setShowFeedback] = useState(false)
-  const [score, setScore]           = useState(0)
+  const [score, setScore]               = useState(0)
 
   const q         = QUESTIONS[qIndex]
-  const isCorrect = showFeedback && selected === q.correct
+  const isCorrect = showFeedback && selected === q?.correct
   const pct       = ((qIndex + (showFeedback ? 1 : 0)) / QUESTIONS.length) * 100
 
-  function handleAnswer(i) {
+  function handleAnswer(choice) {
     if (showFeedback) return
-    setSelected(i)
+    setSelected(choice)
     setShowFeedback(true)
-    if (i === q.correct) setScore(s => s + q.reward)
+    if (choice === q.correct) setScore(s => s + q.reward)
   }
 
   function handleContinue() {
@@ -108,21 +97,40 @@ export default function HeroLesson() {
     )
   }
 
-  /* ─── Done screen ─── */
+  /* ─── Done screen — mirrors the real unit done screen ─── */
   if (phase === 'done') {
-    const total     = QUESTIONS.reduce((s, q) => s + q.reward, 0)
-    const allCorrect = score === total
     return (
-      <div className="hero-quiz hl-done-card">
-        <div className={`hl-done-icon${allCorrect ? ' hl-done-icon--gold' : ''}`} />
-        <h3 className="hl-done-heading">{allCorrect ? 'Perfect score!' : 'Nice work!'}</h3>
-        <p className="hl-done-sub">
-          You earned <strong>¢{score}</strong> — create an account to save your progress and keep earning.
-        </p>
-        <Link href="/learn" className="btn btn-primary hl-cta-btn">
-          <span className="btn-label">Start for real</span>
-          <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
-        </Link>
+      <div className="hero-quiz">
+        <div className="lesson-done">
+          <div className="done-icon">
+            <Check size={32} strokeWidth={3} />
+          </div>
+          <h2>Nice work.</h2>
+          <p className="done-subtitle">Money 101 · {score}/{QUESTIONS.reduce((s, q) => s + q.reward, 0)} cents</p>
+          <div className="done-rewards">
+            <div className="done-cents">
+              <CoinBadge size={28} drop="2px 2px 0" />
+              <span>+{score} cents earned</span>
+            </div>
+            <div className="done-xp">
+              <span className="done-xp-icon" />
+              <span>+{score * 2} XP earned</span>
+            </div>
+          </div>
+          {!currentUser && (
+            <div className="done-guest-cta">
+              <p>Create an account to save your progress and keep earning.</p>
+              <button type="button" className="btn btn-primary" onClick={openLogin}>
+                <span className="btn-label">Log in to save</span>
+                <span className="btn-icon-badge"><LogIn size={16} strokeWidth={2.5} /></span>
+              </button>
+            </div>
+          )}
+          <Link href="/learn" className="btn btn-secondary">
+            <span className="btn-label">Start for real</span>
+            <span className="btn-icon-badge"><ArrowRight size={16} strokeWidth={2.5} /></span>
+          </Link>
+        </div>
       </div>
     )
   }
@@ -132,7 +140,6 @@ export default function HeroLesson() {
     <div className="hero-quiz">
       <div className="hl-lesson-shell">
 
-        {/* Progress row */}
         <div className="lesson-top">
           <div className="lesson-progress-track">
             <div className="lesson-progress-fill" style={{ width: `${pct}%` }} />
@@ -140,7 +147,6 @@ export default function HeroLesson() {
           <span className="lesson-counter">{qIndex + 1} / {QUESTIONS.length}</span>
         </div>
 
-        {/* Unit label */}
         <div className="lesson-meta">
           <span className="lesson-title-inline">{q.unit}</span>
           <span className="hero-quiz-reward">
@@ -149,57 +155,14 @@ export default function HeroLesson() {
           </span>
         </div>
 
-        {/* Question + feedback */}
         <div className="lesson-q-area">
-          {q.type === 'fill-blank' ? (
-            <div className="mc-question mc-question--fill">
-              <FillBlankPrompt
-                prompt={q.prompt}
-                selectedOption={selected !== null ? q.options[selected] : null}
-                correctIndex={q.correct}
-                selectedIndex={selected}
-                showFeedback={showFeedback}
-              />
-              <ul className="lesson-options lesson-options--fill-blank">
-                {q.options.map((opt, i) => {
-                  let cls = 'lesson-option'
-                  if (showFeedback) {
-                    if (i === q.correct) cls += ' correct'
-                    else if (i === selected) cls += ' wrong'
-                  } else if (i === selected) cls += ' selected'
-                  return (
-                    <li key={i}>
-                      <button className={cls} onClick={() => handleAnswer(i)} disabled={showFeedback}>
-                        <span className="option-letter">{i + 1}</span>
-                        {opt}
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          ) : (
-            <div className="mc-question">
-              <p className="lesson-prompt">{q.prompt}</p>
-              <ul className="lesson-options">
-                {q.options.map((opt, i) => {
-                  let cls = 'lesson-option'
-                  if (showFeedback) {
-                    if (i === q.correct) cls += ' correct'
-                    else if (i === selected) cls += ' wrong'
-                  } else if (i === selected) cls += ' selected'
-                  return (
-                    <li key={i}>
-                      <button className={cls} onClick={() => handleAnswer(i)} disabled={showFeedback}>
-                        <span className="option-letter">{i + 1}</span>
-                        {opt}
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          )}
+          <QuestionRenderer
+            key={q.id}
+            q={q}
+            showFeedback={showFeedback}
+            selected={selected}
+            onAnswer={handleAnswer}
+          />
 
           {showFeedback && (
             <div className={`lesson-feedback ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`}>
