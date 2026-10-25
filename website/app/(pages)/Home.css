@@ -19,8 +19,7 @@
 /* ===== How it works ===== */
 
 .home-steps {
-  background-color: var(--muted);
-  border-block: var(--border-width) solid var(--foreground);
+  background-color: var(--background);
 }
 
 .home-steps-grid {
@@ -79,6 +78,11 @@
 }
 
 /* ===== Learning path ===== */
+
+.home-path {
+  background-color: var(--muted);
+  border-block: var(--border-width) solid var(--foreground);
+}
 
 .home-path-inner {
   display: grid;
@@ -171,8 +175,7 @@
 /* ===== Tools ===== */
 
 .home-tools {
-  background-color: var(--muted);
-  border-block: var(--border-width) solid var(--foreground);
+  background-color: var(--background);
 }
 
 .home-tools-grid {
@@ -234,6 +237,11 @@
 }
 
 /* ===== Presentations + Chapters ===== */
+
+.home-community {
+  background-color: var(--muted);
+  border-block: var(--border-width) solid var(--foreground);
+}
 
 .home-community-inner {
   display: grid;
