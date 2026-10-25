@@ -84,7 +84,6 @@ export default function HeroLesson() {
         <div className="hl-intro-banner" style={{ background: UNIT_COLOR }}>
           <p className="hl-intro-eyebrow">The Basics · Lesson 1</p>
           <h3 className="hl-intro-title">Money 101</h3>
-          <p className="hl-intro-meta">3 questions · earn up to ¢30</p>
         </div>
         <p className="hl-intro-desc">
           Get a taste of what real lessons feel like — answer a few questions and see how incentive works.
