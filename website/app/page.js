@@ -13,7 +13,6 @@ import {
 } from 'lucide-react'
 import Hero from '@/components/Hero'
 import Features from '@/components/Features'
-import Impact from '@/components/Impact'
 import CTA from '@/components/CTA'
 import FAQ from '@/components/FAQ'
 import { levels, allUnits } from '@/data/levels'
@@ -241,8 +240,6 @@ export default function Home() {
           <FAQ items={faqs} heading="Frequently asked" />
         </div>
       </section>
-
-      <Impact />
 
       <CTA />
     </>

@@ -10,11 +10,11 @@ import './Navbar.css'
 import './Button.css'
 
 const links = [
-  { label: 'Impact', href: '/#impact' },
   { label: 'Resources', href: '/resources' },
   { label: 'Articles', href: '/articles' },
   { label: 'Quizzes', href: '/quizzes' },
   { label: 'About', href: '/about' },
+  { label: 'Impact', href: '/impact' },
 ]
 
 const CHECK_IN_LINKS = [
