@@ -65,34 +65,62 @@ function MCQuestion({ q, showFeedback, selected, onAnswer }) {
 
 function SortQuestion({ q, showFeedback, selected, onAnswer }) {
   const { buckets, items } = q.meta
-  // shuffledItems: array of original item indices in display order
   const shuffledIndices = useMemo(() => shuffle(items.map((_, i) => i)), [q.id])
 
-  const [pool, setPool]     = useState(shuffledIndices) // indices not yet placed
-  const [placed, setPlaced] = useState(() => buckets.map(() => []))  // placed[bucketIdx] = [itemIdx, ...]
-  const [active, setActive] = useState(null)  // item index currently selected
+  const [pool, setPool]       = useState(shuffledIndices)
+  const [placed, setPlaced]   = useState(() => buckets.map(() => []))
+  const [active, setActive]   = useState(null)   // click fallback
+  const [overZone, setOverZone] = useState(null) // 'pool' | bucketIdx for drag highlight
+  const dragSrc = useRef(null) // { itemIdx, from: 'pool' | number }
 
   const allPlaced = pool.length === 0
-  const isCorrect = selected === q.correct  // 0 = correct, set by parent after onAnswer
 
+  // Move an item between pool and buckets (used by both drag and click paths)
+  function moveItem(itemIdx, from, to) {
+    if (from === 'pool') {
+      setPool(prev => prev.filter(i => i !== itemIdx))
+    } else {
+      setPlaced(prev => prev.map((b, bi) => bi === from ? b.filter(i => i !== itemIdx) : b))
+    }
+    if (to === 'pool') {
+      setPool(prev => [...prev, itemIdx])
+    } else {
+      setPlaced(prev => prev.map((b, bi) => bi === to ? [...b, itemIdx] : b))
+    }
+    setActive(null)
+  }
+
+  // ── Drag handlers ──
+  function handleDragStart(itemIdx, from) {
+    dragSrc.current = { itemIdx, from }
+  }
+  function handleDragOver(e, zone) {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setOverZone(zone)
+  }
+  function handleDragLeave() { setOverZone(null) }
+  function handleDrop(e, to) {
+    e.preventDefault()
+    setOverZone(null)
+    if (!dragSrc.current) return
+    const { itemIdx, from } = dragSrc.current
+    dragSrc.current = null
+    if (from !== to) moveItem(itemIdx, from, to)
+  }
+
+  // ── Click / tap fallback ──
   function pickFromPool(itemIdx) {
     if (showFeedback) return
     setActive(prev => prev === itemIdx ? null : itemIdx)
   }
-
   function pickFromBucket(bucketIdx, itemIdx) {
     if (showFeedback) return
-    // return item to pool
-    setPlaced(prev => prev.map((b, bi) => bi === bucketIdx ? b.filter(i => i !== itemIdx) : b))
-    setPool(prev => [...prev, itemIdx])
-    setActive(null)
+    moveItem(itemIdx, bucketIdx, 'pool')
   }
-
   function assignToBucket(bucketIdx) {
     if (showFeedback || active === null) return
-    setPool(prev => prev.filter(i => i !== active))
-    setPlaced(prev => prev.map((b, bi) => bi === bucketIdx ? [...b, active] : b))
-    setActive(null)
+    moveItem(active, 'pool', bucketIdx)
   }
 
   function handleCheck() {
@@ -102,21 +130,45 @@ function SortQuestion({ q, showFeedback, selected, onAnswer }) {
     onAnswer(correct ? 0 : 1)
   }
 
-  // Bucket colors
   const bucketColors = ['var(--accent)', 'var(--secondary)', 'var(--quaternary)', 'var(--tertiary)']
 
   return (
     <div className="q-sort">
       <p className="lesson-prompt lesson-prompt--sort">{q.prompt}</p>
-      <p className="q-type-hint">Tap an item, then tap a bucket to place it</p>
+      <p className="q-type-hint">Drag items into the right bucket</p>
+
+      {/* Item pool */}
+      <div
+        className={`sort-pool${overZone === 'pool' ? ' sort-pool--over' : ''}`}
+        onDragOver={e => handleDragOver(e, 'pool')}
+        onDragLeave={handleDragLeave}
+        onDrop={e => handleDrop(e, 'pool')}
+      >
+        {pool.map(itemIdx => (
+          <button
+            key={itemIdx}
+            className={`sort-item sort-item--pool${active === itemIdx ? ' sort-item--active' : ''}`}
+            draggable={!showFeedback}
+            onDragStart={() => handleDragStart(itemIdx, 'pool')}
+            onClick={() => pickFromPool(itemIdx)}
+            disabled={showFeedback}
+          >
+            {items[itemIdx].text}
+          </button>
+        ))}
+        {allPlaced && !showFeedback && <span className="sort-pool-done">All placed</span>}
+      </div>
 
       {/* Buckets */}
       <div className="sort-buckets" style={{ gridTemplateColumns: `repeat(${buckets.length}, 1fr)` }}>
         {buckets.map((label, bi) => (
           <div
             key={bi}
-            className={`sort-bucket${active !== null && !showFeedback ? ' sort-bucket--droppable' : ''}`}
+            className={`sort-bucket${(active !== null || overZone === bi) && !showFeedback ? ' sort-bucket--droppable' : ''}${overZone === bi ? ' sort-bucket--over' : ''}`}
             style={{ '--bucket-color': bucketColors[bi % bucketColors.length] }}
+            onDragOver={e => handleDragOver(e, bi)}
+            onDragLeave={handleDragLeave}
+            onDrop={e => handleDrop(e, bi)}
             onClick={() => assignToBucket(bi)}
           >
             <div className="sort-bucket-label">{label}</div>
@@ -127,6 +179,8 @@ function SortQuestion({ q, showFeedback, selected, onAnswer }) {
                   <div
                     key={itemIdx}
                     className={`sort-item sort-item--placed${correct === true ? ' sort-item--correct' : correct === false ? ' sort-item--wrong' : ''}`}
+                    draggable={!showFeedback}
+                    onDragStart={() => handleDragStart(itemIdx, bi)}
                     onClick={e => { e.stopPropagation(); pickFromBucket(bi, itemIdx) }}
                   >
                     {items[itemIdx].text}
@@ -141,22 +195,6 @@ function SortQuestion({ q, showFeedback, selected, onAnswer }) {
           </div>
         ))}
       </div>
-
-      {/* Item pool */}
-      {!allPlaced && (
-        <div className="sort-pool">
-          {pool.map(itemIdx => (
-            <button
-              key={itemIdx}
-              className={`sort-item sort-item--pool${active === itemIdx ? ' sort-item--active' : ''}`}
-              onClick={() => pickFromPool(itemIdx)}
-              disabled={showFeedback}
-            >
-              {items[itemIdx].text}
-            </button>
-          ))}
-        </div>
-      )}
 
       {!showFeedback && (
         <button className="btn btn-primary q-check-btn" onClick={handleCheck} disabled={!allPlaced}>
