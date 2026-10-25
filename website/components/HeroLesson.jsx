@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Star } from 'lucide-react'
+import CoinBadge from '@/components/CoinBadge'
 import '@/app/(pages)/Learn.css'
 import './Button.css'
 
@@ -145,7 +146,8 @@ export default function HeroLesson() {
         <div className="lesson-meta">
           <span className="lesson-title-inline">{q.unit}</span>
           <span className="hero-quiz-reward">
-            <span className="hero-quiz-coin">¢</span>+{q.reward}
+            <CoinBadge size={22} drop="1px 1px 0" />
+            +{q.reward}¢
           </span>
         </div>
 
