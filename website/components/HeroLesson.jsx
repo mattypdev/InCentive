@@ -50,7 +50,7 @@ const QUESTIONS = [
 
 export default function HeroLesson() {
   const { currentUser, openLogin } = useAuth()
-  const [phase, setPhase]               = useState('intro')
+  const [phase, setPhase]               = useState('question')
   const [qIndex, setQIndex]             = useState(0)
   const [selected, setSelected]         = useState(null)
   const [showFeedback, setShowFeedback] = useState(false)
@@ -75,25 +75,6 @@ export default function HeroLesson() {
     } else {
       setPhase('done')
     }
-  }
-
-  /* ─── Intro screen ─── */
-  if (phase === 'intro') {
-    return (
-      <div className="hero-quiz hl-intro-card">
-        <div className="hl-intro-banner" style={{ background: UNIT_COLOR }}>
-          <p className="hl-intro-eyebrow">The Basics · Lesson 1</p>
-          <h3 className="hl-intro-title">Money 101</h3>
-        </div>
-        <p className="hl-intro-desc">
-          Get a taste of what real lessons feel like — answer a few questions and see how incentive works.
-        </p>
-        <button className="btn btn-primary hl-cta-btn" onClick={() => setPhase('question')}>
-          <span className="btn-label">Try a quick lesson</span>
-          <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
-        </button>
-      </div>
-    )
   }
 
   /* ─── Done screen — mirrors the real unit done screen ─── */
