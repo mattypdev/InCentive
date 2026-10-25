@@ -1,279 +1,224 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Check, X, Zap } from 'lucide-react'
+import { ArrowRight, Star } from 'lucide-react'
+import '@/app/(pages)/Learn.css'
+import './Button.css'
+
+const UNIT_COLOR = '#FF6F61'
 
 const QUESTIONS = [
   {
     type: 'mc',
     unit: 'Money Basics',
     reward: 10,
-    prompt: 'What happens to the value of your money when inflation rises?',
+    prompt: 'What is the main benefit of compound interest?',
     options: [
-      { text: 'It buys less than before', correct: true },
-      { text: 'It buys more than before' },
-      { text: 'Its value stays the same' },
+      'Your interest earns interest too',
+      'You pay less tax on savings',
+      'Banks pay you a sign-up bonus',
     ],
-    explanation: 'Inflation means prices rise, so each dollar buys fewer goods and services.',
+    correct: 0,
+    explanation: 'Compound interest means you earn interest on your principal AND on accumulated interest — your money snowballs over time.',
   },
   {
     type: 'fill-blank',
     unit: 'Budgeting',
     reward: 10,
-    before: 'The 50/30/20 rule splits income into needs, wants, and',
-    after: '.',
-    answer: 'savings',
-    alts: ['saving', 'save'],
-    explanation: 'The three buckets are 50% needs, 30% wants, and 20% savings.',
+    prompt: 'The 50/30/20 rule assigns 20% of income to ______.',
+    options: ['savings', 'rent', 'food', 'taxes'],
+    correct: 0,
+    explanation: '50% goes to needs, 30% to wants, and 20% to savings or paying down debt.',
   },
   {
-    type: 'slider',
+    type: 'mc',
     unit: 'Investing',
     reward: 10,
-    prompt: 'Drag to guess: investing $200/month at 8% for 20 years grows to roughly…',
-    min: 50000,
-    max: 200000,
-    step: 1000,
-    answer: 118589,
-    tolerance: 20000,
-    format: '$',
-    explanation: 'Compound growth turns $200/month into ~$118,000 — that\'s the magic of investing early.',
+    prompt: 'What does "diversifying" your portfolio mean?',
+    options: [
+      'Spreading money across different assets',
+      'Putting everything into one stock',
+      'Only buying government bonds',
+    ],
+    correct: 0,
+    explanation: 'Diversification spreads risk — if one investment drops, others may cushion the impact.',
   },
 ]
 
-function ProgressDots({ total, current }) {
+function FillBlankPrompt({ prompt, selectedOption, correctIndex, selectedIndex, showFeedback }) {
+  const parts = prompt.split('______')
+  if (parts.length < 2) return <p className="lesson-prompt">{prompt}</p>
+  let cls = 'fill-blank-gap'
+  if (selectedOption !== null && !showFeedback) cls += ' fill-blank-gap--pending'
+  if (showFeedback && selectedIndex === correctIndex) cls += ' fill-blank-gap--correct'
+  if (showFeedback && selectedIndex !== correctIndex) cls += ' fill-blank-gap--wrong'
   return (
-    <div className="hl-dots">
-      {Array.from({ length: total }, (_, i) => (
-        <span
-          key={i}
-          className={`hl-dot${i < current ? ' hl-dot--done' : i === current ? ' hl-dot--active' : ''}`}
-        />
-      ))}
-    </div>
-  )
-}
-
-function MCQuestion({ q, onAnswer, answered }) {
-  return (
-    <ul className="hl-options">
-      {q.options.map((opt, i) => {
-        let cls = 'hl-option'
-        if (answered !== null) {
-          if (opt.correct) cls += ' hl-option--correct'
-          else if (i === answered) cls += ' hl-option--wrong'
-        }
-        return (
-          <li key={i}>
-            <button
-              className={cls}
-              onClick={() => onAnswer(i, opt.correct)}
-              disabled={answered !== null}
-            >
-              {answered !== null && opt.correct && (
-                <span className="hl-check"><Check size={13} strokeWidth={3} /></span>
-              )}
-              {answered !== null && i === answered && !opt.correct && (
-                <span className="hl-wrong"><X size={13} strokeWidth={3} /></span>
-              )}
-              {opt.text}
-            </button>
-          </li>
-        )
-      })}
-    </ul>
-  )
-}
-
-function FillBlankQuestion({ q, onAnswer, answered }) {
-  const [val, setVal] = useState('')
-  const normalized = val.trim().toLowerCase()
-  const isCorrect = normalized === q.answer || (q.alts || []).includes(normalized)
-
-  function submit(e) {
-    e.preventDefault()
-    if (!val.trim() || answered !== null) return
-    onAnswer(val.trim(), isCorrect)
-  }
-
-  return (
-    <form className="hl-fillblank" onSubmit={submit}>
-      <p className="hl-blank-sentence">
-        {q.before}{' '}
-        <span className={`hl-blank-input-wrap${answered !== null ? (isCorrect ? ' hl-blank--correct' : ' hl-blank--wrong') : ''}`}>
-          <input
-            className="hl-blank-input"
-            type="text"
-            value={val}
-            onChange={e => setVal(e.target.value)}
-            disabled={answered !== null}
-            placeholder="___"
-            aria-label="Fill in the blank"
-          />
-        </span>
-        {q.after}
-      </p>
-      {answered === null && (
-        <button className="hl-submit" type="submit" disabled={!val.trim()}>
-          Check
-        </button>
-      )}
-    </form>
-  )
-}
-
-function SliderQuestion({ q, onAnswer, answered }) {
-  const mid = q.min + Math.round(((q.max - q.min) / 2) / q.step) * q.step
-  const [value, setValue] = useState(mid)
-  const pct = ((value - q.min) / (q.max - q.min)) * 100
-  const bubblePct = Math.max(4, Math.min(96, pct))
-  const isCorrect = answered !== null && Math.abs(value - q.answer) <= q.tolerance
-
-  function fmt(v) {
-    if (q.format === '$') return '$' + v.toLocaleString()
-    return v.toLocaleString()
-  }
-
-  const ticks = Array.from({ length: 3 }, (_, i) =>
-    Math.round(q.min + (q.max - q.min) * i / 2)
-  )
-
-  return (
-    <div className="hl-slider-wrap">
-      <div className="hl-bubble-row" style={{ '--bpct': `${bubblePct}%` }}>
-        <span className={`hl-bubble${answered !== null ? (isCorrect ? ' hl-bubble--ok' : ' hl-bubble--bad') : ''}`}>
-          {fmt(value)}
-        </span>
-      </div>
-      <input
-        className={`hl-range${answered !== null ? (isCorrect ? ' hl-range--ok' : ' hl-range--bad') : ''}`}
-        type="range"
-        min={q.min}
-        max={q.max}
-        step={q.step}
-        value={value}
-        disabled={answered !== null}
-        onChange={e => setValue(Number(e.target.value))}
-        style={{ '--pct': `${pct}%` }}
-      />
-      <div className="hl-ticks">
-        {ticks.map((t, i) => (
-          <span key={i} className="hl-tick">{fmt(t)}</span>
-        ))}
-      </div>
-      {answered === null && (
-        <button className="hl-submit" onClick={() => onAnswer(value, isCorrect)}>
-          Lock it in
-        </button>
-      )}
-      {answered !== null && !isCorrect && (
-        <p className="hl-answer-note">Correct answer: {fmt(q.answer)}</p>
-      )}
-    </div>
+    <p className="lesson-prompt lesson-prompt--fill-blank">
+      {parts[0]}<span className={cls}>{selectedOption ?? '______'}</span>{parts[1]}
+    </p>
   )
 }
 
 export default function HeroLesson() {
-  const [phase, setPhase] = useState('intro')
-  const [qIndex, setQIndex] = useState(0)
-  const [answered, setAnswered] = useState(null)
-  const [correct, setCorrect] = useState(false)
-  const [score, setScore] = useState(0)
+  const [phase, setPhase]           = useState('intro')
+  const [qIndex, setQIndex]         = useState(0)
+  const [selected, setSelected]     = useState(null)
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [score, setScore]           = useState(0)
 
-  const q = QUESTIONS[qIndex]
+  const q         = QUESTIONS[qIndex]
+  const isCorrect = showFeedback && selected === q.correct
+  const pct       = ((qIndex + (showFeedback ? 1 : 0)) / QUESTIONS.length) * 100
 
-  function handleAnswer(choice, isCorrect) {
-    setAnswered(choice)
-    setCorrect(isCorrect)
-    if (isCorrect) setScore(s => s + q.reward)
+  function handleAnswer(i) {
+    if (showFeedback) return
+    setSelected(i)
+    setShowFeedback(true)
+    if (i === q.correct) setScore(s => s + q.reward)
   }
 
-  function handleNext() {
+  function handleContinue() {
     if (qIndex + 1 < QUESTIONS.length) {
       setQIndex(i => i + 1)
-      setAnswered(null)
-      setCorrect(false)
+      setSelected(null)
+      setShowFeedback(false)
     } else {
       setPhase('done')
     }
   }
 
+  /* ─── Intro screen ─── */
   if (phase === 'intro') {
     return (
-      <div className="hero-quiz hl-intro">
-        <div className="hl-intro-icon"><Zap size={28} strokeWidth={2.5} /></div>
-        <h3 className="hl-intro-title">Try a quick lesson!</h3>
-        <p className="hl-intro-body">
-          Answer {QUESTIONS.length} real questions — earn cents, see how it works.
-        </p>
-        <div className="hl-intro-pills">
-          <span className="hl-pill">Multiple choice</span>
-          <span className="hl-pill">Fill in the blank</span>
-          <span className="hl-pill">Slider</span>
+      <div className="hero-quiz hl-intro-card">
+        <div className="hl-intro-banner" style={{ background: UNIT_COLOR }}>
+          <p className="hl-intro-eyebrow">The Basics · Lesson 1</p>
+          <h3 className="hl-intro-title">Money 101</h3>
+          <p className="hl-intro-meta">3 questions · earn up to ¢30</p>
         </div>
-        <button className="hl-start-btn" onClick={() => setPhase('question')}>
-          Start <ArrowRight size={16} strokeWidth={2.5} />
+        <p className="hl-intro-desc">
+          Get a taste of what real lessons feel like — answer a few questions and see how incentive works.
+        </p>
+        <button className="btn btn-primary hl-cta-btn" onClick={() => setPhase('question')}>
+          <span className="btn-label">Try a quick lesson</span>
+          <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
         </button>
       </div>
     )
   }
 
+  /* ─── Done screen ─── */
   if (phase === 'done') {
-    const total = QUESTIONS.reduce((s, q) => s + q.reward, 0)
-    const pct = Math.round((score / total) * 100)
+    const total     = QUESTIONS.reduce((s, q) => s + q.reward, 0)
+    const allCorrect = score === total
     return (
-      <div className="hero-quiz hl-done">
-        <div className="hl-done-score">
-          <span className="hl-done-pct">{pct}%</span>
-          <span className="hl-done-label">¢{score} earned</span>
+      <div className="hero-quiz hl-done-card">
+        <div className={`hl-done-icon${allCorrect ? ' hl-done-icon--gold' : ''}`}>
+          <Star size={26} strokeWidth={2.5} />
         </div>
-        <p className="hl-done-msg">
-          {pct === 100 ? 'Perfect score — you\'re a natural!' : pct >= 66 ? 'Great start! Keep going to build your streak.' : 'Nice try! The full course will get you there.'}
+        <h3 className="hl-done-heading">{allCorrect ? 'Perfect score!' : 'Nice work!'}</h3>
+        <p className="hl-done-sub">
+          You earned <strong>¢{score}</strong> — that's real money in the actual app.
         </p>
-        <Link href="/learn" className="hl-start-btn">
-          Start Learning Free <ArrowRight size={16} strokeWidth={2.5} />
+        <Link href="/learn" className="btn btn-primary hl-cta-btn">
+          <span className="btn-label">Start for real</span>
+          <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
         </Link>
       </div>
     )
   }
 
+  /* ─── Question screen ─── */
   return (
-    <div className="hero-quiz hl-active">
-      <div className="hero-quiz-top">
-        <span className="hero-quiz-unit">{q.unit}</span>
-        <span className="hero-quiz-reward">
-          <span className="hero-quiz-coin">¢</span>+{q.reward}
-        </span>
-      </div>
+    <div className="hero-quiz">
+      <div className="hl-lesson-shell">
 
-      <ProgressDots total={QUESTIONS.length} current={qIndex} />
-
-      <p className="hero-quiz-prompt">{q.type === 'fill-blank' ? 'Fill in the blank' : q.prompt}</p>
-
-      {q.type === 'mc' && <MCQuestion q={q} onAnswer={handleAnswer} answered={answered} />}
-      {q.type === 'fill-blank' && <FillBlankQuestion q={q} onAnswer={handleAnswer} answered={answered} />}
-      {q.type === 'slider' && (
-        <>
-          <p className="hl-slider-prompt">{q.prompt}</p>
-          <SliderQuestion q={q} onAnswer={handleAnswer} answered={answered} />
-        </>
-      )}
-
-      {answered !== null && (
-        <div className={`hl-feedback${correct ? ' hl-feedback--ok' : ' hl-feedback--bad'}`}>
-          <span className="hl-feedback-icon">
-            {correct ? <Check size={14} strokeWidth={3} /> : <X size={14} strokeWidth={3} />}
-          </span>
-          <span>{q.explanation}</span>
+        {/* Progress row */}
+        <div className="lesson-top">
+          <div className="lesson-progress-track">
+            <div className="lesson-progress-fill" style={{ width: `${pct}%` }} />
+          </div>
+          <span className="lesson-counter">{qIndex + 1} / {QUESTIONS.length}</span>
         </div>
-      )}
 
-      {answered !== null && (
-        <button className="hl-next-btn" onClick={handleNext}>
-          {qIndex + 1 < QUESTIONS.length ? 'Next question' : 'See results'}
-          <ArrowRight size={16} strokeWidth={2.5} />
-        </button>
-      )}
+        {/* Unit label */}
+        <div className="lesson-meta">
+          <span className="lesson-title-inline">{q.unit}</span>
+          <span className="hero-quiz-reward">
+            <span className="hero-quiz-coin">¢</span>+{q.reward}
+          </span>
+        </div>
+
+        {/* Question + feedback */}
+        <div className="lesson-q-area">
+          {q.type === 'fill-blank' ? (
+            <div className="mc-question mc-question--fill">
+              <FillBlankPrompt
+                prompt={q.prompt}
+                selectedOption={selected !== null ? q.options[selected] : null}
+                correctIndex={q.correct}
+                selectedIndex={selected}
+                showFeedback={showFeedback}
+              />
+              <ul className="lesson-options lesson-options--fill-blank">
+                {q.options.map((opt, i) => {
+                  let cls = 'lesson-option'
+                  if (showFeedback) {
+                    if (i === q.correct) cls += ' correct'
+                    else if (i === selected) cls += ' wrong'
+                  } else if (i === selected) cls += ' selected'
+                  return (
+                    <li key={i}>
+                      <button className={cls} onClick={() => handleAnswer(i)} disabled={showFeedback}>
+                        <span className="option-letter">{i + 1}</span>
+                        {opt}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ) : (
+            <div className="mc-question">
+              <p className="lesson-prompt">{q.prompt}</p>
+              <ul className="lesson-options">
+                {q.options.map((opt, i) => {
+                  let cls = 'lesson-option'
+                  if (showFeedback) {
+                    if (i === q.correct) cls += ' correct'
+                    else if (i === selected) cls += ' wrong'
+                  } else if (i === selected) cls += ' selected'
+                  return (
+                    <li key={i}>
+                      <button className={cls} onClick={() => handleAnswer(i)} disabled={showFeedback}>
+                        <span className="option-letter">{i + 1}</span>
+                        {opt}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          )}
+
+          {showFeedback && (
+            <div className={`lesson-feedback ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`}>
+              <p className="feedback-label">{isCorrect ? 'Correct!' : 'Not quite'}</p>
+              <p className="feedback-explain">{q.explanation}</p>
+            </div>
+          )}
+        </div>
+
+        {showFeedback && (
+          <button className="btn btn-primary hl-cta-btn" onClick={handleContinue}>
+            <span className="btn-label">
+              {qIndex + 1 < QUESTIONS.length ? 'Continue' : 'See results'}
+            </span>
+            <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
+          </button>
+        )}
+
+      </div>
     </div>
   )
 }
