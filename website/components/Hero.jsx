@@ -28,11 +28,6 @@ export default function Hero() {
 
       <div className="hero-inner container">
         <div className="hero-content">
-          <div className="hero-badge">
-            <span className="hero-badge-dot" />
-            Free financial education for everyone
-          </div>
-
           <h1 className="hero-title">
             Learn Money
             <br />
