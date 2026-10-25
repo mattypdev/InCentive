@@ -34,14 +34,13 @@ export default function Hero() {
           </div>
 
           <h1 className="hero-title">
-            Learn Money.
+            Learn Money
             <br />
             Build{' '}
             <span className="hero-highlight">
               Confidence
               <Squiggle className="hero-squiggle" />
             </span>
-            .
           </h1>
 
           <p className="hero-subtitle">
