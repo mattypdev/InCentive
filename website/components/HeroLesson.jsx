@@ -46,6 +46,57 @@ const QUESTIONS = [
     correct: 0,
     explanation: '50% goes to needs, 30% to wants, and 20% to savings or paying down debt.',
   },
+  {
+    id: 'hero-q4',
+    type: 'sort',
+    unit: 'Budgeting',
+    reward: 10,
+    prompt: 'Sort each expense into the right category.',
+    options: [],
+    correct: 0,
+    meta: {
+      buckets: ['Needs', 'Wants'],
+      items: [
+        { text: 'Rent', bucket: 0 },
+        { text: 'Netflix', bucket: 1 },
+        { text: 'Groceries', bucket: 0 },
+        { text: 'Concert tickets', bucket: 1 },
+      ],
+    },
+    explanation: 'Needs are essentials like housing and food. Wants are extras — nice to have, but not required to survive.',
+  },
+  {
+    id: 'hero-q5',
+    type: 'order',
+    unit: 'Saving',
+    reward: 10,
+    prompt: 'Put these emergency fund steps in the right order.',
+    options: [],
+    correct: 0,
+    meta: {
+      items: [
+        'Calculate 3–6 months of essential expenses',
+        'Open a dedicated savings account',
+        'Set up automatic monthly transfers',
+        'Reach your target balance',
+      ],
+    },
+    explanation: 'Know your target first, then set up a separate account and automate transfers so saving happens without thinking about it.',
+  },
+  {
+    id: 'hero-q6',
+    type: 'wordbank',
+    unit: 'Credit',
+    reward: 10,
+    prompt: 'Paying bills on time builds your ______, which lenders check before approving a ______.',
+    options: [],
+    correct: 0,
+    meta: {
+      bank: ['credit score', 'loan', 'interest rate', 'debit card'],
+      answers: ['credit score', 'loan'],
+    },
+    explanation: 'Your credit score shows how reliably you repay debt. A higher score can unlock lower rates and better loan terms.',
+  },
 ]
 
 export default function HeroLesson() {
