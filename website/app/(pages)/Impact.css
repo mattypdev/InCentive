@@ -84,23 +84,23 @@
 .impact-rule-label {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 48px;
 }
 
 .impact-rule {
   flex: 1;
-  height: 1px;
-  background: var(--border);
+  height: 2px;
+  background: var(--foreground);
+  opacity: 0.12;
 }
 
 .impact-rule-text {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted-foreground);
+  font-weight: 900;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1.1;
+  color: var(--foreground);
   white-space: nowrap;
   flex-shrink: 0;
 }

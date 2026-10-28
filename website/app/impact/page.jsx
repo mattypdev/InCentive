@@ -45,7 +45,6 @@ export default function ImpactPage() {
       <section className="impact-hero section">
         <div className="container impact-hero-inner">
           <p className="home-eyebrow">Our reach</p>
-          <h1 className="impact-heading">Real change.<br />Real communities.</h1>
           <p className="impact-subheading">
             incentive started in one classroom. Today we're reaching students,
             families, and community organizations across the country.
