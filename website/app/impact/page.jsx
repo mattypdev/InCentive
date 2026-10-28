@@ -76,7 +76,7 @@ export default function ImpactPage() {
 
           <div className="impact-rule-label">
             <span className="impact-rule" />
-            <span className="impact-rule-text">As seen in</span>
+            <span className="impact-rule-text">News / Media</span>
             <span className="impact-rule" />
           </div>
 
