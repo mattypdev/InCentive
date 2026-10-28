@@ -5,6 +5,7 @@ import { allUnits } from '@/data/levels'
 import { clearStoredProgress } from '@/lib/guestProgress'
 import { clearShopData } from '@/lib/shop'
 import { loadShopFromCloud } from '@/lib/shopSync'
+import { readStreak, advanceStreak, clearStreak } from '@/lib/streak'
 
 const AuthContext = createContext(null)
 
@@ -58,6 +59,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [profile,     setProfile]     = useState(null)
   const [loading,     setLoading]     = useState(true)
+  const [streak,      setStreak]      = useState(0)
   // Login modal visibility, so any component can open it
   const [loginOpen,   setLoginOpen]   = useState(false)
   const openLogin  = useCallback(() => setLoginOpen(true), [])
@@ -73,6 +75,7 @@ export function AuthProvider({ children }) {
       setCurrentUser(prev => prev ?? { id: cached.userId })
       if (cached.profile) setProfile(prev => prev ?? cached.profile)
     }
+    setStreak(readStreak().count)
   }, [])
 
   async function fetchProfile(userId) {
@@ -111,6 +114,7 @@ export function AuthProvider({ children }) {
         clearCache()
         clearStoredProgress()
         clearShopData()
+        setStreak(readStreak().count)
       }
       if (_event === 'INITIAL_SESSION') setLoading(false)
     })
@@ -164,8 +168,15 @@ export function AuthProvider({ children }) {
     setProfile(prev => prev ? { ...prev, xp: amount } : { xp: amount })
   }
 
+  // Returns { count, isNew } — call on every lesson completion
+  function bumpStreak() {
+    const result = advanceStreak()
+    setStreak(result.count)
+    return result
+  }
+
   return (
-    <AuthContext.Provider value={{ currentUser, profile, loading, signUp, logIn, logOut, signInWithGoogle, refreshProfile, bumpXP, setXP, loginOpen, openLogin, closeLogin }}>
+    <AuthContext.Provider value={{ currentUser, profile, loading, signUp, logIn, logOut, signInWithGoogle, refreshProfile, bumpXP, setXP, streak, bumpStreak, loginOpen, openLogin, closeLogin }}>
       {children}
     </AuthContext.Provider>
   )

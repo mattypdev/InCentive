@@ -251,6 +251,84 @@
   box-shadow: 1px 1px 0 var(--foreground);
 }
 
+/* Streak counter */
+.navbar-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px 6px 10px;
+  background: #FFF7ED;
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  position: relative;
+}
+
+.navbar-streak[data-tooltip] {
+  position: relative;
+}
+
+.navbar-streak[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  z-index: 200;
+}
+
+.navbar-streak[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+.navbar-streak-flame {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.navbar-streak-count {
+  min-width: 10px;
+}
+
+.navbar-streak--cold {
+  opacity: 0.35;
+  filter: grayscale(1);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 7+ day streak — warm glow */
+.navbar-streak--fire {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+  border-color: #F97316;
+  box-shadow: 2px 2px 0 #F97316;
+}
+
+.navbar-streak--fire .navbar-streak-flame {
+  animation: flame-flicker 1.4s ease-in-out infinite;
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: scaleY(1) rotate(-3deg); }
+  33%       { transform: scaleY(1.12) rotate(3deg); }
+  66%       { transform: scaleY(0.95) rotate(-2deg); }
+}
+
 .navbar-mobile-bottom {
   display: flex;
   align-items: center;

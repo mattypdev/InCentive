@@ -50,7 +50,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [checkinOpen, setCheckinOpen] = useState(false)
   const [spent, setSpent] = useState(getSpent)
-  const { currentUser, profile, logOut, openLogin } = useAuth()
+  const { currentUser, profile, streak, logOut, openLogin } = useAuth()
   const router = useRouter()
   const dropdownRef = useRef(null)
 
@@ -70,10 +70,11 @@ export default function Navbar() {
     return () => window.removeEventListener('incentive:shop-update', refresh)
   }, [])
 
-  const coins    = Math.max(0, (profile?.xp ?? 0) - spent)
-  const xp       = (profile?.xp ?? 0) * 2
-  const xpCount  = useCountUp(currentUser ? xp : 0)
-  const coinCount = useCountUp(currentUser ? coins : 0)
+  const coins       = Math.max(0, (profile?.xp ?? 0) - spent)
+  const xp          = (profile?.xp ?? 0) * 2
+  const xpCount     = useCountUp(currentUser ? xp : 0)
+  const coinCount   = useCountUp(currentUser ? coins : 0)
+  const streakCount = useCountUp(currentUser ? streak : 0)
 
   async function handleLogOut() {
     await logOut()
@@ -129,6 +130,13 @@ export default function Navbar() {
                 <CoinBadge size={24} drop="1px 1px 0" />
                 <span className="navbar-cents-count">{coinCount}</span>
               </div>
+              <div
+                className={`navbar-streak${streakCount === 0 ? ' navbar-streak--cold' : streakCount >= 7 ? ' navbar-streak--fire' : ''}`}
+                data-tooltip={streakCount === 0 ? 'Complete a lesson to start your streak' : `${streakCount}-day streak — keep it going!`}
+              >
+                <span className="navbar-streak-flame">🔥</span>
+                <span className="navbar-streak-count">{streakCount}</span>
+              </div>
               <button className="btn btn-secondary navbar-logout" onClick={handleLogOut}>
                 <span className="btn-label">Log out</span>
                 <span className="btn-icon-badge"><LogOut size={16} strokeWidth={2.5} /></span>
@@ -143,6 +151,10 @@ export default function Navbar() {
               <div className="navbar-cents navbar-cents--guest" data-tooltip="Log in to start earning cents">
                 <CoinBadge size={24} drop="1px 1px 0" />
                 <span className="navbar-cents-count">0</span>
+              </div>
+              <div className="navbar-streak navbar-streak--cold" data-tooltip="Log in to track your streak">
+                <span className="navbar-streak-flame">🔥</span>
+                <span className="navbar-streak-count">0</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={openLogin}>
                 <span className="btn-label">Log in</span>

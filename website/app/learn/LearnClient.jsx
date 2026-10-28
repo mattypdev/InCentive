@@ -136,7 +136,7 @@ const ALL_SPRITES = [
 ]
 
 export default function LearnClient() {
-  const { currentUser, profile, refreshProfile, bumpXP, openLogin } = useAuth()
+  const { currentUser, profile, refreshProfile, bumpXP, bumpStreak, openLogin } = useAuth()
   const router = useRouter()
   const [completedIds,  setCompletedIds]  = useState(() => currentUser ? getStoredProgress() : new Set())
   const [activeUnit,    setActiveUnit]    = useState(null)
@@ -148,6 +148,7 @@ export default function LearnClient() {
   const [lessonDone,    setLessonDone]    = useState(false)
   const [centsEarned,   setCentsEarned]   = useState(0)
   const [finalScore,    setFinalScore]    = useState({ correct:0, total:0 })
+  const [streakResult,  setStreakResult]  = useState(null)
   const [sectionIndex,  setSectionIndex]  = useState(0)
   const [view,          setView]          = useState('map')
   const [sparklingId,   setSparklingId]   = useState(null)
@@ -237,6 +238,7 @@ export default function LearnClient() {
 
     triggerCoinFly(earned)
     triggerXPFly(earned * 2)
+    setStreakResult(bumpStreak())
 
     if (currentUser) {
       supabase.from('lesson_progress').upsert(
@@ -307,7 +309,7 @@ export default function LearnClient() {
     setActiveUnit(node); setShuffledQs(questions)
     setQIndex(0); setSelected(null); setShowFeedback(false)
     setSessionOK(0); setLessonDone(false); setCentsEarned(0)
-    setFinalScore({ correct:0, total:0 })
+    setFinalScore({ correct:0, total:0 }); setStreakResult(null)
   }
 
   function exitLesson() { setActiveUnit(null); setLessonDone(false) }
@@ -363,6 +365,16 @@ export default function LearnClient() {
                 <span className="done-xp-icon"></span>
                 <span>+{centsEarned * 2} XP earned</span>
               </div>
+              {streakResult?.count > 0 && (
+                <div className={`done-streak${streakResult.isNew ? ' done-streak--new' : ''}`}>
+                  <span className="done-streak-flame">🔥</span>
+                  <span>
+                    {streakResult.isNew
+                      ? `${streakResult.count}-day streak!`
+                      : `${streakResult.count}-day streak`}
+                  </span>
+                </div>
+              )}
             </div>
             {!currentUser && (
               <div className="done-guest-cta">
