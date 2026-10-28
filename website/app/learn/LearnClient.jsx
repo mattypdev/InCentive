@@ -9,7 +9,7 @@ import { getStoredProgress, storeProgress } from '@/lib/guestProgress'
 import { ChevronLeft, ChevronRight, ArrowLeft, LogIn, Lock, Check, Star, Trophy, RefreshCw, Map as MapIcon } from 'lucide-react'
 import { triggerCoinFly, triggerXPFly } from '@/components/CoinFlyLayer'
 import CoinBadge from '@/components/CoinBadge'
-import FlameIcon from '@/components/FlameIcon'
+import StreakFlame from '@/components/StreakFlame'
 import QuestionRenderer from '@/components/QuestionRenderer'
 import '@/app/(pages)/Learn.css'
 import '@/components/Button.css'
@@ -368,7 +368,10 @@ export default function LearnClient() {
               </div>
               {streakResult?.count > 0 && (
                 <div className={`done-streak${streakResult.isNew ? ' done-streak--new' : ''}`}>
-                  <FlameIcon streak={streakResult.count} size={28} />
+                  <StreakFlame
+                    count={streakResult.count}
+                    state={streakResult.isNew ? (streakResult.count === 1 ? 'ignite' : 'refresh') : 'idle'}
+                  />
                   <span>
                     {streakResult.isNew
                       ? `${streakResult.count}-day streak!`

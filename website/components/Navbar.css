@@ -266,6 +266,7 @@
   font-size: var(--text-sm);
   color: var(--foreground);
   position: relative;
+  overflow: visible;
 }
 
 .navbar-streak[data-tooltip] {
@@ -300,6 +301,8 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  height: 22px;         /* pin layout height; flame SVG overflows visually */
+  overflow: visible;
 }
 
 .navbar-streak-count {
@@ -321,16 +324,6 @@
   background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
   border-color: #F97316;
   box-shadow: 2px 2px 0 #F97316;
-}
-
-.navbar-streak--fire img {
-  animation: flame-flicker 1.4s ease-in-out infinite;
-}
-
-@keyframes flame-flicker {
-  0%, 100% { transform: scaleY(1) rotate(-3deg); }
-  33%       { transform: scaleY(1.12) rotate(3deg); }
-  66%       { transform: scaleY(0.95) rotate(-2deg); }
 }
 
 .navbar-mobile-bottom {

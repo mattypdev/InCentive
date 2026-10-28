@@ -1,5 +1,6 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import StreakFlame from '@/components/StreakFlame'
 import FlameIcon from '@/components/FlameIcon'
 import '@/components/Navbar.css'
 import '@/app/(pages)/Learn.css'
@@ -28,17 +29,21 @@ function useCountUp(value, duration = 900) {
   return display
 }
 
-function StreakPill({ count, label }) {
+function DemoPill({ count, state = 'idle', label }) {
   const display = useCountUp(count)
-  const isCold  = display === 0
-  const isFire  = display >= 7
+  const isCold  = count === 0
+  const isFire  = count >= 7
   return (
     <div className="demo-pill-wrap">
       <div
         className={`navbar-streak${isCold ? ' navbar-streak--cold' : isFire ? ' navbar-streak--fire' : ''}`}
         style={{ cursor: 'default' }}
       >
-        <FlameIcon streak={display} size={22} />
+        <span className="navbar-streak-flame">
+          {count > 0
+            ? <StreakFlame count={count} state={state} />
+            : <FlameIcon streak={0} size={22} />}
+        </span>
         <span className="navbar-streak-count">{display}</span>
       </div>
       <span className="demo-pill-label">{label}</span>
@@ -46,58 +51,110 @@ function StreakPill({ count, label }) {
   )
 }
 
-function DoneStreakBadge({ count, isNew, key: k }) {
+function ReplayFlame({ count, state, label, desc }) {
+  const [k, setK] = useState(0)
   return (
-    <div key={k} className={`done-streak${isNew ? ' done-streak--new' : ''}`}>
-      <FlameIcon streak={count} size={28} />
-      <span>{isNew ? `${count}-day streak!` : `${count}-day streak`}</span>
+    <div className="demo-state-card">
+      <div className="demo-state-flame">
+        <StreakFlame key={k} count={count} state={state} />
+      </div>
+      <div className="demo-state-count">{count}</div>
+      <div className="demo-state-label">{label}</div>
+      <p className="demo-state-desc">{desc}</p>
+      <button className="demo-btn" onClick={() => setK(n => n + 1)}>Replay</button>
+    </div>
+  )
+}
+
+function AtRiskToggle({ count }) {
+  const [on, setOn] = useState(true)
+  return (
+    <div className="demo-state-card">
+      <div className="demo-state-flame">
+        <StreakFlame count={count} state={on ? 'atRisk' : 'idle'} />
+      </div>
+      <div className="demo-state-count">{count}</div>
+      <div className="demo-state-label">At risk</div>
+      <p className="demo-state-desc">Past 8 PM — shrinks, desaturates, flickers.</p>
+      <button className="demo-btn" onClick={() => setOn(v => !v)}>
+        {on ? 'Restore' : 'Set at risk'}
+      </button>
     </div>
   )
 }
 
 export default function StreakDemoPage() {
-  const [liveStreak, setLiveStreak]   = useState(0)
-  const [badgeKey,   setBadgeKey]     = useState(0)
-  const [badgeState, setBadgeState]   = useState(null)  // { count, isNew }
-  const [animTarget, setAnimTarget]   = useState(0)
+  const [liveCount,  setLiveCount]  = useState(0)
+  const [liveState,  setLiveState]  = useState('idle')
+  const [badgeKey,   setBadgeKey]   = useState(0)
+  const [badgeState, setBadgeState] = useState(null)
+  const [animTarget, setAnimTarget] = useState(0)
+  const prevLiveRef = useRef(0)
   const liveDisplay = useCountUp(animTarget)
 
   function fireLesson(days) {
-    const isNew = liveStreak !== days
-    setLiveStreak(days)
+    const prev = prevLiveRef.current
+    const isNew = days !== prev
+    setLiveCount(days)
     setAnimTarget(days)
-    setBadgeState({ count: days, isNew })
-    setBadgeKey(k => k + 1)
+    setLiveState(isNew ? (prev === 0 ? 'ignite' : 'refresh') : 'idle')
+    prevLiveRef.current = days
+    if (isNew) {
+      setBadgeState({ count: days, isNew: true })
+      setBadgeKey(k => k + 1)
+    } else {
+      setBadgeState({ count: days, isNew: false })
+    }
+  }
+
+  function resetLive() {
+    setLiveCount(0); setAnimTarget(0); setLiveState('idle')
+    setBadgeState(null); prevLiveRef.current = 0
   }
 
   return (
     <main style={{ background: 'var(--background)', minHeight: '100vh', padding: '60px 24px' }}>
-      <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 48 }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 56 }}>
 
         <div>
-          <h1 className="demo-heading">Streak Feature Demo</h1>
-          <p className="demo-sub">All states, live — click a button to simulate a lesson finish.</p>
+          <h1 className="demo-heading">Streak Flame Demo</h1>
+          <p className="demo-sub">All 4 animation states · 3 tier sizes · live simulation</p>
         </div>
 
-        {/* ── Static states ── */}
+        {/* ── 4 States ── */}
         <section className="demo-section">
-          <h2 className="demo-section-title">Navbar pill states</h2>
-          <div className="demo-row">
-            <StreakPill count={0}  label="0 days (cold)" />
-            <StreakPill count={1}  label="1 day" />
-            <StreakPill count={3}  label="3 days" />
-            <StreakPill count={6}  label="6 days" />
-            <StreakPill count={7}  label="7 days (🔥 fire)" />
-            <StreakPill count={14} label="14 days" />
-            <StreakPill count={30} label="30 days" />
+          <h2 className="demo-section-title">Animation states</h2>
+          <div className="demo-states-row">
+            <ReplayFlame count={1}  state="ignite"  label="Ignite"  desc="First streak earned — layers pop in with sparks." />
+            <ReplayFlame count={5}  state="refresh" label="Refresh" desc="Daily check-in — squash & stretch, ring pulse." />
+            <AtRiskToggle count={5} />
+            <div className="demo-state-card">
+              <div className="demo-state-flame">
+                <StreakFlame count={7} state="idle" />
+              </div>
+              <div className="demo-state-count">7</div>
+              <div className="demo-state-label">Idle</div>
+              <p className="demo-state-desc">Layers loop with scale + skew. Embers fire at 7+ days.</p>
+            </div>
           </div>
         </section>
 
-        {/* ── Live interactive ── */}
+        {/* ── Tiers ── */}
+        <section className="demo-section">
+          <h2 className="demo-section-title">Tier sizes (in navbar pill)</h2>
+          <div className="demo-row" style={{ alignItems: 'flex-end', gap: 24 }}>
+            <DemoPill count={1}  state="idle" label="Tier 1 · days 1–2" />
+            <DemoPill count={3}  state="idle" label="Tier 2 · days 3–6" />
+            <DemoPill count={7}  state="idle" label="Tier 3 · days 7+" />
+            <DemoPill count={14} state="idle" label="14-day (same tier)" />
+          </div>
+        </section>
+
+        {/* ── Live simulation ── */}
         <section className="demo-section">
           <h2 className="demo-section-title">Live simulation</h2>
           <p className="demo-sub" style={{ marginBottom: 16 }}>
-            Tap a button — the pill animates with count-up and the done-screen badge pops in.
+            Click a day button to simulate finishing a lesson. Watch the ignite/refresh fire.
           </p>
 
           <div className="demo-row" style={{ marginBottom: 24 }}>
@@ -106,7 +163,11 @@ export default function StreakDemoPage() {
                 className={`navbar-streak${liveDisplay === 0 ? ' navbar-streak--cold' : liveDisplay >= 7 ? ' navbar-streak--fire' : ''}`}
                 style={{ cursor: 'default' }}
               >
-                <FlameIcon streak={liveDisplay} size={22} />
+                <span className="navbar-streak-flame">
+                  {liveCount > 0
+                    ? <StreakFlame count={liveCount} state={liveState} />
+                    : <FlameIcon streak={0} size={22} />}
+                </span>
                 <span className="navbar-streak-count">{liveDisplay}</span>
               </div>
               <span className="demo-pill-label">Live pill</span>
@@ -119,61 +180,36 @@ export default function StreakDemoPage() {
                 key={n}
                 className="demo-btn"
                 onClick={() => fireLesson(n)}
-                style={liveStreak === n ? { background: '#FFF7ED', borderColor: '#F97316' } : {}}
+                style={liveCount === n ? { background: '#FFF7ED', borderColor: '#F97316' } : {}}
               >
                 Day {n}
               </button>
             ))}
-            <button className="demo-btn demo-btn--reset" onClick={() => { setLiveStreak(0); setAnimTarget(0); setBadgeState(null) }}>
-              Reset
-            </button>
+            <button className="demo-btn demo-btn--reset" onClick={resetLive}>Reset</button>
           </div>
         </section>
 
-        {/* ── Done screen badge ── */}
+        {/* ── Done-screen badge ── */}
         <section className="demo-section">
           <h2 className="demo-section-title">Done-screen streak badge</h2>
           <p className="demo-sub" style={{ marginBottom: 16 }}>
-            Appears after finishing a lesson. Pops with orange border when the streak is newly extended.
+            Appears after finishing a lesson. Orange pop when streak is newly extended.
           </p>
           <div className="demo-row" style={{ flexWrap: 'wrap', gap: 12 }}>
             {badgeState ? (
-              <DoneStreakBadge key={badgeKey} count={badgeState.count} isNew={badgeState.isNew} />
+              <div key={badgeKey} className={`done-streak${badgeState.isNew ? ' done-streak--new' : ''}`}>
+                <StreakFlame
+                  key={badgeKey}
+                  count={badgeState.count}
+                  state={badgeState.isNew ? (badgeState.count === 1 ? 'ignite' : 'refresh') : 'idle'}
+                />
+                <span>{badgeState.isNew ? `${badgeState.count}-day streak!` : `${badgeState.count}-day streak`}</span>
+              </div>
             ) : (
               <span style={{ color: 'var(--muted-foreground)', fontFamily: 'var(--font-body)' }}>
                 Click a day button above to see the badge
               </span>
             )}
-            {/* Also show both variants side by side */}
-            <DoneStreakBadge count={5} isNew={false} />
-            <DoneStreakBadge key="new-static" count={5} isNew={true} />
-          </div>
-          <p className="demo-sub" style={{ marginTop: 8, fontSize: '0.75rem' }}>
-            Left: already-extended today (quiet) · Right: newly extended (orange pop)
-          </p>
-        </section>
-
-        {/* ── Fire animation ── */}
-        <section className="demo-section">
-          <h2 className="demo-section-title">7-day flame animation</h2>
-          <p className="demo-sub" style={{ marginBottom: 16 }}>
-            At 7+ days the flame flickers — a CSS keyframe that scales and tilts.
-          </p>
-          <div className="demo-row">
-            <div className="demo-pill-wrap">
-              <div className="navbar-streak navbar-streak--fire" style={{ cursor: 'default' }}>
-                <FlameIcon streak={7} size={22} />
-                <span className="navbar-streak-count">7</span>
-              </div>
-              <span className="demo-pill-label">Flickering flame</span>
-            </div>
-            <div className="demo-pill-wrap">
-              <div className="navbar-streak navbar-streak--fire" style={{ cursor: 'default' }}>
-                <FlameIcon streak={30} size={22} />
-                <span className="navbar-streak-count">30</span>
-              </div>
-              <span className="demo-pill-label">Same at 30 days</span>
-            </div>
           </div>
         </section>
 
@@ -185,9 +221,7 @@ export default function StreakDemoPage() {
           </p>
           <div className="demo-btn-row">
             {[0, 1, 5, 10, 30, 100].map(n => (
-              <button key={n} className="demo-btn" onClick={() => setAnimTarget(n)}>
-                → {n}
-              </button>
+              <button key={n} className="demo-btn" onClick={() => setAnimTarget(n)}>→ {n}</button>
             ))}
           </div>
           <div style={{ marginTop: 16 }}>

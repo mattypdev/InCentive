@@ -6,6 +6,8 @@ import { Menu, X, LogIn, LogOut } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
 import FlameIcon from '@/components/FlameIcon'
+import StreakFlame from '@/components/StreakFlame'
+import { getSeenCount, setSeenCount, isAtRisk } from '@/lib/streak'
 import { getSpent } from '@/lib/shop'
 import './Navbar.css'
 import './Button.css'
@@ -51,6 +53,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [checkinOpen, setCheckinOpen] = useState(false)
   const [spent, setSpent] = useState(getSpent)
+  const [flameState, setFlameState] = useState('idle')
+  const seenRef = useRef(null)
   const { currentUser, profile, streak, logOut, openLogin } = useAuth()
   const router = useRouter()
   const dropdownRef = useRef(null)
@@ -70,6 +74,21 @@ export default function Navbar() {
     window.addEventListener('incentive:shop-update', refresh)
     return () => window.removeEventListener('incentive:shop-update', refresh)
   }, [])
+
+  useEffect(() => {
+    if (!currentUser || streak <= 0) { setFlameState('idle'); return }
+    if (seenRef.current === null) seenRef.current = getSeenCount()
+    const seen = seenRef.current
+    if (streak > seen) {
+      setFlameState(seen === 0 ? 'ignite' : 'refresh')
+      setSeenCount(streak)
+      seenRef.current = streak
+    } else if (isAtRisk()) {
+      setFlameState('atRisk')
+    } else {
+      setFlameState('idle')
+    }
+  }, [currentUser, streak])
 
   const coins       = Math.max(0, (profile?.xp ?? 0) - spent)
   const xp          = (profile?.xp ?? 0) * 2
@@ -135,7 +154,11 @@ export default function Navbar() {
                 className={`navbar-streak${streakCount === 0 ? ' navbar-streak--cold' : streakCount >= 7 ? ' navbar-streak--fire' : ''}`}
                 data-tooltip={streakCount === 0 ? 'Complete a lesson to start your streak' : `${streakCount}-day streak — keep it going!`}
               >
-                <FlameIcon streak={streakCount} size={22} />
+                <span className="navbar-streak-flame">
+                  {streak > 0
+                    ? <StreakFlame count={streak} state={flameState} />
+                    : <FlameIcon streak={0} size={22} />}
+                </span>
                 <span className="navbar-streak-count">{streakCount}</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={handleLogOut}>
@@ -154,7 +177,7 @@ export default function Navbar() {
                 <span className="navbar-cents-count">0</span>
               </div>
               <div className="navbar-streak navbar-streak--cold" data-tooltip="Log in to track your streak">
-                <FlameIcon streak={streakCount} size={22} />
+                <FlameIcon streak={0} size={22} />
                 <span className="navbar-streak-count">0</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={openLogin}>
@@ -179,7 +202,11 @@ export default function Navbar() {
             title={`${streakCount}-day streak`}
             aria-hidden="true"
           >
-            <FlameIcon streak={streakCount} size={22} />
+            <span className="navbar-streak-flame">
+              {currentUser && streak > 0
+                ? <StreakFlame count={streak} state={flameState} />
+                : <FlameIcon streak={0} size={22} />}
+            </span>
             <span className="navbar-streak-count">{streakCount}</span>
           </div>
           <button
@@ -222,7 +249,11 @@ export default function Navbar() {
                 <span className="navbar-cents-count">{coins}</span>
               </div>
               <div className={`navbar-streak${streak === 0 ? ' navbar-streak--cold' : streak >= 7 ? ' navbar-streak--fire' : ''}`}>
-                <FlameIcon streak={streakCount} size={22} />
+                <span className="navbar-streak-flame">
+                  {streak > 0
+                    ? <StreakFlame count={streak} state={flameState} />
+                    : <FlameIcon streak={0} size={22} />}
+                </span>
                 <span className="navbar-streak-count">{streak}</span>
               </div>
               <button className="btn btn-secondary" onClick={handleLogOut} style={{ flex: 1, justifyContent: 'center' }}>

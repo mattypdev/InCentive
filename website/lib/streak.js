@@ -36,3 +36,22 @@ export function advanceStreak() {
   writeStreak({ count: newCount, lastDate: t })
   return { count: newCount, isNew: true }
 }
+
+// Last count the user has already seen an animation for — prevents replaying on reload.
+const SEEN_KEY = 'incentive_streak_seen'
+export function getSeenCount() {
+  try { return parseInt(localStorage.getItem(SEEN_KEY) ?? '0', 10) || 0 } catch { return 0 }
+}
+export function setSeenCount(n) {
+  try { localStorage.setItem(SEEN_KEY, String(n)) } catch {}
+}
+
+// True when the user has a streak, hasn't acted today, and it's past 8 PM local time.
+export function isAtRisk() {
+  try {
+    const { count, lastDate } = readStreak()
+    if (!count) return false
+    if (lastDate === todayStr()) return false
+    return new Date().getHours() >= 20
+  } catch { return false }
+}
