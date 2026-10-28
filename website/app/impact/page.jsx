@@ -1,5 +1,4 @@
 import '@/app/(pages)/Impact.css'
-import '@/components/Hero.css'
 
 const SITE = 'https://incentivefinance.org'
 
@@ -40,12 +39,6 @@ const press = [
     href: 'https://www.buzzsprout.com/1427981',
     dark: true,
   },
-  {
-    name: 'KTVN 2 News Nevada',
-    logo: '/ktvn2.png',
-    href: 'https://www.ktvn.com',
-    dark: false,
-  },
 ]
 
 export default function ImpactPage() {
@@ -80,11 +73,32 @@ export default function ImpactPage() {
       {/* ── Press ── */}
       <section className="impact-press-section section">
         <div className="container">
+
           <div className="impact-rule-label">
             <span className="impact-rule" />
             <span className="impact-rule-text">As seen in</span>
             <span className="impact-rule" />
           </div>
+
+          {/* Featured: KTVN video */}
+          <div className="impact-feature">
+            <div className="impact-feature-label">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ktvn2.png" alt="KTVN 2 News Nevada" className="impact-feature-logo" />
+            </div>
+            <div className="impact-feature-video-wrap">
+              <video
+                className="impact-feature-video"
+                controls
+                preload="metadata"
+                playsInline
+              >
+                <source src="https://cdn.field59.com/KTVN/1792543323-bc31a46bd94eb5fe60c6c9f967c9095c8d699d07_fl9-720p.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+
+          {/* Other press logos */}
           <div className="impact-logos">
             {press.map(p => (
               <a
@@ -97,9 +111,11 @@ export default function ImpactPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={p.logo} alt={p.name} className="impact-logo-img" />
+                <span className="impact-logo-name">{p.name}</span>
               </a>
             ))}
           </div>
+
         </div>
       </section>
 

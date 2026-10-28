@@ -112,31 +112,85 @@
   border-bottom: var(--border-width) solid var(--foreground);
 }
 
+/* Featured coverage block (KTVN video) */
+.impact-feature {
+  margin-bottom: 56px;
+  background: var(--card);
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-pop);
+  overflow: hidden;
+}
+
+.impact-feature-label {
+  display: flex;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: var(--border-width) solid var(--foreground);
+  background: var(--muted);
+}
+
+.impact-feature-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.impact-feature-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.impact-feature-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* Other press logos */
 .impact-logos {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
 .impact-logo-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  gap: 12px;
+  padding: 28px 20px;
+  background: var(--card);
+  border: var(--border-width) solid var(--foreground);
   border-radius: var(--radius-md);
-  transition: opacity 180ms ease, transform 180ms ease;
-  opacity: 0.75;
+  box-shadow: 3px 3px 0 var(--foreground);
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .impact-logo-item:hover {
-  opacity: 1;
-  transform: translateY(-2px);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pop);
+}
+
+.impact-logo-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  text-align: center;
 }
 
 .impact-logo-img {
   max-width: 100%;
-  max-height: 56px;
+  max-height: 52px;
   width: auto;
   object-fit: contain;
   mix-blend-mode: multiply;
@@ -218,7 +272,7 @@
 
   .impact-logos {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    gap: 12px;
   }
 
   .impact-partner-card {
@@ -230,7 +284,6 @@
 
 @media (max-width: 480px) {
   .impact-logos {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: 1fr;
   }
 }
