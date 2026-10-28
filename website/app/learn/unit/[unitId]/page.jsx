@@ -7,6 +7,7 @@ import { ArrowLeft, Check, Lock, LogIn, Star } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { triggerCoinFly, triggerXPFly } from '@/components/CoinFlyLayer'
 import CoinBadge from '@/components/CoinBadge'
+import StreakFlame from '@/components/StreakFlame'
 import { createClient } from '@/lib/supabase/client'
 import { getStoredProgress, storeProgress } from '@/lib/guestProgress'
 import { allUnits } from '@/data/levels'
@@ -102,7 +103,7 @@ function SparkleEffect({ color }) {
 export default function UnitPage() {
   const { unitId } = useParams()
   const router     = useRouter()
-  const { currentUser, bumpXP, refreshProfile, openLogin } = useAuth()
+  const { currentUser, bumpXP, bumpStreak, refreshProfile, openLogin } = useAuth()
   const sectionIndex = typeof window !== 'undefined'
     ? (parseInt(new URLSearchParams(window.location.search).get('section') ?? '0') || 0)
     : 0
@@ -144,6 +145,7 @@ export default function UnitPage() {
   const [lessonDone,    setLessonDone]    = useState(false)
   const [centsEarned,   setCentsEarned]   = useState(0)
   const [finalScore,    setFinalScore]    = useState({ correct: 0, total: 0 })
+  const [streakResult,  setStreakResult]  = useState(null)
   const [sparklingId,   setSparklingId]   = useState(null)
   const [slideIndex,    setSlideIndex]    = useState(null)
 
@@ -212,7 +214,7 @@ export default function UnitPage() {
     setShuffledQs(qs)
     setQIndex(0); setSelected(null); setShowFeedback(false)
     setSessionOK(0); setLessonDone(false); setCentsEarned(0)
-    setFinalScore({ correct: 0, total: 0 })
+    setFinalScore({ correct: 0, total: 0 }); setStreakResult(null)
     setSlideIndex(intros?.length ? 0 : null)
   }
 
@@ -248,6 +250,7 @@ export default function UnitPage() {
 
     triggerCoinFly(earned)
     triggerXPFly(earned * 2)
+    setStreakResult(bumpStreak())
 
     if (currentUser) {
       storeProgress(newCompleted)
@@ -298,6 +301,19 @@ export default function UnitPage() {
                 <span className="done-xp-icon"></span>
                 <span>+{centsEarned * 2} XP earned</span>
               </div>
+              {streakResult?.count > 0 && (
+                <div className={`done-streak${streakResult.isNew ? ' done-streak--new' : ''}`}>
+                  <StreakFlame
+                    count={streakResult.count}
+                    state={streakResult.isNew ? (streakResult.count === 1 ? 'ignite' : 'refresh') : 'idle'}
+                  />
+                  <span>
+                    {streakResult.isNew
+                      ? `${streakResult.count}-day streak!`
+                      : `${streakResult.count}-day streak`}
+                  </span>
+                </div>
+              )}
             </div>
             {!currentUser && (
               <div className="done-guest-cta">
