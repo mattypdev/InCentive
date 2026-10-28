@@ -1,7 +1,6 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import StreakFlame from '@/components/StreakFlame'
-import FlameIcon from '@/components/FlameIcon'
 import '@/components/Navbar.css'
 import '@/app/(pages)/Learn.css'
 import './streak-demo.css'
@@ -40,9 +39,7 @@ function DemoPill({ count, state = 'idle', label }) {
         style={{ cursor: 'default' }}
       >
         <span className="navbar-streak-flame">
-          {count > 0
-            ? <StreakFlame count={count} state={state} />
-            : <FlameIcon streak={0} size={22} />}
+          <StreakFlame count={count} state={state} />
         </span>
         <span className="navbar-streak-count">{display}</span>
       </div>
@@ -164,9 +161,7 @@ export default function StreakDemoPage() {
                 style={{ cursor: 'default' }}
               >
                 <span className="navbar-streak-flame">
-                  {liveCount > 0
-                    ? <StreakFlame count={liveCount} state={liveState} />
-                    : <FlameIcon streak={0} size={22} />}
+                  <StreakFlame count={liveCount} state={liveState} />
                 </span>
                 <span className="navbar-streak-count">{liveDisplay}</span>
               </div>
@@ -226,7 +221,9 @@ export default function StreakDemoPage() {
           </div>
           <div style={{ marginTop: 16 }}>
             <div className="navbar-streak" style={{ cursor: 'default', display: 'inline-flex' }}>
-              <FlameIcon streak={liveDisplay} size={22} />
+              <span className="navbar-streak-flame">
+                <StreakFlame count={liveDisplay} state="idle" />
+              </span>
               <span className="navbar-streak-count">{liveDisplay}</span>
             </div>
           </div>
