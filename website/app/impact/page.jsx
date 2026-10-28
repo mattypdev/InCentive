@@ -1,6 +1,16 @@
 import '@/app/(pages)/Impact.css'
 import MediaGallery from './MediaGallery'
 
+const articles = [
+  {
+    outlet: 'This is Reno',
+    logo: '/this-is-reno.webp',
+    title: 'Taking the initiative to create incentive: Reno high school students launch a nation-wide financial literacy nonprofit',
+    date: 'September 27, 2026',
+    href: 'https://thisisreno.com/2026/09/students-launch-incentive-financial-literacy/',
+  },
+]
+
 const SITE = 'https://incentivefinance.org'
 
 export const metadata = {
@@ -59,6 +69,36 @@ export default function ImpactPage() {
             <span className="impact-rule" />
           </div>
           <MediaGallery />
+        </div>
+      </section>
+
+      {/* ── Articles ── */}
+      <section className="impact-articles-section section">
+        <div className="container">
+          <div className="impact-rule-label">
+            <span className="impact-rule" />
+            <span className="impact-rule-text">Articles</span>
+            <span className="impact-rule" />
+          </div>
+          <div className="impact-articles">
+            {articles.map(a => (
+              <a
+                key={a.href}
+                href={a.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="impact-article-btn"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={a.logo} alt={a.outlet} className="impact-article-logo" />
+                <div className="impact-article-text">
+                  <span className="impact-article-title">{a.title}</span>
+                  <span className="impact-article-meta">{a.outlet} · {a.date}</span>
+                </div>
+                <span className="impact-article-arrow">↗</span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
