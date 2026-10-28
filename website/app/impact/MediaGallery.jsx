@@ -119,7 +119,7 @@ export default function MediaGallery() {
               className={`mg-btn${item.id === activeId ? ' mg-btn--active' : ''}${item.type === 'pending' ? ' mg-btn--pending' : ''}`}
               onClick={() => setActiveId(item.id)}
             >
-              <span className="mg-btn-indicator" aria-hidden="true" />
+              <span className="mg-btn-check" aria-hidden="true">✓</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={item.logo}
