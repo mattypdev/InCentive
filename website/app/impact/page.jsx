@@ -12,7 +12,7 @@ const articles = [
   {
     outlet: 'SEE Change Magazine',
     logo: '/see-change.png',
-    title: 'Financial Education',
+    title: 'Student-Led Initiative Makes Financial Education Accessible & Fun',
     date: null,
     href: 'https://www.seechangemagazine.com/tag/financial-education/',
   },
