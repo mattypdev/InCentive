@@ -15,8 +15,8 @@ const ITEMS = [
     name: 'Education Innovators Podcast',
     logo: '/eip-podcast.jpeg',
     dark: true,
-    type: 'pending',
-    src: null,
+    type: 'podcast',
+    src: 'https://www.youtube.com/embed/515elFbpgBM',
   },
 ]
 
