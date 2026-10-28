@@ -43,17 +43,6 @@ const stats = [
 export default function ImpactPage() {
   return (
     <>
-      {/* ── Header ── */}
-      <section className="impact-hero section">
-        <div className="container impact-hero-inner">
-          <p className="home-eyebrow">Our reach</p>
-          <p className="impact-subheading">
-            incentive started in one classroom. Today we're reaching students,
-            families, and community organizations across the country.
-          </p>
-        </div>
-      </section>
-
       {/* ── Stats ── */}
       <section className="impact-stats-section section">
         <div className="container">
