@@ -105,101 +105,179 @@
   flex-shrink: 0;
 }
 
-/* ── Press logos ── */
+/* ── Press / Media Gallery ── */
 
 .impact-press-section {
   background-color: var(--background);
   border-bottom: var(--border-width) solid var(--foreground);
 }
 
-/* Featured coverage block (KTVN video) */
-.impact-feature {
-  margin-bottom: 56px;
+/* Gallery: viewer left, list right */
+.mg-wrap {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Viewer panel */
+.mg-viewer {
   background: var(--card);
   border: var(--border-width) solid var(--foreground);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-pop);
   overflow: hidden;
-}
-
-.impact-feature-label {
+  aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
-  padding: 18px 24px;
-  border-bottom: var(--border-width) solid var(--foreground);
-  background: var(--muted);
+  justify-content: center;
 }
 
-.impact-feature-logo {
-  height: 28px;
-  width: auto;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-}
-
-.impact-feature-video-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
-}
-
-.impact-feature-video {
+.mg-video {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: contain;
+  background: #000;
 }
 
-/* Other press logos */
-.impact-logos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+.mg-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 
-.impact-logo-item {
+.mg-link-view,
+.mg-pending {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.mg-link-logo,
+.mg-pending-logo {
+  max-height: 56px;
+  max-width: 200px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+}
+
+.mg-link-logo--dark,
+.mg-pending-logo--dark {
+  mix-blend-mode: normal;
+  border-radius: var(--radius-sm);
+}
+
+.mg-link-label {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.mg-link-btn {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mg-pending-text {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Selector list */
+.mg-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mg-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
   gap: 12px;
-  padding: 28px 20px;
+  padding: 14px 16px;
   background: var(--card);
   border: var(--border-width) solid var(--foreground);
   border-radius: var(--radius-md);
   box-shadow: 3px 3px 0 var(--foreground);
-  text-decoration: none;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+  position: relative;
 }
 
-.impact-logo-item:hover {
-  transform: translate(-2px, -2px);
+.mg-btn:hover {
+  transform: translate(-1px, -1px);
   box-shadow: var(--shadow-pop);
 }
 
-.impact-logo-name {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted-foreground);
-  text-align: center;
+.mg-btn--active {
+  background: var(--muted);
+  border-color: var(--secondary);
+  box-shadow: 3px 3px 0 var(--secondary);
 }
 
-.impact-logo-img {
-  max-width: 100%;
-  max-height: 52px;
-  width: auto;
+.mg-btn--active:hover {
+  box-shadow: 4px 4px 0 var(--secondary);
+}
+
+.mg-btn--pending {
+  opacity: 0.55;
+}
+
+/* Active indicator bar */
+.mg-btn-indicator {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: var(--radius-full) 0 0 var(--radius-full);
+  background: transparent;
+  transition: background 150ms ease;
+}
+
+.mg-btn--active .mg-btn-indicator {
+  background: var(--secondary);
+}
+
+.mg-btn-logo {
+  height: 28px;
+  width: 60px;
   object-fit: contain;
+  flex-shrink: 0;
   mix-blend-mode: multiply;
 }
 
-.impact-logo-item--dark .impact-logo-img {
+.mg-btn-logo--dark {
   mix-blend-mode: normal;
-  border-radius: var(--radius-sm);
-  max-height: 64px;
+  border-radius: 4px;
+}
+
+.mg-btn-name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  color: var(--foreground);
+  line-height: 1.3;
+  flex: 1;
 }
 
 /* ── Partners ── */
@@ -264,15 +342,30 @@
 
 /* ── Responsive ── */
 
+@media (max-width: 900px) {
+  .mg-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .mg-viewer {
+    aspect-ratio: 16 / 9;
+  }
+
+  .mg-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .mg-btn {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .impact-stats {
     grid-template-columns: 1fr;
     gap: 2px;
-  }
-
-  .impact-logos {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
   }
 
   .impact-partner-card {
@@ -283,7 +376,12 @@
 }
 
 @media (max-width: 480px) {
-  .impact-logos {
-    grid-template-columns: 1fr;
+  .mg-list {
+    flex-direction: column;
+  }
+
+  .mg-btn {
+    flex: unset;
+    width: 100%;
   }
 }
