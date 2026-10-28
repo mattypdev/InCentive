@@ -2,11 +2,10 @@
 import { useEffect, useRef } from 'react'
 import { StreakFlame as Core } from './StreakFlameCore'
 
-// Fixed display dimensions — single tier (no progressive sizing).
-const CORE_W    = 92           // SVG viewBox width used by Core
-const CORE_TALL = 1.0          // height multiplier
-const DISPLAY_W = 28           // px wide in the UI
-const DISPLAY_H = Math.round(CORE_W * 1.2 * CORE_TALL * (DISPLAY_W / CORE_W)) // ≈ 34px
+// Fixed display size — fits within the navbar pill at all streak lengths.
+const CORE_W    = 92
+const DISPLAY_W = 22
+const DISPLAY_H = Math.round(CORE_W * 1.2 * (DISPLAY_W / CORE_W)) // 26px
 const SCALE     = DISPLAY_W / CORE_W
 
 // state: 'idle' | 'ignite' | 'refresh' | 'atRisk'
@@ -16,10 +15,14 @@ export default function StreakFlame({ count = 0, state = 'idle', className = '' 
   const prevCount    = useRef(null)
   const prevState    = useRef(null)
 
-  // Mount / unmount
+  // Dormant (count=0): desaturate the outer wrapper via CSS so the Core
+  // never needs to know about the grey state — keeps the logic simple.
+  const dormant = count <= 0
+
   useEffect(() => {
     if (!containerRef.current) return
-    const f = new Core(containerRef.current, { count: Math.max(count, 1), sparks: true, idle: true })
+    // idle: false → no idle sway animation; flame stays flat after effects settle.
+    const f = new Core(containerRef.current, { count: Math.max(count, 1), sparks: true, idle: false })
     flameRef.current  = f
     prevCount.current = count
     prevState.current = state
@@ -31,7 +34,6 @@ export default function StreakFlame({ count = 0, state = 'idle', className = '' 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Count / state changes after mount
   useEffect(() => {
     const f = flameRef.current
     if (!f) return
@@ -50,9 +52,6 @@ export default function StreakFlame({ count = 0, state = 'idle', className = '' 
       f.setAtRisk(true)
     } else if (prevS === 'atRisk' && state !== 'atRisk') {
       f.setAtRisk(false)
-    } else if (prevC !== count && state === 'idle') {
-      // count changed but no explicit state transition — just refresh
-      if (count > 0) f.refresh(c)
     }
   }, [count, state])
 
@@ -66,6 +65,9 @@ export default function StreakFlame({ count = 0, state = 'idle', className = '' 
         position:   'relative',
         overflow:   'visible',
         flexShrink: 0,
+        // Grey dormant when no streak; transitions to orange when streak is earned.
+        filter:     dormant ? 'saturate(0.15) brightness(1.1)' : undefined,
+        transition: 'filter 600ms ease-in-out',
       }}
     >
       <div

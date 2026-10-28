@@ -301,8 +301,8 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  height: 24px;       /* pins pill height; the 34px flame overflows 5px top+bottom */
-  overflow: visible;
+  height: 24px;       /* pins pill height; flame (26px) overflows ~1px — visually within */
+  overflow: visible;  /* lets sparks escape during ignite/refresh */
 }
 
 .navbar-streak-count {

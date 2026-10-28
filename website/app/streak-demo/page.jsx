@@ -123,30 +123,30 @@ export default function StreakDemoPage() {
 
         {/* ── 4 States ── */}
         <section className="demo-section">
-          <h2 className="demo-section-title">Animation states</h2>
+          <h2 className="demo-section-title">States</h2>
           <div className="demo-states-row">
+            <div className="demo-state-card">
+              <div className="demo-state-flame">
+                <StreakFlame count={0} state="idle" />
+              </div>
+              <div className="demo-state-count">0</div>
+              <div className="demo-state-label">Dormant</div>
+              <p className="demo-state-desc">No streak yet — grey/desaturated, flat.</p>
+            </div>
             <ReplayFlame count={1}  state="ignite"  label="Ignite"  desc="First streak earned — layers pop in with sparks." />
             <ReplayFlame count={5}  state="refresh" label="Refresh" desc="Daily check-in — squash & stretch, ring pulse." />
             <AtRiskToggle count={5} />
-            <div className="demo-state-card">
-              <div className="demo-state-flame">
-                <StreakFlame count={7} state="idle" />
-              </div>
-              <div className="demo-state-count">7</div>
-              <div className="demo-state-label">Idle</div>
-              <p className="demo-state-desc">Layers loop with scale + skew. Embers fire at 7+ days.</p>
-            </div>
           </div>
         </section>
 
-        {/* ── Tiers ── */}
+        {/* ── Pill states ── */}
         <section className="demo-section">
-          <h2 className="demo-section-title">Tier sizes (in navbar pill)</h2>
+          <h2 className="demo-section-title">Pill — single size at all counts</h2>
           <div className="demo-row" style={{ alignItems: 'flex-end', gap: 24 }}>
-            <DemoPill count={1}  state="idle" label="Tier 1 · days 1–2" />
-            <DemoPill count={3}  state="idle" label="Tier 2 · days 3–6" />
-            <DemoPill count={7}  state="idle" label="Tier 3 · days 7+" />
-            <DemoPill count={14} state="idle" label="14-day (same tier)" />
+            <DemoPill count={0}  state="idle" label="0 days (dormant)" />
+            <DemoPill count={1}  state="idle" label="1 day" />
+            <DemoPill count={7}  state="idle" label="7 days" />
+            <DemoPill count={30} state="idle" label="30 days" />
           </div>
         </section>
 
