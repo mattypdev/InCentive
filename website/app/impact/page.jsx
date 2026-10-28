@@ -82,7 +82,6 @@ export default function ImpactPage() {
                   <div className="impact-article-text">
                     <span className="impact-article-title">{a.title}</span>
                     <span className="impact-article-meta">{a.outlet}{a.date ? ` · ${a.date}` : ''}</span>
-                    <span className="impact-article-arrow">↗</span>
                   </div>
                 </div>
               </a>
