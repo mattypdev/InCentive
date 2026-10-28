@@ -306,10 +306,13 @@
 }
 
 .navbar-streak--cold {
-  opacity: 0.35;
-  filter: grayscale(1);
+  opacity: 0.4;
   pointer-events: none;
   user-select: none;
+}
+
+.navbar-streak--mobile {
+  display: none;
 }
 
 /* 7+ day streak — warm glow */
@@ -392,7 +395,8 @@
 
   /* Compact counter pills on mobile */
   .navbar-cents--mobile,
-  .navbar-xp--mobile {
+  .navbar-xp--mobile,
+  .navbar-streak--mobile {
     display: inline-flex;
     padding: 5px 10px;
     gap: 5px;
@@ -409,6 +413,10 @@
     width: 22px;
     height: 22px;
     font-size: 11px;
+  }
+
+  .navbar-streak--mobile .navbar-streak-flame {
+    font-size: 14px;
   }
 
   .navbar-end {

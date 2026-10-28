@@ -173,6 +173,14 @@ export default function Navbar() {
             <CoinBadge size={24} drop="1px 1px 0" />
             <span className="navbar-cents-count">{coinCount}</span>
           </div>
+          <div
+            className={`navbar-streak navbar-streak--mobile${!currentUser || streakCount === 0 ? ' navbar-streak--cold' : streakCount >= 7 ? ' navbar-streak--fire' : ''}`}
+            title={`${streakCount}-day streak`}
+            aria-hidden="true"
+          >
+            <span className="navbar-streak-flame">🔥</span>
+            <span className="navbar-streak-count">{streakCount}</span>
+          </div>
           <button
             className="navbar-toggle"
             aria-label={open ? 'Close menu' : 'Open menu'}
@@ -211,6 +219,10 @@ export default function Navbar() {
               <div className="navbar-cents">
                 <CoinBadge size={24} drop="1px 1px 0" />
                 <span className="navbar-cents-count">{coins}</span>
+              </div>
+              <div className={`navbar-streak${streak === 0 ? ' navbar-streak--cold' : streak >= 7 ? ' navbar-streak--fire' : ''}`}>
+                <span className="navbar-streak-flame">🔥</span>
+                <span className="navbar-streak-count">{streak}</span>
               </div>
               <button className="btn btn-secondary" onClick={handleLogOut} style={{ flex: 1, justifyContent: 'center' }}>
                 <span className="btn-label">Log out</span>
