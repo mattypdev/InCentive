@@ -18,14 +18,6 @@ const ITEMS = [
     type: 'pending',
     src: null,
   },
-  {
-    id: 'see-change',
-    name: 'SEE Change Magazine',
-    logo: '/see-change.png',
-    dark: false,
-    type: 'pending',
-    src: null,
-  },
 ]
 
 function MediaViewer({ item }) {

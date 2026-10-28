@@ -9,6 +9,13 @@ const articles = [
     date: 'September 27, 2026',
     href: 'https://thisisreno.com/2026/09/students-launch-incentive-financial-literacy/',
   },
+  {
+    outlet: 'SEE Change Magazine',
+    logo: '/see-change.png',
+    title: 'Financial Education',
+    date: null,
+    href: 'https://www.seechangemagazine.com/tag/financial-education/',
+  },
 ]
 
 const SITE = 'https://incentivefinance.org'
@@ -93,7 +100,7 @@ export default function ImpactPage() {
                 <img src={a.logo} alt={a.outlet} className="impact-article-logo" />
                 <div className="impact-article-text">
                   <span className="impact-article-title">{a.title}</span>
-                  <span className="impact-article-meta">{a.outlet} · {a.date}</span>
+                  <span className="impact-article-meta">{a.outlet}{a.date ? ` · ${a.date}` : ''}</span>
                 </div>
                 <span className="impact-article-arrow">↗</span>
               </a>
