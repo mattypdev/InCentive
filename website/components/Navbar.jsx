@@ -36,7 +36,6 @@ function useCountUp(value, duration = 900) {
 
 const links = [
   { label: 'Resources', href: '/resources' },
-  { label: 'Articles', href: '/articles' },
   { label: 'Quizzes', href: '/quizzes' },
   { label: 'About', href: '/about' },
   { label: 'Impact', href: '/impact' },
