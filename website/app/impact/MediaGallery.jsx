@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import ArticleReader from './ArticleReader'
 
 const ITEMS = [
   {
@@ -15,7 +16,7 @@ const ITEMS = [
     name: 'This is Reno',
     logo: '/this-is-reno.webp',
     dark: false,
-    type: 'pending',
+    type: 'reader',
     src: null,
   },
   {
@@ -77,6 +78,10 @@ function MediaViewer({ item }) {
     )
   }
 
+  if (item.type === 'reader') {
+    return <ArticleReader key={item.id} />
+  }
+
   if (item.type === 'podcast') {
     return (
       <iframe
@@ -107,7 +112,7 @@ export default function MediaGallery() {
   return (
     <div className="mg-wrap">
       {/* Left: viewer */}
-      <div className="mg-viewer">
+      <div className={`mg-viewer${active?.type === 'reader' ? ' mg-viewer--reader' : ''}`}>
         <MediaViewer item={active} />
       </div>
 
