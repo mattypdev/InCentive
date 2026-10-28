@@ -106,7 +106,7 @@ export default function StreakDemoPage() {
                 className={`navbar-streak${liveDisplay === 0 ? ' navbar-streak--cold' : liveDisplay >= 7 ? ' navbar-streak--fire' : ''}`}
                 style={{ cursor: 'default' }}
               >
-                <FlameIcon streak={display} size={22} />
+                <FlameIcon streak={liveDisplay} size={22} />
                 <span className="navbar-streak-count">{liveDisplay}</span>
               </div>
               <span className="demo-pill-label">Live pill</span>
@@ -162,14 +162,14 @@ export default function StreakDemoPage() {
           <div className="demo-row">
             <div className="demo-pill-wrap">
               <div className="navbar-streak navbar-streak--fire" style={{ cursor: 'default' }}>
-                <FlameIcon streak={display} size={22} />
+                <FlameIcon streak={7} size={22} />
                 <span className="navbar-streak-count">7</span>
               </div>
               <span className="demo-pill-label">Flickering flame</span>
             </div>
             <div className="demo-pill-wrap">
               <div className="navbar-streak navbar-streak--fire" style={{ cursor: 'default' }}>
-                <FlameIcon streak={display} size={22} />
+                <FlameIcon streak={30} size={22} />
                 <span className="navbar-streak-count">30</span>
               </div>
               <span className="demo-pill-label">Same at 30 days</span>
@@ -192,7 +192,7 @@ export default function StreakDemoPage() {
           </div>
           <div style={{ marginTop: 16 }}>
             <div className="navbar-streak" style={{ cursor: 'default', display: 'inline-flex' }}>
-              <FlameIcon streak={display} size={22} />
+              <FlameIcon streak={liveDisplay} size={22} />
               <span className="navbar-streak-count">{liveDisplay}</span>
             </div>
           </div>
