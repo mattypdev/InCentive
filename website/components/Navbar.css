@@ -301,7 +301,7 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  height: 22px;         /* pin layout height; flame SVG overflows visually */
+  height: 24px;       /* pins pill height; the 34px flame overflows 5px top+bottom */
   overflow: visible;
 }
 

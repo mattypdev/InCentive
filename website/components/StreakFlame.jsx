@@ -2,31 +2,29 @@
 import { useEffect, useRef } from 'react'
 import { StreakFlame as Core } from './StreakFlameCore'
 
-const tierFor = n =>
-  n >= 7 ? { w: 156, tall: 1.16, displayW: 34 }
-: n >= 3 ? { w: 124, tall: 1.05, displayW: 28 }
-:          { w: 92,  tall: 1,    displayW: 22 }
+// Fixed display dimensions — single tier (no progressive sizing).
+const CORE_W    = 92           // SVG viewBox width used by Core
+const CORE_TALL = 1.0          // height multiplier
+const DISPLAY_W = 28           // px wide in the UI
+const DISPLAY_H = Math.round(CORE_W * 1.2 * CORE_TALL * (DISPLAY_W / CORE_W)) // ≈ 34px
+const SCALE     = DISPLAY_W / CORE_W
 
 // state: 'idle' | 'ignite' | 'refresh' | 'atRisk'
-export default function StreakFlame({ count = 1, state = 'idle', className = '' }) {
+export default function StreakFlame({ count = 0, state = 'idle', className = '' }) {
   const containerRef = useRef(null)
   const flameRef     = useRef(null)
   const prevCount    = useRef(null)
   const prevState    = useRef(null)
 
-  const tier     = tierFor(count)
-  const scale    = tier.displayW / tier.w
-  const displayH = Math.round(tier.w * 1.2 * tier.tall * scale)
-
   // Mount / unmount
   useEffect(() => {
     if (!containerRef.current) return
-    const f = new Core(containerRef.current, { count, sparks: true, idle: true })
+    const f = new Core(containerRef.current, { count: Math.max(count, 1), sparks: true, idle: true })
     flameRef.current  = f
     prevCount.current = count
     prevState.current = state
 
-    if      (state === 'ignite') f.ignite(count)
+    if      (state === 'ignite') f.ignite(Math.max(count, 1))
     else if (state === 'atRisk') f.setAtRisk(true)
 
     return () => { f.destroy(); flameRef.current = null }
@@ -42,28 +40,29 @@ export default function StreakFlame({ count = 1, state = 'idle', className = '' 
     prevCount.current = count
     prevState.current = state
 
+    const c = Math.max(count, 1)
+
     if (state === 'ignite' && prevS !== 'ignite') {
-      f.ignite(count)
+      f.ignite(c)
     } else if (state === 'refresh' && (prevC !== count || prevS !== 'refresh')) {
-      f.refresh(count)
+      f.refresh(c)
     } else if (state === 'atRisk' && prevS !== 'atRisk') {
       f.setAtRisk(true)
     } else if (prevS === 'atRisk' && state !== 'atRisk') {
       f.setAtRisk(false)
-    } else if (prevC !== count) {
-      f.refresh(count)
+    } else if (prevC !== count && state === 'idle') {
+      // count changed but no explicit state transition — just refresh
+      if (count > 0) f.refresh(c)
     }
   }, [count, state])
-
-  if (count <= 0) return null
 
   return (
     <div
       className={className}
       aria-hidden="true"
       style={{
-        width:      tier.displayW,
-        height:     displayH,
+        width:      DISPLAY_W,
+        height:     DISPLAY_H,
         position:   'relative',
         overflow:   'visible',
         flexShrink: 0,
@@ -75,7 +74,7 @@ export default function StreakFlame({ count = 1, state = 'idle', className = '' 
           position:        'absolute',
           top:             0,
           left:            0,
-          transform:       `scale(${scale})`,
+          transform:       `scale(${SCALE})`,
           transformOrigin: 'top left',
           pointerEvents:   'none',
         }}

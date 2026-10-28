@@ -5,9 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Menu, X, LogIn, LogOut } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
-import FlameIcon from '@/components/FlameIcon'
 import StreakFlame from '@/components/StreakFlame'
-import { getSeenCount, setSeenCount, isAtRisk } from '@/lib/streak'
+import { isAtRisk } from '@/lib/streak'
 import { getSpent } from '@/lib/shop'
 import './Navbar.css'
 import './Button.css'
@@ -54,7 +53,7 @@ export default function Navbar() {
   const [checkinOpen, setCheckinOpen] = useState(false)
   const [spent, setSpent] = useState(getSpent)
   const [flameState, setFlameState] = useState('idle')
-  const seenRef = useRef(null)
+  const prevStreakRef = useRef(null)
   const { currentUser, profile, streak, logOut, openLogin } = useAuth()
   const router = useRouter()
   const dropdownRef = useRef(null)
@@ -76,19 +75,21 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    if (!currentUser || streak <= 0) { setFlameState('idle'); return }
-    if (seenRef.current === null) seenRef.current = getSeenCount()
-    const seen = seenRef.current
-    if (streak > seen) {
-      setFlameState(seen === 0 ? 'ignite' : 'refresh')
-      setSeenCount(streak)
-      seenRef.current = streak
-    } else if (isAtRisk()) {
+    const prev = prevStreakRef.current
+    prevStreakRef.current = streak
+    if (prev === null) {
+      // Initial mount — restore to idle; don't replay past animations.
+      setFlameState(streak > 0 && isAtRisk() ? 'atRisk' : 'idle')
+      return
+    }
+    if (streak > prev) {
+      setFlameState(prev === 0 ? 'ignite' : 'refresh')
+    } else if (streak > 0 && isAtRisk()) {
       setFlameState('atRisk')
     } else {
       setFlameState('idle')
     }
-  }, [currentUser, streak])
+  }, [streak])
 
   const coins       = Math.max(0, (profile?.xp ?? 0) - spent)
   const xp          = (profile?.xp ?? 0) * 2
@@ -155,9 +156,7 @@ export default function Navbar() {
                 data-tooltip={streakCount === 0 ? 'Complete a lesson to start your streak' : `${streakCount}-day streak — keep it going!`}
               >
                 <span className="navbar-streak-flame">
-                  {streak > 0
-                    ? <StreakFlame count={streak} state={flameState} />
-                    : <FlameIcon streak={0} size={22} />}
+                  <StreakFlame count={streak} state={flameState} />
                 </span>
                 <span className="navbar-streak-count">{streakCount}</span>
               </div>
@@ -177,7 +176,9 @@ export default function Navbar() {
                 <span className="navbar-cents-count">0</span>
               </div>
               <div className="navbar-streak navbar-streak--cold" data-tooltip="Log in to track your streak">
-                <FlameIcon streak={0} size={22} />
+                <span className="navbar-streak-flame">
+                  <StreakFlame count={0} state="idle" />
+                </span>
                 <span className="navbar-streak-count">0</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={openLogin}>
@@ -203,9 +204,7 @@ export default function Navbar() {
             aria-hidden="true"
           >
             <span className="navbar-streak-flame">
-              {currentUser && streak > 0
-                ? <StreakFlame count={streak} state={flameState} />
-                : <FlameIcon streak={0} size={22} />}
+              <StreakFlame count={currentUser ? streak : 0} state={currentUser ? flameState : 'idle'} />
             </span>
             <span className="navbar-streak-count">{streakCount}</span>
           </div>
@@ -250,9 +249,7 @@ export default function Navbar() {
               </div>
               <div className={`navbar-streak${streak === 0 ? ' navbar-streak--cold' : streak >= 7 ? ' navbar-streak--fire' : ''}`}>
                 <span className="navbar-streak-flame">
-                  {streak > 0
-                    ? <StreakFlame count={streak} state={flameState} />
-                    : <FlameIcon streak={0} size={22} />}
+                  <StreakFlame count={streak} state={flameState} />
                 </span>
                 <span className="navbar-streak-count">{streak}</span>
               </div>
