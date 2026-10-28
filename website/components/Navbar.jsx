@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Menu, X, LogIn, LogOut } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
+import FlameIcon from '@/components/FlameIcon'
 import { getSpent } from '@/lib/shop'
 import './Navbar.css'
 import './Button.css'
@@ -134,7 +135,7 @@ export default function Navbar() {
                 className={`navbar-streak${streakCount === 0 ? ' navbar-streak--cold' : streakCount >= 7 ? ' navbar-streak--fire' : ''}`}
                 data-tooltip={streakCount === 0 ? 'Complete a lesson to start your streak' : `${streakCount}-day streak — keep it going!`}
               >
-                <span className="navbar-streak-flame">🔥</span>
+                <FlameIcon streak={streakCount} size={22} />
                 <span className="navbar-streak-count">{streakCount}</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={handleLogOut}>
@@ -153,7 +154,7 @@ export default function Navbar() {
                 <span className="navbar-cents-count">0</span>
               </div>
               <div className="navbar-streak navbar-streak--cold" data-tooltip="Log in to track your streak">
-                <span className="navbar-streak-flame">🔥</span>
+                <FlameIcon streak={streakCount} size={22} />
                 <span className="navbar-streak-count">0</span>
               </div>
               <button className="btn btn-secondary navbar-logout" onClick={openLogin}>
@@ -178,7 +179,7 @@ export default function Navbar() {
             title={`${streakCount}-day streak`}
             aria-hidden="true"
           >
-            <span className="navbar-streak-flame">🔥</span>
+            <FlameIcon streak={streakCount} size={22} />
             <span className="navbar-streak-count">{streakCount}</span>
           </div>
           <button
@@ -221,7 +222,7 @@ export default function Navbar() {
                 <span className="navbar-cents-count">{coins}</span>
               </div>
               <div className={`navbar-streak${streak === 0 ? ' navbar-streak--cold' : streak >= 7 ? ' navbar-streak--fire' : ''}`}>
-                <span className="navbar-streak-flame">🔥</span>
+                <FlameIcon streak={streakCount} size={22} />
                 <span className="navbar-streak-count">{streak}</span>
               </div>
               <button className="btn btn-secondary" onClick={handleLogOut} style={{ flex: 1, justifyContent: 'center' }}>

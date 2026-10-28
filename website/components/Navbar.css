@@ -297,8 +297,9 @@
 }
 
 .navbar-streak-flame {
-  font-size: 16px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .navbar-streak-count {
@@ -322,7 +323,7 @@
   box-shadow: 2px 2px 0 #F97316;
 }
 
-.navbar-streak--fire .navbar-streak-flame {
+.navbar-streak--fire img {
   animation: flame-flicker 1.4s ease-in-out infinite;
 }
 
