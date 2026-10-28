@@ -5,6 +5,7 @@ const articles = [
   {
     outlet: 'This is Reno',
     logo: '/this-is-reno.webp',
+    image: '/davidson-academy.png',
     title: 'Taking the initiative to create incentive: Reno high school students launch a nation-wide financial literacy nonprofit',
     date: 'September 27, 2026',
     href: 'https://thisisreno.com/2026/09/students-launch-incentive-financial-literacy/',
@@ -12,6 +13,7 @@ const articles = [
   {
     outlet: 'SEE Change Magazine',
     logo: '/see-change.png',
+    image: '/workshop-reno.png',
     title: 'Student-Led Initiative Makes Financial Education Accessible & Fun',
     date: null,
     href: 'https://www.seechangemagazine.com/tag/financial-education/',
@@ -96,12 +98,14 @@ export default function ImpactPage() {
                 className="impact-article-btn"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.logo} alt={a.outlet} className="impact-article-logo" />
-                <div className="impact-article-text">
+                <img src={a.image} alt="" className="impact-article-thumb" />
+                <div className="impact-article-body">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={a.logo} alt={a.outlet} className="impact-article-logo" />
                   <span className="impact-article-title">{a.title}</span>
                   <span className="impact-article-meta">{a.outlet}{a.date ? ` · ${a.date}` : ''}</span>
+                  <span className="impact-article-arrow">↗</span>
                 </div>
-                <span className="impact-article-arrow">↗</span>
               </a>
             ))}
           </div>
