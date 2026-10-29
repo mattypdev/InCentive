@@ -344,6 +344,11 @@
   display: none;
 }
 
+/* "Start learning" CTA shown on mobile for guests */
+.navbar-cta--mobile {
+  display: none;
+}
+
 
 /* Hamburger toggle — hidden on desktop */
 .navbar-toggle {
@@ -389,13 +394,18 @@
 
   /* Compact counter pills on mobile */
   .navbar-cents--mobile,
-  .navbar-xp--mobile,
-  .navbar-streak--mobile {
+  .navbar-xp--mobile {
     display: inline-flex;
     padding: 5px 10px;
     gap: 5px;
     font-size: var(--text-sm);
     box-shadow: none;
+  }
+
+  .navbar-cta--mobile {
+    display: inline-flex;
+    padding: 8px 14px;
+    font-size: var(--text-sm);
   }
 
   .navbar-xp--mobile .navbar-xp-icon-wrap {
@@ -407,10 +417,6 @@
     width: 22px;
     height: 22px;
     font-size: 11px;
-  }
-
-  .navbar-streak--mobile .navbar-streak-flame {
-    font-size: 14px;
   }
 
   .navbar-end {

@@ -190,24 +190,22 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-end">
-          <div className={`navbar-xp navbar-xp--mobile${!currentUser ? ' navbar-xp--guest' : ''}`} title="Your XP" aria-hidden="true">
-            <span className="navbar-xp-icon-wrap"></span>
-            <span className="navbar-xp-count">{xpCount}</span>
-          </div>
-          <div className={`navbar-cents navbar-cents--mobile${!currentUser ? ' navbar-cents--guest' : ''}`} title="Your cents" aria-hidden="true">
-            <CoinBadge size={24} drop="1px 1px 0" />
-            <span className="navbar-cents-count">{coinCount}</span>
-          </div>
-          <div
-            className={`navbar-streak navbar-streak--mobile${!currentUser || streakCount === 0 ? ' navbar-streak--cold' : streakCount >= 7 ? ' navbar-streak--fire' : ''}`}
-            title={`${streakCount}-day streak`}
-            aria-hidden="true"
-          >
-            <span className="navbar-streak-flame">
-              <StreakFlame count={currentUser ? streak : 0} state={currentUser ? flameState : 'idle'} />
-            </span>
-            <span className="navbar-streak-count">{streakCount}</span>
-          </div>
+          {currentUser ? (
+            <>
+              <div className="navbar-xp navbar-xp--mobile" title="Your XP" aria-hidden="true">
+                <span className="navbar-xp-icon-wrap"></span>
+                <span className="navbar-xp-count">{xpCount}</span>
+              </div>
+              <div className="navbar-cents navbar-cents--mobile" title="Your cents" aria-hidden="true">
+                <CoinBadge size={24} drop="1px 1px 0" />
+                <span className="navbar-cents-count">{coinCount}</span>
+              </div>
+            </>
+          ) : (
+            <Link href="/learn" className="btn btn-primary navbar-cta--mobile" onClick={() => setOpen(false)}>
+              <span className="btn-label">Start learning</span>
+            </Link>
+          )}
           <button
             className="navbar-toggle"
             aria-label={open ? 'Close menu' : 'Open menu'}
