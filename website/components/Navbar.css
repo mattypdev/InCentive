@@ -404,8 +404,9 @@
 
   .navbar-end .navbar-cta--mobile {
     display: inline-flex;
-    padding: 8px 14px;
+    padding: 6px 14px;
     font-size: var(--text-sm);
+    box-shadow: var(--shadow-card);
   }
 
   .navbar-xp--mobile .navbar-xp-icon-wrap {

@@ -202,9 +202,10 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            <Link href="/learn" className="btn btn-primary navbar-cta--mobile" onClick={() => setOpen(false)}>
-              <span className="btn-label">Start learning</span>
-            </Link>
+            <button className="btn btn-primary navbar-cta--mobile" onClick={openLogin}>
+              <span className="btn-label">Log in</span>
+              <span className="btn-icon-badge"><LogIn size={15} strokeWidth={2.5} /></span>
+            </button>
           )}
           <button
             className="navbar-toggle"
