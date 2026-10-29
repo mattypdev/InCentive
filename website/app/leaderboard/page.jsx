@@ -17,8 +17,8 @@ function computeXP(rows) {
   rows.forEach(r => {
     const pct = (r.score ?? 0) / 100
     if (rewardMap[r.lesson_id] !== undefined) total += Math.round(rewardMap[r.lesson_id] * pct)
-    else if (r.lesson_id === 'capstone') total += Math.round(200 * pct)
-    else if (r.lesson_id?.endsWith('-test')) total += Math.round(100 * pct)
+    else if (r.lesson_id === 'capstone') total += Math.round(400 * pct)
+    else if (r.lesson_id?.endsWith('-test')) total += Math.round(200 * pct)
   })
   return total * 2
 }
