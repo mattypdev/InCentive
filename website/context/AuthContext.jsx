@@ -45,9 +45,9 @@ function computeXP(rows) {
     if (rewardMap[r.lesson_id] !== undefined) {
       total += Math.round(rewardMap[r.lesson_id] * pct)
     } else if (r.lesson_id === 'capstone') {
-      total += Math.round(200 * pct)
+      total += Math.round(400 * pct)
     } else if (r.lesson_id.endsWith('-test')) {
-      total += Math.round(100 * pct)
+      total += Math.round(200 * pct)
     }
   })
   return total
