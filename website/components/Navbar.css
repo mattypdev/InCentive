@@ -344,8 +344,8 @@
   display: none;
 }
 
-/* "Start learning" CTA shown on mobile for guests */
-.navbar-cta--mobile {
+/* "Start learning" CTA shown on mobile for guests only */
+.navbar-end .navbar-cta--mobile {
   display: none;
 }
 
@@ -402,7 +402,7 @@
     box-shadow: none;
   }
 
-  .navbar-cta--mobile {
+  .navbar-end .navbar-cta--mobile {
     display: inline-flex;
     padding: 8px 14px;
     font-size: var(--text-sm);
