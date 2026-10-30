@@ -5,7 +5,7 @@ import { allUnits } from '@/data/levels'
 import { clearStoredProgress } from '@/lib/guestProgress'
 import { clearShopData } from '@/lib/shop'
 import { loadShopFromCloud } from '@/lib/shopSync'
-import { readStreak, advanceStreak, clearStreak } from '@/lib/streak'
+import { readStreak, writeStreak, advanceStreak, clearStreak } from '@/lib/streak'
 
 const AuthContext = createContext(null)
 
@@ -88,6 +88,15 @@ export function AuthProvider({ children }) {
     setProfile(updated)
     writeCache(userId, updated)
     loadShopFromCloud(userId)
+
+    // Sync streak from cloud — cloud wins when its date is >= local (handles multi-device / cleared cache)
+    if (profileData?.streak_last_date) {
+      const local = readStreak()
+      if (!local.lastDate || profileData.streak_last_date >= local.lastDate) {
+        writeStreak({ count: profileData.streak_count ?? 0, lastDate: profileData.streak_last_date })
+        setStreak(profileData.streak_count ?? 0)
+      }
+    }
   }
 
   async function ensureProfile(user) {
@@ -171,6 +180,13 @@ export function AuthProvider({ children }) {
   function bumpStreak() {
     const result = advanceStreak()
     setStreak(result.count)
+    if (result.isNew && currentUser?.id) {
+      const { count, lastDate } = readStreak()
+      supabase.from('profiles')
+        .update({ streak_count: count, streak_last_date: lastDate })
+        .eq('id', currentUser.id)
+        .then(() => {})
+    }
     return result
   }
 

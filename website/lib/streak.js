@@ -13,7 +13,7 @@ export function readStreak() {
   }
 }
 
-function writeStreak(data) {
+export function writeStreak(data) {
   try { localStorage.setItem(KEY, JSON.stringify(data)) } catch {}
 }
 
