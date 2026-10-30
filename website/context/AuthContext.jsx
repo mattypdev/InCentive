@@ -125,7 +125,6 @@ export function AuthProvider({ children }) {
   async function signUp(name, email, password) {
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) throw error
-    if (!data.session) throw new Error('CHECK_EMAIL')
     await supabase.from('profiles').upsert({ id: data.user.id, name }, { onConflict: 'id' })
     await fetchProfile(data.user.id)
   }

@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Mail, X } from 'lucide-react'
+import { ArrowRight, X } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import './LoginModal.css'
 import './Button.css'
@@ -9,7 +9,6 @@ import './Button.css'
 function friendlyError(msg = '') {
   if (msg.includes('already registered') || msg.includes('User already registered')) return 'An account with that email already exists.'
   if (msg.includes('Invalid login') || msg.includes('invalid_credentials')) return 'Incorrect email or password.'
-  if (msg.includes('Email not confirmed') || msg.includes('not confirmed')) return 'Please confirm your email first, then log in.'
   if (msg.includes('Password should') || msg.includes('at least')) return 'Password must be at least 6 characters.'
   if (msg.includes('rate limit') || msg.includes('Too many')) return 'Too many attempts — wait a minute and try again.'
   return 'Something went wrong. Please try again.'
@@ -44,7 +43,6 @@ function LoginDialog({ onClose }) {
   const [error, setError]             = useState('')
   const [loading, setLoading]         = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
-  const [emailSent, setEmailSent]     = useState(false)
   const emailRef = useRef(null)
 
   // Escape closes, background scroll is locked, first field gets focus
@@ -73,8 +71,7 @@ function LoginDialog({ onClose }) {
       onClose()
       router.push('/learn')
     } catch (err) {
-      if (err.message === 'CHECK_EMAIL') setEmailSent(true)
-      else setError(friendlyError(err.message))
+      setError(friendlyError(err.message))
     } finally {
       setLoading(false)
     }
@@ -109,25 +106,7 @@ function LoginDialog({ onClose }) {
           <X size={20} strokeWidth={2.5} />
         </button>
 
-        {emailSent ? (
-          <div className="login-email-sent">
-            <div className="login-email-icon"><Mail size={32} strokeWidth={2} /></div>
-            <h2 id="login-title">Check your email</h2>
-            <p>
-              We sent a confirmation link to <strong>{email}</strong>.<br />
-              Click it to activate your account, then come back to log in.
-            </p>
-            <button
-              type="button"
-              className="btn btn-primary login-submit"
-              onClick={() => { setEmailSent(false); setMode('login'); setPassword('') }}
-            >
-              <span className="btn-label">Back to log in</span>
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="login-header">
+        <div className="login-header">
               <div className="login-brand">in<span>cent</span>ive</div>
               <h2 id="login-title">{mode === 'login' ? 'Log in to learn' : 'Create your account'}</h2>
               <p>{mode === 'login' ? 'Pick up right where your streak left off.' : 'Start building real financial confidence today.'}</p>
@@ -201,8 +180,6 @@ function LoginDialog({ onClose }) {
                 {mode === 'login' ? 'Sign up' : 'Log in'}
               </button>
             </p>
-          </>
-        )}
       </div>
     </div>
   )
