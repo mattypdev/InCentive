@@ -1,0 +1,726 @@
+/* ─── Teacher Hub design tokens ───────────────────────────────────────────── */
+
+.teach-layout,
+.teach-layout * {
+  --t-bg:     #FFFDF5;
+  --t-ink:    #1E293B;
+  --t-mute:   #475569;
+  --t-line:   #E7E2D3;
+  --t-coral:  #FF6F61;
+  --t-teal:   #0F766E;
+  --t-teal-l: #CCFBF1;
+  --t-side:   #F4FBF9;
+}
+
+/* ─── Layout shell ────────────────────────────────────────────────────────── */
+
+.teach-layout {
+  display: flex;
+  min-height: calc(100dvh - 72px);
+  background: var(--t-bg);
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+
+.t-side {
+  flex: 1 1 210px;
+  max-width: 220px;
+  min-width: 200px;
+  background: var(--t-side);
+  border-right: 2px solid var(--t-ink);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 72px;
+  height: calc(100dvh - 72px);
+  overflow-y: auto;
+}
+
+/* Class switcher button */
+.t-cls {
+  border: 2px solid var(--t-ink);
+  border-radius: 12px;
+  background: #fff;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  text-align: left;
+  cursor: default;
+  width: 100%;
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+}
+
+.t-cls-name {
+  font-size: 14px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 1px;
+  color: var(--t-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.t-cls-meta {
+  font-size: 11.5px;
+  color: var(--t-mute);
+  font-weight: 500;
+}
+
+/* Nav links */
+.t-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 11px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--t-ink);
+  text-decoration: none;
+  transition: background 100ms;
+  position: relative;
+}
+
+.t-nav-link:hover {
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.t-nav-link.on {
+  background: var(--t-teal);
+  color: #fff;
+}
+
+.t-nav-link.on svg {
+  color: #fff;
+}
+
+/* Badge count */
+.t-count {
+  margin-left: auto;
+  background: #fff;
+  color: var(--t-ink);
+  border: 1px solid var(--t-line);
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.t-nav-link.on .t-count {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.4);
+  color: #fff;
+}
+
+/* Footer nav */
+.t-side-gap {
+  flex: 1;
+}
+
+.t-side-footer {
+  border-top: 1.5px dashed var(--t-line);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── Main content ────────────────────────────────────────────────────────── */
+
+.t-main {
+  flex: 999 1 560px;
+  padding: 28px 32px 56px;
+  overflow-y: auto;
+  max-height: calc(100dvh - 72px);
+  background: var(--t-bg);
+}
+
+/* ─── Cards ───────────────────────────────────────────────────────────────── */
+
+.t-card {
+  background: #fff;
+  border: 2px solid var(--t-ink);
+  border-radius: 16px;
+  box-shadow: 3px 3px 0 var(--t-ink);
+  padding: 16px 18px;
+}
+
+.t-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--t-mute);
+  margin-bottom: 8px;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+
+.t-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 2px solid var(--t-ink);
+  box-shadow: 2px 2px 0 var(--t-ink);
+  font-weight: 700;
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 14px;
+  background: var(--t-teal);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: box-shadow 80ms, transform 80ms;
+}
+
+.t-btn:hover {
+  box-shadow: 3px 3px 0 var(--t-ink);
+  transform: translate(-1px, -1px);
+}
+
+.t-btn:active {
+  box-shadow: 1px 1px 0 var(--t-ink);
+  transform: translate(1px, 1px);
+}
+
+.t-btn.ghost {
+  background: #fff;
+  color: var(--t-ink);
+}
+
+.t-btn.sm {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.t-btn.xs {
+  min-height: 32px;
+  padding: 0 11px;
+  font-size: 12px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 0 var(--t-ink);
+}
+
+/* ─── KPI grid ────────────────────────────────────────────────────────────── */
+
+.t-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.t-kpi-num {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+  color: var(--t-ink);
+}
+
+.t-kpi-label {
+  font-size: 12px;
+  color: var(--t-mute);
+  font-weight: 600;
+}
+
+/* ─── Progress stack bar ──────────────────────────────────────────────────── */
+
+.t-stack {
+  height: 10px;
+  border-radius: 99px;
+  background: #EFF1F3;
+  border: 1.5px solid var(--t-ink);
+  overflow: hidden;
+  display: flex;
+}
+
+.t-stack-done {
+  background: var(--t-teal);
+}
+
+.t-stack-started {
+  background: #FDE68A;
+}
+
+/* ─── Score badge .m color classes ───────────────────────────────────────── */
+/* m4 ≥90, m3 70-89, m2 50-69, m1 <50, m0 not started */
+
+.m {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 24px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+.m4 { background: var(--t-teal); color: #fff; }
+.m3 { background: #99F6E4; color: #134E4A; }
+.m2 { background: #FDE68A; color: #78350F; }
+.m1 { background: #FDBA74; color: #7C2D12; }
+.m0 { background: transparent; border: 1.5px dashed var(--t-line); color: var(--t-mute); }
+
+/* ─── Tabs ────────────────────────────────────────────────────────────────── */
+
+.t-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--t-line);
+  margin-bottom: 20px;
+}
+
+.t-tab {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--t-mute);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 100ms;
+}
+
+.t-tab:hover {
+  color: var(--t-ink);
+}
+
+.t-tab.on {
+  color: var(--t-coral);
+  border-bottom-color: var(--t-coral);
+}
+
+/* ─── Content type chips ──────────────────────────────────────────────────── */
+
+.t-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.t-chip.lesson { background: #FFE4E6; color: #9F1239; }
+.t-chip.swipe  { background: #EDE9FE; color: #5B21B6; }
+.t-chip.check  { background: #FEF3C7; color: #92400E; }
+.t-chip.chal   { background: #DCFCE7; color: #166534; }
+.t-chip.ok     { background: var(--t-teal-l); color: #134E4A; }
+.t-chip.warn   { background: #FFF7ED; color: #9A3412; border: 1px solid #FED7AA; }
+.t-chip.off    { background: transparent; border: 1.5px dashed var(--t-line); color: var(--t-mute); }
+.t-chip.pending { background: #FEF3C7; color: #92400E; }
+.t-chip.done    { background: var(--t-teal-l); color: #134E4A; }
+.t-chip.draft   { background: #F1F5F9; color: var(--t-mute); border: 1px solid var(--t-line); }
+
+/* ─── Answer distribution rows ────────────────────────────────────────────── */
+
+.t-dist-row {
+  display: grid;
+  grid-template-columns: 20px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  margin-bottom: 4px;
+}
+
+.t-dist-bar {
+  height: 14px;
+  border-radius: 4px;
+}
+
+.t-dist-bar.correct { background: #DCFCE7; border: 1.5px solid #86EFAC; }
+.t-dist-bar.wrong   { background: #FDBA74; border: 1.5px solid #FB923C; }
+.t-dist-bar.empty   { background: #F1F5F9; border: 1.5px solid var(--t-line); }
+
+/* ─── Setup steps (FirstRun) ──────────────────────────────────────────────── */
+
+.t-step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 16px 18px;
+  background: #fff;
+  border: 2px solid var(--t-ink);
+  border-radius: 16px;
+  box-shadow: 3px 3px 0 var(--t-ink);
+  margin-bottom: 14px;
+  opacity: 1;
+}
+
+.t-step.pending {
+  opacity: 0.55;
+}
+
+.t-step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--t-ink);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.t-step.done .t-step-circle {
+  background: var(--t-teal);
+  color: #fff;
+  border-color: var(--t-teal);
+}
+
+.t-step.active .t-step-circle {
+  background: var(--t-coral);
+  color: #fff;
+  border-color: var(--t-coral);
+}
+
+/* ─── Tables ──────────────────────────────────────────────────────────────── */
+
+.t-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.t-table th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--t-mute);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--t-line);
+  white-space: nowrap;
+}
+
+.t-table td {
+  padding: 10px 12px;
+  border-bottom: 1.5px solid var(--t-line);
+  font-size: 13.5px;
+  vertical-align: middle;
+}
+
+.t-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.t-table tbody tr:hover td {
+  background: #F8FBF9;
+}
+
+/* ─── Avatar ──────────────────────────────────────────────────────────────── */
+
+.t-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--t-ink);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ─── Page header row ─────────────────────────────────────────────────────── */
+
+.t-hrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.t-hrow h1 {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--t-ink);
+  line-height: 1.1;
+}
+
+.t-sub {
+  font-size: 13px;
+  color: var(--t-mute);
+  margin-top: 2px;
+}
+
+.t-spacer {
+  flex: 1;
+}
+
+/* ─── Two-column layouts ──────────────────────────────────────────────────── */
+
+.t-cols {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.t-col-main {
+  flex: 999 1 520px;
+  min-width: 0;
+}
+
+.t-col-side {
+  flex: 1 1 320px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Progress grid (progress page) ──────────────────────────────────────── */
+
+.t-pgrid {
+  overflow-x: auto;
+}
+
+.t-pgrid table {
+  border-collapse: separate;
+  border-spacing: 3px;
+  width: 100%;
+}
+
+.t-pgrid th {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--t-mute);
+  text-align: center;
+  padding: 4px 2px;
+  white-space: nowrap;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+.t-pgrid th.name-col {
+  text-align: left;
+  padding-left: 12px;
+  min-width: 150px;
+  max-width: none;
+}
+
+.t-pgrid tr { height: 36px; }
+
+/* Score cells — do NOT use .m here (that class sets display:inline-flex) */
+.t-pgrid td.pgrid-cell {
+  text-align: center;
+  border-radius: 7px;
+  font-size: 11.5px;
+  font-weight: 700;
+  min-width: 44px;
+  vertical-align: middle;
+}
+
+.t-pgrid td.pgrid-cell.m4 { background: var(--t-teal); color: #fff; }
+.t-pgrid td.pgrid-cell.m3 { background: #99F6E4; color: #134E4A; }
+.t-pgrid td.pgrid-cell.m2 { background: #FDE68A; color: #78350F; }
+.t-pgrid td.pgrid-cell.m1 { background: #FDBA74; color: #7C2D12; }
+.t-pgrid td.pgrid-cell.m0 { background: transparent; border: 1.5px dashed var(--t-line); color: var(--t-mute); }
+
+.t-pgrid td.name-col {
+  text-align: left;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+/* ─── Search input ────────────────────────────────────────────────────────── */
+
+.t-search {
+  width: 100%;
+  border: 2px solid var(--t-line);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+  transition: border-color 100ms;
+  color: var(--t-ink);
+}
+
+.t-search:focus {
+  border-color: var(--t-teal);
+}
+
+/* ─── Form inputs ─────────────────────────────────────────────────────────── */
+
+.t-input {
+  width: 100%;
+  border: 2px solid var(--t-ink);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #fff;
+  box-shadow: 2px 2px 0 var(--t-ink);
+  outline: none;
+  transition: box-shadow 100ms;
+  color: var(--t-ink);
+}
+
+.t-input:focus {
+  box-shadow: 3px 3px 0 var(--t-ink);
+}
+
+.t-label {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: var(--t-ink);
+}
+
+.t-form-group {
+  margin-bottom: 16px;
+}
+
+/* ─── Island/unit accordion (new assignment) ──────────────────────────────── */
+
+.t-island-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--t-ink);
+  border-bottom: 1.5px solid var(--t-line);
+  text-align: left;
+}
+
+.t-island-btn:hover {
+  background: rgba(15, 118, 110, 0.04);
+}
+
+.t-unit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px 8px 32px;
+  border-bottom: 1px solid var(--t-line);
+  font-size: 13.5px;
+}
+
+.t-unit-row:last-child {
+  border-bottom: none;
+}
+
+/* ─── Code display ────────────────────────────────────────────────────────── */
+
+.t-code-big {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-align: center;
+  padding: 10px 0;
+  color: var(--t-teal);
+}
+
+.t-code-url {
+  font-size: 12px;
+  color: var(--t-mute);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* ─── Empty state ─────────────────────────────────────────────────────────── */
+
+.t-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--t-mute);
+}
+
+.t-empty h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--t-ink);
+  margin-bottom: 8px;
+}
+
+.t-empty p {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* ─── Dashed info card ────────────────────────────────────────────────────── */
+
+.t-dashed-card {
+  border: 2px dashed var(--t-line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  background: #FAFAF8;
+  color: var(--t-mute);
+  font-size: 13.5px;
+}
+
+/* ─── Classes new wizard ──────────────────────────────────────────────────── */
+
+.t-wizard {
+  max-width: 560px;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  .t-kpis { grid-template-columns: repeat(2, 1fr); }
+  .t-cols { flex-direction: column; }
+  .t-col-side { min-width: 0; width: 100%; }
+}
+
+@media (max-width: 700px) {
+  .t-side { display: none; }
+  .t-main { padding: 16px; }
+  .t-kpis { grid-template-columns: 1fr 1fr; }
+}
+
+/* ─── Backward compat aliases (old .teach-* → new .t-*) ──────────────────── */
+
+.teach-layout { display: flex; min-height: calc(100dvh - 72px); }
+.teach-main { flex: 1; padding: 22px 28px; overflow-y: auto; max-height: calc(100dvh - 72px); }
+.teach-h1row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.teach-h1row h1 { font-size: 27px; font-weight: 800; }
+.teach-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 10px; border: 2.5px solid var(--t-ink);
+  box-shadow: 2px 2px 0 var(--t-ink); font-weight: 700;
+  font-family: var(--font-heading, 'Outfit', sans-serif); font-size: 13px;
+  background: var(--t-teal); color: #fff; cursor: pointer; text-decoration: none;
+}
+.teach-btn.ghost { background: #fff; color: var(--t-ink); }
+.teach-box { background: #fff; border: 2px solid var(--t-ink); border-radius: 16px; box-shadow: 3px 3px 0 var(--t-ink); padding: 14px 16px; }
+.teach-spacer { flex: 1; }
+.teach-pill { display: inline-block; border: 1.5px solid var(--t-ink); border-radius: 99px; padding: 2px 10px; font-size: 11px; font-weight: 700; background: #fff; }
+.teach-form-input { width: 100%; border: 2px solid var(--t-ink); border-radius: 10px; padding: 10px 14px; font-size: 15px; font-family: inherit; background: #fff; box-shadow: 2px 2px 0 var(--t-ink); outline: none; }
+.teach-form-group { margin-bottom: 18px; }
+.teach-form-group label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+.teach-wizard { max-width: 600px; }
