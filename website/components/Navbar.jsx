@@ -142,6 +142,11 @@ export default function Navbar() {
           <li key="/learn">
             <Link href="/learn" onClick={() => setOpen(false)}>Learn</Link>
           </li>
+          {profile?.is_teacher && (
+            <li key="/teach">
+              <Link href="/teach" onClick={() => setOpen(false)}>Classes</Link>
+            </li>
+          )}
           {links.map(({ label, href }) => (
             <li key={href}>
               <Link href={href} onClick={() => setOpen(false)}>{label}</Link>
@@ -274,6 +279,11 @@ export default function Navbar() {
             <li key="/learn">
               <Link href="/learn" onClick={() => setOpen(false)}>Learn</Link>
             </li>
+            {profile?.is_teacher && (
+              <li key="/teach">
+                <Link href="/teach" onClick={() => setOpen(false)}>Classes</Link>
+              </li>
+            )}
             <li key="/progress">
               <Link href="/progress" onClick={() => setOpen(false)}>My progress</Link>
             </li>
