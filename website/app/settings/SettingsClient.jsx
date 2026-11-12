@@ -5,6 +5,10 @@ import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
 import './Settings.css'
 
+const SOUND_KEY = 'incentive_sound_enabled'
+function readSound() { try { const v = localStorage.getItem(SOUND_KEY); return v === null ? true : v === 'true' } catch { return true } }
+function writeSound(v) { try { localStorage.setItem(SOUND_KEY, String(v)) } catch {} }
+
 const TIMEZONES = [
   'America/New_York',
   'America/Chicago',
@@ -25,6 +29,7 @@ export default function SettingsClient() {
   const [sound, setSound]         = useState(true)
   const [saving, setSaving]       = useState(false)
   const [saved, setSaved]         = useState(false)
+  const [saveError, setSaveError] = useState('')
   const [deleteConfirm, setDeleteConfirm] = useState(false)
 
   // Link email (class accounts only)
@@ -38,8 +43,11 @@ export default function SettingsClient() {
     if (!profile) return
     setName(profile.name ?? '')
     setTimezone(profile.timezone ?? 'America/Los_Angeles')
-    setSound(profile.sound_enabled ?? true)
   }, [profile])
+
+  useEffect(() => {
+    setSound(readSound())
+  }, [])
 
   useEffect(() => {
     if (!loading && !currentUser) router.replace('/login')
@@ -50,11 +58,17 @@ export default function SettingsClient() {
   async function handleSave(e) {
     e.preventDefault()
     setSaving(true)
-    await supabase.from('profiles').update({
+    setSaveError('')
+    const { error } = await supabase.from('profiles').update({
       name: name.trim(),
       timezone,
-      sound_enabled: sound,
     }).eq('id', currentUser.id)
+    writeSound(sound)
+    if (error) {
+      setSaveError('Could not save — please try again.')
+      setSaving(false)
+      return
+    }
     await refreshProfile()
     setSaving(false)
     setSaved(true)
@@ -149,6 +163,7 @@ export default function SettingsClient() {
               <span className="settings-toggle-knob" />
             </button>
           </div>
+          {saveError && <p className="settings-error">{saveError}</p>}
           <button className="settings-save-btn" type="submit" disabled={saving}>
             {saved ? '✓ Saved' : saving ? 'Saving…' : 'Save changes'}
           </button>
