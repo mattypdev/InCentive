@@ -7,8 +7,8 @@ import '@/app/teach/Teach.css'
 
 export default function NewClassPage() {
   const router = useRouter()
-  const { profile } = useAuth()
-  const firstName = profile?.first_name ?? 'there'
+  const { profile, currentUser } = useAuth()
+  const displayName = profile?.name ?? currentUser?.email?.split('@')[0] ?? 'there'
 
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -31,7 +31,7 @@ export default function NewClassPage() {
 
         {/* Greeting */}
         <div style={{ marginBottom: 32, textAlign: 'center' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>👋</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🎓</div>
           <h1 style={{
             fontFamily: 'var(--font-heading, Outfit, sans-serif)',
             fontSize: 30,
@@ -39,7 +39,7 @@ export default function NewClassPage() {
             color: 'var(--t-ink, #1E293B)',
             marginBottom: 8,
           }}>
-            Hi {firstName}!
+            Hi {displayName}!
           </h1>
           <p style={{ fontSize: 15, color: 'var(--t-mute, #475569)', lineHeight: 1.6 }}>
             Let's set up your first class. Students will join with a code you can share.
