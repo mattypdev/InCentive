@@ -59,13 +59,14 @@ export default function SettingsClient() {
     e.preventDefault()
     setSaving(true)
     setSaveError('')
-    const { error } = await supabase.from('profiles').update({
+    const { error } = await supabase.from('profiles').upsert({
+      id: currentUser.id,
       name: name.trim(),
       timezone,
-    }).eq('id', currentUser.id)
+    }, { onConflict: 'id' })
     writeSound(sound)
     if (error) {
-      setSaveError('Could not save — please try again.')
+      setSaveError(error.message || 'Could not save — please try again.')
       setSaving(false)
       return
     }
