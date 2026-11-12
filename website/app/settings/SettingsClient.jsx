@@ -62,7 +62,6 @@ export default function SettingsClient() {
     const { error } = await supabase.from('profiles').upsert({
       id: currentUser.id,
       name: name.trim(),
-      timezone,
     }, { onConflict: 'id' })
     writeSound(sound)
     if (error) {
