@@ -1,0 +1,453 @@
+/* ─── Full-page login layout ─────────────────────────────────────────────── */
+
+.lp-root {
+  min-height: 100dvh;
+  display: flex;
+}
+
+/* ─── Left branding panel ─────────────────────────────────────────────────── */
+
+.lp-left {
+  flex: 0 0 42%;
+  background: var(--accent);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.lp-brand {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  color: #fff;
+  text-decoration: none;
+}
+
+.lp-brand span { color: rgba(255,255,255,0.55); }
+
+.lp-tagline {
+  color: #fff;
+}
+
+.lp-tagline h2 {
+  font-size: var(--text-3xl);
+  color: #fff;
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+.lp-tagline p {
+  font-size: var(--text-base);
+  color: rgba(255,255,255,0.85);
+  line-height: 1.6;
+}
+
+.lp-art {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  max-height: 240px;
+  border: var(--border-width) solid rgba(255,255,255,0.3);
+}
+
+/* ─── Right form panel ────────────────────────────────────────────────────── */
+
+.lp-right {
+  flex: 1;
+  padding: 48px 48px 48px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lp-form-inner {
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ─── Tabs ────────────────────────────────────────────────────────────────── */
+
+.lp-tabs {
+  display: flex;
+  gap: 0;
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.lp-tab {
+  flex: 1;
+  padding: 10px 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.lp-tab.active {
+  background: var(--foreground);
+  color: #fff;
+}
+
+/* ─── Role cards ──────────────────────────────────────────────────────────── */
+
+.lp-roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.lp-role-card {
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  cursor: pointer;
+  background: var(--card);
+  text-align: left;
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lp-role-card:hover:not(.selected) {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pop);
+}
+
+.lp-role-card.selected {
+  background: var(--accent);
+  color: #fff;
+}
+
+.lp-role-card .role-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.lp-role-card .role-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.lp-role-card .role-desc {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.4;
+}
+
+.lp-role-card.selected .role-desc { color: rgba(255,255,255,0.75); }
+
+/* ─── Google button ───────────────────────────────────────────────────────── */
+
+.lp-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 28px;
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--foreground);
+  background: transparent;
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+  margin-bottom: 20px;
+}
+
+.lp-google:hover:not(:disabled) {
+  background-color: var(--muted);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pop);
+}
+
+.lp-google:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ─── OR divider ──────────────────────────────────────────────────────────── */
+
+.lp-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+
+.lp-or::before, .lp-or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--foreground);
+  opacity: 0.15;
+}
+
+/* ─── Form fields ─────────────────────────────────────────────────────────── */
+
+.lp-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.lp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lp-field label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.lp-field input, .lp-field select {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--foreground);
+  background: var(--input);
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: box-shadow 200ms ease;
+  appearance: none;
+}
+
+.lp-field input:focus, .lp-field select:focus {
+  box-shadow: 3px 3px 0px 0px var(--foreground);
+}
+
+.lp-field input::placeholder { color: var(--muted-foreground); }
+
+.lp-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ─── Birth date / age gate ───────────────────────────────────────────────── */
+
+.lp-under13-warning {
+  background: #FFF3F0;
+  border: var(--border-width) solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+/* ─── Submit button ───────────────────────────────────────────────────────── */
+
+.lp-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  margin-bottom: 20px;
+}
+
+.lp-submit:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pop);
+}
+
+.lp-submit:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-pop-active);
+}
+
+.lp-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* ─── Have a code box ─────────────────────────────────────────────────────── */
+
+.lp-code-box {
+  border: var(--border-width) dashed var(--foreground);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lp-code-box p {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin: 0 0 8px;
+}
+
+.lp-code-box a {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--secondary);
+  text-decoration: underline;
+}
+
+/* ─── Class login toggle ──────────────────────────────────────────────────── */
+
+.lp-class-toggle {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--secondary);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* ─── Error ───────────────────────────────────────────────────────────────── */
+
+.lp-error {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 16px;
+}
+
+/* ─── Switch link ─────────────────────────────────────────────────────────── */
+
+.lp-switch {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.lp-switch button {
+  color: var(--secondary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ─── Almost there screen ─────────────────────────────────────────────────── */
+
+.lp-almost {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.lp-almost h2 { margin-bottom: 12px; }
+
+.lp-almost p {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.lp-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 24px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--text-sm);
+}
+
+.lp-step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: var(--border-width) solid var(--foreground);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xs);
+}
+
+.lp-step-dot.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.lp-ghost-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  border: var(--border-width) dashed var(--foreground);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color 150ms ease;
+}
+
+.lp-ghost-btn:hover { background: var(--muted); }
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .lp-root { flex-direction: column; }
+  .lp-left {
+    flex: unset;
+    height: auto;
+    position: static;
+    padding: 32px 24px;
+  }
+  .lp-art { max-height: 120px; }
+  .lp-tagline h2 { font-size: var(--text-xl); }
+  .lp-right { padding: 32px 24px 48px; justify-content: flex-start; }
+}

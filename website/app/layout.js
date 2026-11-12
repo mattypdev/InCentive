@@ -1,4 +1,5 @@
-import { Outfit, Plus_Jakarta_Sans } from 'next/font/google'
+import { Outfit } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import '../styles/globals.css'
 import '../styles/app.css'
 import Navbar from '@/components/Navbar'

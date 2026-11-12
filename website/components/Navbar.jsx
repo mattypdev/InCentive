@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, LogIn, LogOut } from 'lucide-react'
+import { Menu, X, LogIn, LogOut, ChevronDown, User, TrendingUp, Settings, Trophy } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import CoinBadge from '@/components/CoinBadge'
 import StreakFlame from '@/components/StreakFlame'
@@ -25,7 +25,7 @@ function useCountUp(value, duration = 900) {
     const start = performance.now()
     function tick(now) {
       const t = Math.min((now - start) / duration, 1)
-      const eased = 1 - Math.pow(1 - t, 3) // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3)
       setDisplay(Math.round(from + (to - from) * eased))
       if (t < 1) rafRef.current = requestAnimationFrame(tick)
     }
@@ -43,29 +43,50 @@ const links = [
   { label: 'Impact', href: '/impact' },
 ]
 
-const CHECK_IN_LINKS = [
-  { label: 'Progress', href: '/progress' },
-  { label: 'Leaderboard', href: '/leaderboard' },
-]
+function ProfileAvatar({ profile, size = 28 }) {
+  const initial = (profile?.first_name?.[0] ?? '?').toUpperCase()
+  return (
+    <span
+      className="navbar-avatar"
+      style={{ width: size, height: size, fontSize: size * 0.43 }}
+      aria-hidden="true"
+    >
+      {initial}
+    </span>
+  )
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
-  const [checkinOpen, setCheckinOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [spent, setSpent] = useState(getSpent)
   const [flameState, setFlameState] = useState('idle')
   const prevStreakRef = useRef(null)
   const { currentUser, profile, streak, logOut, openLogin } = useAuth()
   const router = useRouter()
-  const dropdownRef = useRef(null)
+  const userMenuRef = useRef(null)
+
+  const displayName = profile?.first_name ?? currentUser?.email?.split('@')[0] ?? ''
+  const truncatedName = displayName.length > 12 ? displayName.slice(0, 12) + '…' : displayName
+  const roleLine = profile?.is_teacher ? 'Teacher' : 'Student'
+  const fullName = profile?.name ?? displayName
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setCheckinOpen(false)
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') setUserMenuOpen(false)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   useEffect(() => {
@@ -78,7 +99,6 @@ export default function Navbar() {
     const prev = prevStreakRef.current
     prevStreakRef.current = streak
     if (prev === null) {
-      // Initial mount — restore to idle; don't replay past animations.
       setFlameState(streak > 0 && isAtRisk() ? 'atRisk' : 'idle')
       return
     }
@@ -98,9 +118,16 @@ export default function Navbar() {
   const streakCount = useCountUp(currentUser ? streak : 0)
 
   async function handleLogOut() {
+    setUserMenuOpen(false)
+    setOpen(false)
     await logOut()
     router.push('/')
+  }
+
+  function closeMenu(href) {
+    setUserMenuOpen(false)
     setOpen(false)
+    router.push(href)
   }
 
   return (
@@ -114,24 +141,6 @@ export default function Navbar() {
         <ul className={`navbar-links ${open ? 'navbar-links--open' : ''}`}>
           <li key="/learn">
             <Link href="/learn" onClick={() => setOpen(false)}>Learn</Link>
-          </li>
-          <li className="navbar-dropdown-wrap" ref={dropdownRef}>
-            <button
-              className={`navbar-dropdown-trigger${checkinOpen ? ' navbar-dropdown-trigger--open' : ''}`}
-              onClick={() => setCheckinOpen(v => !v)}
-              aria-expanded={checkinOpen}
-            >
-              Check-in
-            </button>
-            {checkinOpen && (
-              <div className="navbar-dropdown">
-                {CHECK_IN_LINKS.map(({ label, href }) => (
-                  <Link key={href} href={href} className="navbar-dropdown-item" onClick={() => { setCheckinOpen(false); setOpen(false) }}>
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            )}
           </li>
           {links.map(({ label, href }) => (
             <li key={href}>
@@ -160,10 +169,51 @@ export default function Navbar() {
                 </span>
                 <span className="navbar-streak-count">{streakCount}</span>
               </div>
-              <button className="btn btn-secondary navbar-logout" onClick={handleLogOut}>
-                <span className="btn-label">Log out</span>
-                <span className="btn-icon-badge"><LogOut size={16} strokeWidth={2.5} /></span>
-              </button>
+
+              {/* Profile pill */}
+              <div className="navbar-profile-wrap" ref={userMenuRef}>
+                <button
+                  className={`navbar-profile-pill${userMenuOpen ? ' navbar-profile-pill--open' : ''}`}
+                  onClick={() => setUserMenuOpen(v => !v)}
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                  aria-label={`${displayName} — account menu`}
+                >
+                  <ProfileAvatar profile={profile} size={28} />
+                  <span className="navbar-profile-name">{truncatedName}</span>
+                  <ChevronDown size={13} strokeWidth={2.5} className="navbar-profile-chevron" />
+                </button>
+
+                {userMenuOpen && (
+                  <div className="navbar-profile-menu" role="menu">
+                    {/* Header */}
+                    <div className="navbar-profile-menu-header">
+                      <ProfileAvatar profile={profile} size={36} />
+                      <div>
+                        <div className="navbar-profile-menu-name">{fullName}</div>
+                        <div className="navbar-profile-menu-role">{roleLine}</div>
+                      </div>
+                    </div>
+                    <div className="navbar-profile-menu-divider" />
+                    <button className="navbar-profile-menu-item" role="menuitem" onClick={() => closeMenu('/settings')}>
+                      <User size={14} strokeWidth={2} /> Profile
+                    </button>
+                    <button className="navbar-profile-menu-item" role="menuitem" onClick={() => closeMenu('/progress')}>
+                      <TrendingUp size={14} strokeWidth={2} /> My progress
+                    </button>
+                    <button className="navbar-profile-menu-item" role="menuitem" onClick={() => closeMenu('/leaderboard')}>
+                      <Trophy size={14} strokeWidth={2} /> Leaderboard
+                    </button>
+                    <button className="navbar-profile-menu-item" role="menuitem" onClick={() => closeMenu('/settings')}>
+                      <Settings size={14} strokeWidth={2} /> Settings
+                    </button>
+                    <div className="navbar-profile-menu-divider" />
+                    <button className="navbar-profile-menu-item navbar-profile-menu-item--danger" role="menuitem" onClick={handleLogOut}>
+                      <LogOut size={14} strokeWidth={2} /> Log out
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <>
@@ -224,12 +274,12 @@ export default function Navbar() {
             <li key="/learn">
               <Link href="/learn" onClick={() => setOpen(false)}>Learn</Link>
             </li>
-            <li className="navbar-mobile-group-label">Check-in</li>
-            {CHECK_IN_LINKS.map(({ label, href }) => (
-              <li key={href} className="navbar-mobile-subitem">
-                <Link href={href} onClick={() => setOpen(false)}>{label}</Link>
-              </li>
-            ))}
+            <li key="/progress">
+              <Link href="/progress" onClick={() => setOpen(false)}>My progress</Link>
+            </li>
+            <li key="/leaderboard">
+              <Link href="/leaderboard" onClick={() => setOpen(false)}>Leaderboard</Link>
+            </li>
             {links.map(({ label, href }) => (
               <li key={href}>
                 <Link href={href} onClick={() => setOpen(false)}>{label}</Link>

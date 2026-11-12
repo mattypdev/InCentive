@@ -1,0 +1,427 @@
+/* ─── Family pages layout ─────────────────────────────────────────────────── */
+
+.family-main {
+  padding: 22px 32px;
+  margin-top: 64px;
+  min-height: calc(100dvh - 64px);
+}
+
+/* ─── Grid layout ────────────────────────────────────────────────────────── */
+
+.family-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1.05fr 0.95fr;
+  gap: 16px;
+  margin-top: 14px;
+  align-items: start;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────────────────── */
+
+.family-box {
+  background: #fff;
+  border: 2.5px solid var(--foreground);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  padding: 14px 16px;
+}
+
+.family-box h3 {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.family-box + .family-box {
+  margin-top: 14px;
+}
+
+/* ─── Header row ─────────────────────────────────────────────────────────── */
+
+.family-h1row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.family-h1row h1 {
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.family-h1row-meta {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+
+.family-spacer { flex: 1; }
+
+/* ─── Island strip ───────────────────────────────────────────────────────── */
+
+.family-isles {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  margin: 6px 0 4px;
+}
+
+.family-isle {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.family-isle img {
+  width: 100%;
+  display: block;
+}
+
+.family-isle.future img {
+  filter: grayscale(0.85) opacity(0.45);
+}
+
+.family-isle span {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  display: block;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.family-isle.done span { color: #22C55E; }
+.family-isle.current span { color: var(--accent); }
+
+/* ─── Stats grid (kv) ────────────────────────────────────────────────────── */
+
+.family-kv {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.family-kv-cell {
+  border: 2px solid var(--foreground);
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+  background: #fff;
+}
+
+.family-kv-val {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.family-kv-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+
+/* ─── Ask at dinner cards ────────────────────────────────────────────────── */
+
+.family-ask-card {
+  border: 2px solid var(--foreground);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.family-ask-card:last-child { margin-bottom: 0; }
+
+.family-ask-answer {
+  display: block;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+  font-size: 11.5px;
+}
+
+/* ─── Try at home card ───────────────────────────────────────────────────── */
+
+.family-try-card {
+  background: #FDF2F8;
+  border: 2.5px solid var(--foreground);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  padding: 14px 16px;
+}
+
+.family-try-card h3 {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.family-try-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+/* ─── Family challenge ───────────────────────────────────────────────────── */
+
+.family-challenge-card {
+  background: #FDF2F8;
+  border: 2.5px solid var(--foreground);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  padding: 14px 16px;
+}
+
+.family-dots {
+  display: flex;
+  gap: 5px;
+  margin: 6px 0;
+}
+
+.family-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  border: 2px solid var(--foreground);
+  background: #fff;
+}
+
+.family-dot.done { background: #EC4899; }
+
+.family-who {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+
+.family-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 2.5px solid var(--foreground);
+  box-shadow: 3px 3px 0 var(--foreground);
+  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  background: #EC4899;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: box-shadow 100ms, transform 100ms;
+  margin-top: 10px;
+}
+
+.family-btn:hover {
+  box-shadow: 4px 4px 0 var(--foreground);
+  transform: translate(-1px, -1px);
+}
+
+.family-btn:active {
+  box-shadow: 1px 1px 0 var(--foreground);
+  transform: translate(1px, 1px);
+}
+
+.family-btn.ghost {
+  background: #fff;
+  color: var(--foreground);
+}
+
+/* ─── Family code display ─────────────────────────────────────────────────── */
+
+.family-code-box {
+  border: 3px solid var(--foreground);
+  border-radius: 16px;
+  background: #fff;
+  text-align: center;
+  padding: 14px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  margin: 12px 0;
+}
+
+.family-code-big {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: .14em;
+  display: block;
+}
+
+.family-code-sub {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+/* ─── Toggle switches ────────────────────────────────────────────────────── */
+
+.family-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1.5px dashed #E2DACA;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.family-toggle-row:last-child { border: none; }
+
+.family-switch {
+  width: 38px;
+  height: 22px;
+  border-radius: 99px;
+  border: 2px solid var(--foreground);
+  position: relative;
+  background: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 150ms;
+}
+
+.family-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--foreground);
+  transition: left 150ms;
+}
+
+.family-switch.on {
+  background: #EC4899;
+}
+
+.family-switch.on::after {
+  left: auto;
+  right: 2px;
+  background: #fff;
+}
+
+/* ─── Link page ──────────────────────────────────────────────────────────── */
+
+.family-link-page {
+  max-width: 440px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+/* ─── Child new page ─────────────────────────────────────────────────────── */
+
+.family-form-group {
+  margin-bottom: 18px;
+}
+
+.family-form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.family-form-input {
+  width: 100%;
+  border: 2px solid var(--foreground);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-family: var(--font-body);
+  background: #fff;
+  box-shadow: 2px 2px 0 var(--foreground);
+  outline: none;
+  transition: box-shadow 120ms;
+}
+
+.family-form-input:focus {
+  box-shadow: 3px 3px 0 var(--foreground);
+}
+
+/* ─── Challenges page ────────────────────────────────────────────────────── */
+
+.family-challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.family-chal-card {
+  border: 2.5px solid var(--foreground);
+  border-radius: 16px;
+  background: #FDF2F8;
+  padding: 14px;
+  box-shadow: 4px 4px 0 var(--foreground);
+}
+
+.family-chal-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: #EC4899;
+  margin-bottom: 2px;
+}
+
+.family-chal-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 19px;
+  margin-bottom: 10px;
+}
+
+.family-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+}
+
+.family-day-box {
+  height: 28px;
+  border-radius: 8px;
+  border: 2px solid var(--foreground);
+  background: #fff;
+  margin-bottom: 3px;
+  display: block;
+}
+
+.family-day-box.done { background: #EC4899; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .family-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .family-main { padding: 16px; }
+  .family-grid { grid-template-columns: 1fr; }
+}

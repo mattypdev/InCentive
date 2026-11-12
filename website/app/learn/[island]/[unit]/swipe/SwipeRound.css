@@ -1,0 +1,234 @@
+/* ===== Swipe Round ===== */
+
+.swipe-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  align-items: center;
+}
+
+.swipe-topbar {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  border-bottom: 2px solid var(--border);
+  background: var(--background);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.swipe-exit {
+  font-weight: 700;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.swipe-title {
+  flex: 1;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.swipe-counter {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+/* Card deck */
+.swipe-deck-wrap {
+  position: relative;
+  width: min(380px, 92vw);
+  height: 280px;
+  margin: 40px 0 24px;
+}
+
+.swipe-card {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--foreground);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 5px 5px 0 var(--foreground);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background 200ms, border-color 200ms;
+  touch-action: none;
+  user-select: none;
+}
+
+.swipe-card--shadow {
+  background: #F1EBDA;
+  transform: rotate(2deg) translateX(8px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.swipe-card--correct {
+  background: #DCFCE7;
+  border-color: #15803D;
+  box-shadow: 5px 5px 0 #15803D;
+}
+
+.swipe-card--wrong {
+  background: #FEE2E2;
+  border-color: #DC2626;
+  box-shadow: 5px 5px 0 #DC2626;
+}
+
+.swipe-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.swipe-statement {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.swipe-explanation {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.swipe-verdict {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.swipe-verdict--correct { color: #15803D; }
+.swipe-verdict--wrong   { color: #DC2626; }
+
+/* Drag hints */
+.swipe-hint {
+  position: absolute;
+  top: 14px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 3px solid;
+  transform: rotate(12deg);
+}
+
+.swipe-hint--true  { right: 14px; color: #16A34A; border-color: #16A34A; transform: rotate(10deg); }
+.swipe-hint--false { left: 14px;  color: #DC2626; border-color: #DC2626; transform: rotate(-10deg); }
+
+/* Buttons */
+.swipe-btns {
+  display: flex;
+  gap: 12px;
+  width: min(380px, 92vw);
+}
+
+.swipe-btn {
+  display: block;
+  flex: 1;
+  padding: 12px 16px;
+  border: 2.5px solid var(--foreground);
+  border-radius: 14px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 var(--foreground);
+  transition: transform 80ms, box-shadow 80ms;
+}
+
+.swipe-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--foreground);
+}
+
+.swipe-btn--false { background: #FEE2E2; color: #991B1B; }
+.swipe-btn--true  { background: #DCFCE7; color: #166534; }
+
+/* keyboard hint */
+.swipe-keyboard-hint {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-weight: 600;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Results */
+.swipe-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 20px;
+  width: min(420px, 96vw);
+  text-align: center;
+}
+
+.swipe-results-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+.swipe-results-sub {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-heading);
+}
+
+.swipe-missed {
+  width: 100%;
+  text-align: left;
+}
+
+.swipe-missed-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+
+.swipe-missed-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  background: #fff;
+}
+
+.swipe-missed-answer {
+  font-weight: 800;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: #15803D;
+  flex-shrink: 0;
+}

@@ -1,0 +1,290 @@
+/* Island Map — /learn redesign */
+
+.island-map {
+  flex: 1;
+  padding: 22px 32px;
+  overflow-y: auto;
+}
+
+.island-map-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.island-map-title {
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.island-map-subtitle {
+  color: var(--muted-foreground);
+  margin-top: 4px;
+  font-size: 13.5px;
+}
+
+.island-map-toggle {
+  display: flex;
+  border: 2.5px solid var(--foreground);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 var(--foreground);
+}
+
+.island-map-toggle-on,
+.island-map-toggle-off {
+  padding: 7px 16px;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--foreground);
+}
+
+.island-map-toggle-on {
+  background: var(--foreground);
+  color: #fff;
+}
+
+/* Hero */
+.island-hero {
+  display: grid;
+  grid-template-columns: 52px 1fr 1fr 52px;
+  align-items: center;
+  gap: 18px;
+  height: 390px;
+}
+
+.island-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2.5px solid var(--foreground);
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--foreground);
+  font-weight: 800;
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  color: var(--foreground);
+}
+
+.island-arrow--dim {
+  opacity: 0.35;
+  box-shadow: none;
+  cursor: default;
+}
+
+.island-stage {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.island-stage-shadow {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.12);
+  z-index: 1;
+}
+
+.island-stage-img {
+  position: relative;
+  z-index: 2;
+  object-fit: contain;
+}
+
+/* Info card */
+.island-info {
+  padding: 20px 22px;
+  border: 2.5px solid var(--foreground);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  background: #fff;
+}
+
+.island-info-kicker {
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--coral, #FF6F61);
+  text-transform: uppercase;
+}
+
+.island-info-title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 2px 0 6px;
+}
+
+.island-info-sub {
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.island-units-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.island-unit-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.island-unit-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--foreground);
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.island-unit-dot--done {
+  background: #22C55E;
+  color: #fff;
+  border-color: #22C55E;
+}
+
+.island-unit-name {
+  flex: 1;
+}
+
+.island-unit-done-label {
+  font-size: 11px;
+  color: #22C55E;
+  font-weight: 700;
+}
+
+.island-unit-more {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-weight: 600;
+  padding-left: 30px;
+}
+
+.island-info-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.island-continue-btn {
+  flex: 1;
+}
+
+.island-explore-btn {
+  flex: 1;
+}
+
+/* Island strip */
+.island-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.island-tile {
+  text-align: center;
+  border-radius: 14px;
+  padding: 8px 4px 6px;
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.island-tile--active {
+  background: #FFE4E6;
+  border-color: var(--foreground);
+  box-shadow: 3px 3px 0 var(--foreground);
+}
+
+.island-tile-img {
+  height: 58px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.island-tile-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  margin-top: 4px;
+  line-height: 1.2;
+  color: var(--foreground);
+}
+
+/* Mobile: full-width column layout */
+@media (max-width: 768px) {
+  .island-map {
+    padding: 16px;
+  }
+
+  .island-hero {
+    grid-template-columns: 40px 1fr 40px;
+    grid-template-rows: auto auto;
+    height: auto;
+    gap: 12px;
+  }
+
+  .island-stage {
+    grid-column: 1 / -1;
+    height: 220px;
+  }
+
+  .island-arrow:first-of-type {
+    grid-row: 2;
+    grid-column: 1;
+    align-self: start;
+  }
+
+  .island-info {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .island-arrow:last-of-type {
+    grid-row: 2;
+    grid-column: 3;
+    align-self: start;
+  }
+
+  .island-strip {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .island-strip {
+    grid-template-columns: repeat(4, 1fr);
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+}

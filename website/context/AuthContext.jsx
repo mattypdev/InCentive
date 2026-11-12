@@ -131,10 +131,12 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  async function signUp(name, email, password) {
+  async function signUp(name, email, password, role) {
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) throw error
-    await supabase.from('profiles').upsert({ id: data.user.id, name }, { onConflict: 'id' })
+    const profileData = { id: data.user.id, name }
+    if (role === 'teacher') profileData.is_teacher = true
+    await supabase.from('profiles').upsert(profileData, { onConflict: 'id' })
     await fetchProfile(data.user.id)
   }
 

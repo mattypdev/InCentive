@@ -73,6 +73,40 @@
 }
 
 
+/* ===== Tab strip ===== */
+
+.login-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.login-tab {
+  flex: 1;
+  padding: 8px 10px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  border: 2px solid var(--foreground);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background 150ms, color 150ms, transform 100ms, box-shadow 100ms;
+}
+
+.login-tab:hover:not(.active) {
+  background: var(--background);
+}
+
+.login-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 3px 3px 0 var(--foreground);
+  transform: translate(-1px, -1px);
+}
+
 .login-header h2 {
   font-size: var(--text-2xl);
   margin-bottom: 8px;

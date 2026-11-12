@@ -1,0 +1,295 @@
+/* Island Detail Page — /learn/[island] */
+
+.island-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+/* Banner */
+.island-page-banner {
+  padding: 32px 24px;
+  border-bottom: 2.5px solid var(--foreground);
+}
+
+.island-page-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.island-page-banner-text {
+  flex: 1;
+}
+
+.island-page-kicker {
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.island-page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.island-page-tagline {
+  font-size: 15px;
+  color: #334155;
+  margin-bottom: 12px;
+}
+
+.island-page-standards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.island-standard-chip {
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: var(--foreground);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+
+.island-page-art {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Nav */
+.island-page-nav {
+  padding: 12px 24px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.island-back-link {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-decoration: none;
+}
+
+.island-back-link:hover {
+  color: var(--foreground);
+}
+
+/* Units */
+.island-page-units {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.island-unit-card {
+  border: 2.5px solid var(--foreground);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  background: #fff;
+  overflow: hidden;
+}
+
+.island-unit-header {
+  padding: 20px 22px 16px;
+}
+
+.island-unit-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.island-unit-number {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.island-unit-level-chip {
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: #F1F5F9;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: var(--muted-foreground);
+}
+
+.island-unit-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.island-unit-summary {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.island-unit-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.island-unit-progress-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 99px;
+  background: #EFEAD9;
+  overflow: hidden;
+}
+
+.island-unit-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--coral, #FF6F61);
+  transition: width 0.4s ease;
+}
+
+.island-unit-progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+/* Lesson chips */
+.island-lessons-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 22px 18px;
+}
+
+.island-lesson-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: 2px solid var(--foreground);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--foreground);
+  transition: background 0.1s, box-shadow 0.1s;
+}
+
+.island-lesson-chip:hover {
+  background: #FFF8E8;
+  box-shadow: 2px 2px 0 var(--foreground);
+}
+
+.island-lesson-chip--done {
+  background: #DCFCE7;
+  border-color: #22C55E;
+}
+
+.island-lesson-chip--check {
+  background: #FEF9C3;
+  border-color: #F59E0B;
+  font-weight: 700;
+}
+
+.island-lesson-chip--swipe {
+  background: #EFF6FF;
+  border-color: #3B82F6;
+}
+
+.island-lesson-check {
+  color: #22C55E;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.island-lesson-mins {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  font-weight: 600;
+}
+
+/* Island Challenge */
+.island-challenge-card {
+  border: 2.5px solid var(--foreground);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  background: #FFF8F0;
+}
+
+.island-challenge-inner {
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.island-challenge-kicker {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #F59E0B;
+  margin-bottom: 4px;
+}
+
+.island-challenge-title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.island-challenge-desc {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .island-page-banner-inner {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .island-page-art {
+    width: 120px;
+    height: 120px;
+    align-self: center;
+  }
+
+  .island-challenge-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .island-challenge-inner .btn {
+    align-self: stretch;
+    justify-content: center;
+  }
+}

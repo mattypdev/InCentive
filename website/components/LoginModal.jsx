@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, X } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { getClassEmail } from '@/app/actions/auth'
 import './LoginModal.css'
 import './Button.css'
 
@@ -25,10 +26,15 @@ function GoogleIcon() {
   )
 }
 
+const TABS = [
+  { key: 'student', label: 'Student' },
+  { key: 'teacher', label: 'Teacher' },
+  { key: 'signup',  label: 'Sign up' },
+]
+
 // Rendered once in the root layout; opened via openLogin() from useAuth().
 export default function LoginModal() {
   const { loginOpen, closeLogin } = useAuth()
-  // Mount only while open so the form resets every time it opens
   if (!loginOpen) return null
   return <LoginDialog onClose={closeLogin} />
 }
@@ -36,16 +42,24 @@ export default function LoginModal() {
 function LoginDialog({ onClose }) {
   const { signUp, logIn, signInWithGoogle } = useAuth()
   const router = useRouter()
-  const [mode, setMode]               = useState('login')
-  const [name, setName]               = useState('')
-  const [email, setEmail]             = useState('')
-  const [password, setPassword]       = useState('')
-  const [error, setError]             = useState('')
-  const [loading, setLoading]         = useState(false)
+  const [tab, setTab]                   = useState('student')
+  const [teacherMode, setTeacherMode]   = useState('login') // 'login' | 'signup'
+  const [studentMode, setStudentMode]   = useState('email') // 'email' | 'pin'
+  const [name, setName]                 = useState('')
+  const [email, setEmail]               = useState('')
+  const [password, setPassword]         = useState('')
+  const [pinUsername, setPinUsername]   = useState('')
+  const [pin, setPin]                   = useState('')
+  const [error, setError]               = useState('')
+  const [loading, setLoading]           = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const emailRef = useRef(null)
+  const pinRef = useRef(null)
 
-  // Escape closes, background scroll is locked, first field gets focus
+  const isTeacher       = tab === 'teacher'
+  const isTeacherSignup = isTeacher && teacherMode === 'signup'
+  const isSignup        = tab === 'signup' || isTeacherSignup
+
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
@@ -58,18 +72,42 @@ function LoginDialog({ onClose }) {
     }
   }, [onClose])
 
+  function switchTab(key) {
+    setTab(key)
+    setTeacherMode('login')
+    setStudentMode('email')
+    setError('')
+    setName('')
+    setEmail('')
+    setPassword('')
+    setPinUsername('')
+    setPin('')
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
     setLoading(true)
     try {
-      if (mode === 'signup') {
+      if (tab === 'student' && studentMode === 'pin') {
+        const result = await getClassEmail(pinUsername.trim(), pin.trim())
+        if (result.error) throw new Error(result.error)
+        await logIn(result.email, pin.trim())
+        onClose()
+        router.push('/learn')
+      } else if (isTeacherSignup) {
+        await signUp(name.trim(), email, password, 'teacher')
+        onClose()
+        router.push('/teach')
+      } else if (tab === 'signup') {
         await signUp(name.trim(), email, password)
+        onClose()
+        router.push('/learn')
       } else {
         await logIn(email, password)
+        onClose()
+        router.push(isTeacher ? '/teach' : '/learn')
       }
-      onClose()
-      router.push('/learn')
     } catch (err) {
       setError(friendlyError(err.message))
     } finally {
@@ -88,10 +126,17 @@ function LoginDialog({ onClose }) {
     }
   }
 
-  function switchMode() {
-    setMode(m => (m === 'login' ? 'signup' : 'login'))
-    setError('')
+  const headings = {
+    student:       { title: 'Log in to learn',          sub: 'Pick up right where your streak left off.' },
+    studentPin:    { title: 'Log in with class PIN',     sub: 'Enter the username and PIN your teacher gave you.' },
+    teacher:       { title: 'Teacher sign in',           sub: 'Access your classes, gradebook, and lesson kits.' },
+    teacherSignup: { title: 'Create a teacher account',  sub: 'Set up your classroom and assign lessons.' },
+    signup:        { title: 'Create your account',       sub: 'Start building real financial confidence today.' },
   }
+
+  const heading = isTeacherSignup ? headings.teacherSignup
+    : (tab === 'student' && studentMode === 'pin') ? headings.studentPin
+    : headings[tab]
 
   return (
     <div className="login-overlay" onMouseDown={onClose}>
@@ -107,13 +152,61 @@ function LoginDialog({ onClose }) {
         </button>
 
         <div className="login-header">
-              <div className="login-brand">in<span>cent</span>ive</div>
-              <h2 id="login-title">{mode === 'login' ? 'Log in to learn' : 'Create your account'}</h2>
-              <p>{mode === 'login' ? 'Pick up right where your streak left off.' : 'Start building real financial confidence today.'}</p>
-            </div>
+          <div className="login-brand">in<span>cent</span>ive</div>
 
-            <form className="login-form" onSubmit={handleSubmit}>
-              {mode === 'signup' && (
+          <div className="login-tabs">
+            {TABS.map(t => (
+              <button
+                key={t.key}
+                type="button"
+                className={`login-tab${tab === t.key ? ' active' : ''}`}
+                onClick={() => switchTab(t.key)}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <h2 id="login-title">{heading.title}</h2>
+          <p>{heading.sub}</p>
+        </div>
+
+        <form className="login-form" onSubmit={handleSubmit}>
+          {tab === 'student' && studentMode === 'pin' ? (
+            <>
+              <div className="login-field">
+                <label htmlFor="login-username">Username</label>
+                <input
+                  ref={pinRef}
+                  id="login-username"
+                  type="text"
+                  placeholder="e.g. sathvik.65an"
+                  value={pinUsername}
+                  onChange={e => setPinUsername(e.target.value)}
+                  required
+                  autoComplete="username"
+                  autoCapitalize="none"
+                />
+              </div>
+              <div className="login-field">
+                <label htmlFor="login-pin">PIN</label>
+                <input
+                  id="login-pin"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="6-digit PIN"
+                  maxLength={6}
+                  value={pin}
+                  onChange={e => setPin(e.target.value.replace(/\D/g, ''))}
+                  required
+                  autoComplete="one-time-code"
+                  style={{ letterSpacing: 4, fontWeight: 700 }}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              {isSignup && (
                 <div className="login-field">
                   <label htmlFor="login-name">Full name</label>
                   <input
@@ -127,59 +220,78 @@ function LoginDialog({ onClose }) {
                   />
                 </div>
               )}
-
               <div className="login-field">
                 <label htmlFor="login-email">Email</label>
                 <input
                   ref={emailRef}
                   id="login-email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={isTeacher ? 'your.name@school.edu' : 'you@example.com'}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
                   autoComplete="email"
                 />
               </div>
-
               <div className="login-field">
                 <label htmlFor="login-password">Password</label>
                 <input
                   id="login-password"
                   type="password"
-                  placeholder={mode === 'signup' ? 'At least 6 characters' : '••••••••'}
+                  placeholder={isSignup ? 'At least 6 characters' : '••••••••'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+                  autoComplete={isSignup ? 'new-password' : 'current-password'}
                 />
               </div>
+            </>
+          )}
 
-              {error && <p className="login-error">{error}</p>}
+          {error && <p className="login-error">{error}</p>}
 
-              <button className="login-submit btn btn-primary" type="submit" disabled={loading}>
-                <span className="btn-label">
-                  {loading ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Create account'}
-                </span>
-                {!loading && (
-                  <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>
-                )}
-              </button>
-            </form>
+          <button className="login-submit btn btn-primary" type="submit" disabled={loading}>
+            <span className="btn-label">
+              {loading ? 'Please wait…' : isTeacherSignup ? 'Create teacher account' : tab === 'signup' ? 'Create account' : 'Log in'}
+            </span>
+            {!loading && <span className="btn-icon-badge"><ArrowRight size={18} strokeWidth={2.5} /></span>}
+          </button>
+        </form>
 
+        {!(tab === 'student' && studentMode === 'pin') && (
+          <>
             <div className="login-divider"><span>or</span></div>
-
             <button className="login-google-btn" type="button" disabled={googleLoading} onClick={handleGoogle}>
               <GoogleIcon />
               {googleLoading ? 'Redirecting…' : 'Continue with Google'}
             </button>
+          </>
+        )}
 
-            <p className="login-switch">
-              {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-              <button type="button" onClick={switchMode}>
-                {mode === 'login' ? 'Sign up' : 'Log in'}
-              </button>
-            </p>
+        {isTeacher && (
+          <p className="login-switch" style={{ marginTop: 16 }}>
+            {isTeacherSignup ? 'Already have an account? ' : 'New teacher? '}
+            <button type="button" onClick={() => { setTeacherMode(isTeacherSignup ? 'login' : 'signup'); setError(''); setName(''); setEmail(''); setPassword('') }}>
+              {isTeacherSignup ? 'Log in' : 'Sign up'}
+            </button>
+          </p>
+        )}
+
+        {tab === 'student' && (
+          <p className="login-switch">
+            {studentMode === 'pin' ? 'Have an email? ' : 'Using a class PIN? '}
+            <button type="button" onClick={() => { setStudentMode(studentMode === 'pin' ? 'email' : 'pin'); setError(''); setPinUsername(''); setPin(''); setEmail(''); setPassword('') }}>
+              {studentMode === 'pin' ? 'Log in with email' : 'Log in with PIN'}
+            </button>
+          </p>
+        )}
+
+        {tab === 'signup' && (
+          <p className="login-switch">
+            Already have an account?{' '}
+            <button type="button" onClick={() => switchTab('student')}>Log in</button>
+          </p>
+        )}
       </div>
     </div>
   )

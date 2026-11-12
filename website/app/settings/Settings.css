@@ -1,0 +1,171 @@
+.settings-page {
+  padding: 48px 0 80px;
+  max-width: 640px;
+}
+
+.settings-page h1 { margin-bottom: 40px; }
+
+.settings-section {
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-section:last-child { border-bottom: none; }
+
+.settings-section h2 {
+  font-size: var(--text-xl);
+  margin-bottom: 20px;
+}
+
+/* ─── Form ────────────────────────────────────────────────────────────────── */
+
+.settings-form { display: flex; flex-direction: column; gap: 20px; }
+
+.settings-field { display: flex; flex-direction: column; gap: 6px; }
+
+.settings-field label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.settings-field input,
+.settings-field select {
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--foreground);
+  background: var(--input);
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: box-shadow 200ms ease;
+  appearance: none;
+  max-width: 360px;
+}
+
+.settings-field input:focus,
+.settings-field select:focus { box-shadow: 3px 3px 0 var(--foreground); }
+
+/* ─── Toggle ──────────────────────────────────────────────────────────────── */
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-toggle-row label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.settings-toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 9999px;
+  border: var(--border-width) solid var(--foreground);
+  background: var(--muted);
+  cursor: pointer;
+  position: relative;
+  transition: background-color 200ms ease;
+  padding: 0;
+}
+
+.settings-toggle.on { background: var(--secondary); }
+
+.settings-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--foreground);
+  transition: transform 200ms ease;
+}
+
+.settings-toggle.on .settings-toggle-knob { transform: translateX(20px); }
+
+/* ─── Save button ─────────────────────────────────────────────────────────── */
+
+.settings-save-btn {
+  align-self: flex-start;
+  padding: 12px 28px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: #fff;
+  background: var(--accent);
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-pop);
+}
+
+.settings-save-btn:disabled { opacity: 0.6; }
+
+.settings-hint {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.settings-error {
+  font-size: var(--text-sm);
+  color: #DC2626;
+}
+
+.settings-success {
+  font-size: var(--text-sm);
+  color: #16A34A;
+}
+
+/* ─── Account section ─────────────────────────────────────────────────────── */
+
+.settings-email {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-bottom: 20px;
+}
+
+.settings-account-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.settings-link-btn {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--secondary);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.settings-delete-btn {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: #DC2626;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.settings-delete-btn.confirm { color: #991B1B; }

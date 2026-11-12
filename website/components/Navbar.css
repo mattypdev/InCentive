@@ -128,6 +128,151 @@
   border-top: 1px solid var(--border);
 }
 
+/* Profile pill */
+.navbar-profile-wrap {
+  position: relative;
+}
+
+.navbar-profile-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px 4px 4px;
+  background: #FFE9E6;
+  border: var(--border-width) solid var(--foreground);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--foreground);
+  transition: background 150ms ease;
+}
+
+.navbar-profile-pill:hover {
+  background: #ffd8d3;
+}
+
+.navbar-profile-name {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar-profile-chevron {
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+  color: var(--muted-foreground);
+}
+
+.navbar-profile-pill--open .navbar-profile-chevron {
+  transform: rotate(180deg);
+}
+
+/* Avatar circle */
+.navbar-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #FF6F61;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  border: var(--border-width) solid var(--foreground);
+  box-shadow: 1px 1px 0 var(--foreground);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Profile dropdown menu */
+.navbar-profile-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border: 2px solid var(--foreground);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--foreground);
+  min-width: 200px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.navbar-profile-menu-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px 12px;
+}
+
+.navbar-profile-menu-name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+.navbar-profile-menu-role {
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+.navbar-profile-menu-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+.navbar-profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 11px 16px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 150ms ease;
+}
+
+.navbar-profile-menu-item:hover {
+  background: var(--muted);
+}
+
+.navbar-profile-menu-item--danger {
+  color: #DC2626;
+}
+
+.navbar-profile-menu-item--danger:hover {
+  background: #FEE2E2;
+}
+
+/* Below 640px: show only avatar in pill */
+@media (max-width: 640px) {
+  .navbar-profile-name,
+  .navbar-profile-chevron {
+    display: none;
+  }
+  .navbar-profile-pill {
+    padding: 4px;
+  }
+}
+
 /* Desktop CTA */
 .navbar-actions {
   display: flex;

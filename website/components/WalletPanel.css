@@ -1,0 +1,241 @@
+/* Wallet Panel — 316px right sidebar */
+
+.wallet-panel {
+  width: 316px;
+  flex-shrink: 0;
+  border-left: 2.5px solid var(--foreground);
+  background: #FFF8E8;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: calc(100vh - 64px);
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.wallet-panel-heading {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Stats row */
+.wallet-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.wallet-stat {
+  background: #fff;
+  border: 2px solid var(--foreground);
+  border-radius: 14px;
+  padding: 8px 6px;
+  text-align: center;
+}
+
+.wallet-stat-value {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.wallet-stat-label {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.wallet-coin-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFE27A, #E9A800);
+  border: 1.5px solid #B07D00;
+  vertical-align: -2px;
+  flex-shrink: 0;
+}
+
+/* Cards */
+.wallet-card {
+  background: #fff;
+  border: 2px solid var(--foreground);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+/* Daily goal */
+.wallet-goal-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wallet-goal-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.wallet-goal-sub {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-top: 2px;
+}
+
+/* Up next */
+.wallet-next-card {
+  background: #FFE7E3;
+  border-color: var(--foreground);
+}
+
+.wallet-next-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #fff;
+  border: 1.5px solid var(--foreground);
+}
+
+.wallet-next-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  margin: 6px 0 2px;
+}
+
+.wallet-next-sub {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-bottom: 10px;
+}
+
+.wallet-continue-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: var(--accent, #FF6F61);
+  color: #fff;
+  border: 2.5px solid var(--foreground);
+  border-radius: 10px;
+  box-shadow: 2px 2px 0 var(--foreground);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.1s;
+}
+
+.wallet-continue-btn:hover {
+  box-shadow: 3px 3px 0 var(--foreground);
+}
+
+/* Quests */
+.wallet-section-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.wallet-quest {
+  margin-bottom: 10px;
+}
+
+.wallet-quest:last-child {
+  margin-bottom: 0;
+}
+
+.wallet-quest-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.wallet-quest-count {
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+.wallet-bar-track {
+  height: 7px;
+  border-radius: 99px;
+  background: #EFEAD9;
+  overflow: hidden;
+}
+
+.wallet-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--accent, #FF6F61);
+  transition: width 0.4s ease;
+}
+
+/* Leaderboard */
+.wallet-lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.wallet-lb-row--me {
+  background: #FFE7E3;
+  border-radius: 8px;
+  padding: 4px 6px;
+  margin: 0 -6px;
+}
+
+.wallet-lb-rank {
+  width: 18px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+
+.wallet-lb-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+/* Footer */
+.wallet-footer {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--accent, #FF6F61);
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.wallet-footer a {
+  color: var(--accent, #FF6F61);
+  text-decoration: none;
+}
+
+.wallet-footer a:hover {
+  text-decoration: underline;
+}

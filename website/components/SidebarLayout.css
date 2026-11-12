@@ -1,0 +1,19 @@
+/* Two-column layout: main content + wallet panel */
+
+.sidebar-layout {
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(100vh - 64px);
+}
+
+.sidebar-layout-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Hide wallet panel on mobile */
+@media (max-width: 960px) {
+  .sidebar-layout .wallet-panel {
+    display: none;
+  }
+}
