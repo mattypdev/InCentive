@@ -104,7 +104,7 @@ function LoginDialog({ onClose }) {
         onClose()
         router.push('/learn')
       } else {
-        await logIn(email, password)
+        await logIn(email, password, isTeacher ? 'teacher' : undefined)
         onClose()
         router.push(isTeacher ? '/teach' : '/learn')
       }

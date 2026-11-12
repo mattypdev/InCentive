@@ -140,14 +140,13 @@ export function AuthProvider({ children }) {
     await fetchProfile(data.user.id)
   }
 
-  async function logIn(email, password) {
+  async function logIn(email, password, role) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
     if (data.user) {
-      const { data: existing } = await supabase.from('profiles').select('id').eq('id', data.user.id).single()
-      if (!existing) {
-        await supabase.from('profiles').insert({ id: data.user.id, name: data.user.email.split('@')[0] })
-      }
+      const profileData = { id: data.user.id, name: data.user.email.split('@')[0] }
+      if (role === 'teacher') profileData.is_teacher = true
+      await supabase.from('profiles').upsert(profileData, { onConflict: 'id' })
       setCurrentUser(data.user)
       await fetchProfile(data.user.id)
     }
