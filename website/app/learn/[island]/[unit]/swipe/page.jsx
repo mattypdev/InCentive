@@ -19,6 +19,8 @@ const SWIPE_CARDS = {
   ],
 }
 
+export const dynamic = 'force-dynamic'
+
 export async function generateStaticParams() {
   const out = []
   for (const island of islands) {
