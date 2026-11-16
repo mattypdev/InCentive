@@ -3,6 +3,14 @@ import MediaGallery from './MediaGallery'
 
 const articles = [
   {
+    outlet: 'North Shore Weekly',
+    logo: null,
+    image: null,
+    title: 'Former Northbrook student builds free financial literacy nonprofit',
+    date: null,
+    href: 'https://northshoreweekly.com/articles/former-northbrook-student-builds-free-financial-literacy-nonprofit-mwjdsu3c',
+  },
+  {
     outlet: 'This is Reno',
     logo: '/this-is-reno.webp',
     image: '/davidson-academy.png',
@@ -72,12 +80,18 @@ export default function ImpactPage() {
                 rel="noopener noreferrer"
                 className="impact-article-btn"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.image} alt="" className="impact-article-thumb" />
+                {a.image && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={a.image} alt="" className="impact-article-thumb" />
+                )}
                 <div className="impact-article-body">
                   <div className="impact-article-logo-panel">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.logo} alt={a.outlet} className="impact-article-logo" />
+                    {a.logo ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={a.logo} alt={a.outlet} className="impact-article-logo" />
+                    ) : (
+                      <span className="impact-article-outlet-name">{a.outlet}</span>
+                    )}
                   </div>
                   <div className="impact-article-text">
                     <span className="impact-article-title">{a.title}</span>
