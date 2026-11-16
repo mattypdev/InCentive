@@ -4,7 +4,7 @@ import MediaGallery from './MediaGallery'
 const articles = [
   {
     outlet: 'North Shore Weekly',
-    logo: null,
+    logo: '/north-shore-weekly.png',
     image: null,
     title: 'Former Northbrook student builds free financial literacy nonprofit',
     date: null,
