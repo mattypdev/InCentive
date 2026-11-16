@@ -5,7 +5,7 @@ const articles = [
   {
     outlet: 'North Shore Weekly',
     logo: '/north-shore-weekly.png',
-    image: null,
+    image: '/northbrook-presentation.jpg',
     title: 'Former Northbrook student builds free financial literacy nonprofit',
     date: null,
     href: 'https://northshoreweekly.com/articles/former-northbrook-student-builds-free-financial-literacy-nonprofit-mwjdsu3c',
