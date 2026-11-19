@@ -24,11 +24,10 @@ export async function joinClass(
 ): Promise<{ error?: string; pin?: string; email?: string }> {
   const upper = code.toUpperCase()
 
-  const supabase = await createClient()
   const admin = createAdminClient()
 
-  // Verify the class exists
-  const { data: group, error: gErr } = await supabase
+  // Verify the class exists (admin bypasses member-only RLS)
+  const { data: group, error: gErr } = await admin
     .from('groups')
     .select('id')
     .eq('code', upper)
