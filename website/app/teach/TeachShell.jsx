@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Home, ClipboardList, BarChart2, Users, Settings, Plus } from 'lucide-react'
 
 const NAV = [
@@ -29,7 +30,8 @@ export default async function TeachShell({ activeHref, classId, assignmentCount 
     activeClass = classId ? classes.find(c => c.id === classId) : classes[0]
 
     if (activeClass) {
-      const { count } = await supabase
+      const admin = createAdminClient()
+      const { count } = await admin
         .from('group_members')
         .select('user_id', { count: 'exact', head: true })
         .eq('group_id', activeClass.id)

@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import TeachShell from '../TeachShell'
 import StudentsClient from './StudentsClient'
 
@@ -25,8 +26,9 @@ export default async function StudentsPage({ searchParams }) {
   const activeClass = classId ? classes.find(c => c.id === classId) : classes[0]
   if (!activeClass) redirect('/teach/classes/new')
 
-  // Load members
-  const { data: members } = await supabase
+  // Load members (admin bypasses gm_self RLS)
+  const admin = createAdminClient()
+  const { data: members } = await admin
     .from('group_members')
     .select('user_id, role, joined_at')
     .eq('group_id', activeClass.id)
@@ -38,9 +40,9 @@ export default async function StudentsPage({ searchParams }) {
   let students = []
   if (studentIds.length) {
     const [profilesRes, streaksRes, lpRes] = await Promise.all([
-      supabase.from('profiles').select('id, first_name, last_initial, class_email, is_class_account').in('id', studentIds),
-      supabase.from('streaks').select('user_id, last_active_on').in('user_id', studentIds),
-      supabase.from('lesson_progress').select('user_id, score, completed').in('user_id', studentIds).eq('completed', true),
+      admin.from('profiles').select('id, first_name, last_initial, class_email, is_class_account').in('id', studentIds),
+      admin.from('streaks').select('user_id, last_active_on').in('user_id', studentIds),
+      admin.from('lesson_progress').select('user_id, score, completed').in('user_id', studentIds).eq('completed', true),
     ])
 
     const profiles = profilesRes.data ?? []

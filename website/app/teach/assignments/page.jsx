@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import TeachShell from '../TeachShell'
 import { Plus } from 'lucide-react'
 import { scoreClass } from '@/lib/teachUtils'
@@ -50,8 +51,9 @@ export default async function AssignmentsPage({ searchParams }) {
   const tabData = { active, scheduled, past }
   const currentList = tabData[tab] ?? active
 
-  // Student count
-  const { count: studentCount } = await supabase
+  // Student count (admin bypasses gm_self RLS)
+  const admin = createAdminClient()
+  const { count: studentCount } = await admin
     .from('group_members')
     .select('user_id', { count: 'exact', head: true })
     .eq('group_id', activeClass.id)

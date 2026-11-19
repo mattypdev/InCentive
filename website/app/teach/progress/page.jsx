@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import TeachShell from '../TeachShell'
 import { scoreClass, scoreLabel, avatarColor } from '@/lib/teachUtils'
 
@@ -28,8 +29,9 @@ export default async function ProgressPage({ searchParams }) {
 
   const q = `?class=${activeClass.id}`
 
-  // Students
-  const { data: members } = await supabase
+  // Students (admin bypasses gm_self RLS)
+  const admin = createAdminClient()
+  const { data: members } = await admin
     .from('group_members')
     .select('user_id')
     .eq('group_id', activeClass.id)
@@ -49,8 +51,8 @@ export default async function ProgressPage({ searchParams }) {
 
   if (studentIds.length) {
     const [profilesRes, lpRes] = await Promise.all([
-      supabase.from('profiles').select('id, first_name, last_initial').in('id', studentIds),
-      supabase.from('lesson_progress').select('user_id, lesson_id, score, completed').in('user_id', studentIds).eq('completed', true),
+      admin.from('profiles').select('id, first_name, last_initial').in('id', studentIds),
+      admin.from('lesson_progress').select('user_id, lesson_id, score, completed').in('user_id', studentIds).eq('completed', true),
     ])
 
     const profiles = profilesRes.data ?? []
