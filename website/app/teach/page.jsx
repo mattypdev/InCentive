@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import TeachShell from './TeachShell'
 import { Plus, Users } from 'lucide-react'
 import CopyButton from './CopyButton'
@@ -37,8 +38,9 @@ export default async function TeachHome({ searchParams }) {
   const activeClass = classId ? classes.find(c => c.id === classId) : classes[0]
   if (!activeClass) redirect('/teach/classes/new')
 
-  // Load student count
-  const { count: studentCount } = await supabase
+  // Load student count (admin bypasses gm_self RLS so teacher can see all members)
+  const admin = createAdminClient()
+  const { count: studentCount } = await admin
     .from('group_members')
     .select('user_id', { count: 'exact', head: true })
     .eq('group_id', activeClass.id)
@@ -53,7 +55,7 @@ export default async function TeachHome({ searchParams }) {
   const now = new Date()
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000).toISOString()
 
-  const { data: members } = await supabase
+  const { data: members } = await admin
     .from('group_members')
     .select('user_id')
     .eq('group_id', activeClass.id)
@@ -63,11 +65,11 @@ export default async function TeachHome({ searchParams }) {
 
   // KPI data
   const [lpWeekRes, lpAllRes, assignDueRes, streaksRes, profilesRes] = await Promise.all([
-    supabase.from('lesson_progress').select('user_id, score, completed').in('user_id', studentIds).gte('updated_at', sevenDaysAgo),
-    supabase.from('lesson_progress').select('user_id, lesson_id, score, completed, updated_at').in('user_id', studentIds).order('updated_at', { ascending: false }),
-    supabase.from('assignments').select('id, title, unit_id, lesson_id, opens_at, due_at, items').eq('group_id', activeClass.id).eq('is_draft', false).not('due_at', 'is', null).gte('due_at', now.toISOString()).order('due_at').limit(5),
-    supabase.from('streaks').select('user_id, last_active_on').in('user_id', studentIds),
-    supabase.from('profiles').select('id, first_name, last_initial').in('id', studentIds),
+    admin.from('lesson_progress').select('user_id, score, completed').in('user_id', studentIds).gte('updated_at', sevenDaysAgo),
+    admin.from('lesson_progress').select('user_id, lesson_id, score, completed, updated_at').in('user_id', studentIds).order('updated_at', { ascending: false }),
+    admin.from('assignments').select('id, title, unit_id, lesson_id, opens_at, due_at, items').eq('group_id', activeClass.id).eq('is_draft', false).not('due_at', 'is', null).gte('due_at', now.toISOString()).order('due_at').limit(5),
+    admin.from('streaks').select('user_id, last_active_on').in('user_id', studentIds),
+    admin.from('profiles').select('id, first_name, last_initial').in('id', studentIds),
   ])
 
   const lpWeek = lpWeekRes.data ?? []
