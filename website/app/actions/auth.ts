@@ -51,11 +51,10 @@ export async function joinClass(
     user_metadata: { full_name: `${firstName} ${lastInitial}.` },
   })
   if (authErr) {
-    // If the email already exists, generate a new unique suffix
     if (authErr.message?.includes('already been registered')) {
       return { error: 'That name is already in this class. Try a different nickname.' }
     }
-    return { error: 'Could not create account. Please try again.' }
+    return { error: authErr.message || 'Could not create account. Please try again.' }
   }
 
   const userId = authData.user.id
