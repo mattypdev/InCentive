@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 // ── Class join ────────────────────────────────────────────────────────────────
 
 export async function lookupClassCode(code: string) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('groups')
     .select('id, name, code')
