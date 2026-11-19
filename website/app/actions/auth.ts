@@ -79,9 +79,8 @@ export async function joinClass(
   ])
 
   if (profileRes.error || memberRes.error) {
-    // Rollback the auth user to keep things clean
     await admin.auth.admin.deleteUser(userId)
-    return { error: 'Could not save account. Please try again.' }
+    return { error: profileRes.error?.message || memberRes.error?.message || 'Could not save account. Please try again.' }
   }
 
   return { pin, email }
