@@ -171,7 +171,7 @@ export default function JoinClient() {
                   value={firstName}
                   onChange={e => setFirstName(e.target.value)}
                   required
-                  maxLength={20}
+                  maxLength={10}
                 />
               </div>
               <div className="join-field">

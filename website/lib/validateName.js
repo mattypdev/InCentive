@@ -3,6 +3,7 @@
 const BAD_WORDS = [
   'fuck','shit','ass','bitch','cunt','dick','cock','pussy','nigger','nigga',
   'faggot','fag','whore','slut','bastard','damn','retard','kike','spic','chink',
+  'diddy','sus',
 ]
 
 const RESERVED = ['admin','teacher','incentive','support','moderator','mod','staff']
@@ -12,7 +13,7 @@ const RESERVED = ['admin','teacher','incentive','support','moderator','mod','sta
  * @param {string} raw
  * @param {{ maxLen?: number }} opts
  */
-export function validateDisplayName(raw, { maxLen = 20 } = {}) {
+export function validateDisplayName(raw, { maxLen = 10 } = {}) {
   const v = raw.trim()
   if (!v) return 'Name is required.'
   if (v.length > maxLen) return `Name must be ${maxLen} characters or fewer.`

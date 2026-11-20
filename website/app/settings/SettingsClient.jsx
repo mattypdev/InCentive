@@ -138,8 +138,8 @@ export default function SettingsClient() {
           <div className="settings-field">
             <label htmlFor="set-name" style={{ display: 'flex', justifyContent: 'space-between' }}>
               Display name
-              <span style={{ fontWeight: 400, fontSize: 12, color: name.length > 18 ? '#e11d48' : 'var(--muted-foreground, #888)' }}>
-                {name.length}/20
+              <span style={{ fontWeight: 400, fontSize: 12, color: name.length > 8 ? '#e11d48' : 'var(--muted-foreground, #888)' }}>
+                {name.length}/10
               </span>
             </label>
             <input
@@ -148,7 +148,7 @@ export default function SettingsClient() {
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Your name"
-              maxLength={20}
+              maxLength={10}
               autoComplete="off"
             />
           </div>
