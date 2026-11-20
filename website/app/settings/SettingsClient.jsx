@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
+import { validateDisplayName } from '@/lib/validateName'
 import './Settings.css'
 
 const SOUND_KEY = 'incentive_sound_enabled'
@@ -57,6 +58,8 @@ export default function SettingsClient() {
 
   async function handleSave(e) {
     e.preventDefault()
+    const nameErr = validateDisplayName(name, { maxLen: 20 })
+    if (nameErr) { setSaveError(nameErr); return }
     setSaving(true)
     setSaveError('')
     const { error } = await supabase.from('profiles').upsert({
@@ -133,13 +136,20 @@ export default function SettingsClient() {
         <h2>Profile</h2>
         <form className="settings-form" onSubmit={handleSave}>
           <div className="settings-field">
-            <label htmlFor="set-name">Display name</label>
+            <label htmlFor="set-name" style={{ display: 'flex', justifyContent: 'space-between' }}>
+              Display name
+              <span style={{ fontWeight: 400, fontSize: 12, color: name.length > 18 ? '#e11d48' : 'var(--muted-foreground, #888)' }}>
+                {name.length}/20
+              </span>
+            </label>
             <input
               id="set-name"
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Your name"
+              maxLength={20}
+              autoComplete="off"
             />
           </div>
           <div className="settings-field">

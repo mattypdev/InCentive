@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { lookupClassCode, joinClass } from '@/app/actions/auth'
+import { validateDisplayName } from '@/lib/validateName'
 import './Join.css'
 
 export default function JoinClient() {
@@ -81,6 +82,8 @@ export default function JoinClient() {
   async function handleJoin(e) {
     e.preventDefault()
     if (!group || joinBusy) return
+    const nameErr = validateDisplayName(firstName, { maxLen: 20 })
+    if (nameErr) { setJoinError(nameErr); return }
     setJoinBusy(true)
     setJoinError('')
     const result = await joinClass(code, firstName.trim(), lastInitial.trim())
