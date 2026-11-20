@@ -3,30 +3,17 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { createClient } from '@/lib/supabase/client'
-import { validateDisplayName } from '@/lib/validateName'
 import './Settings.css'
 
 const SOUND_KEY = 'incentive_sound_enabled'
 function readSound() { try { const v = localStorage.getItem(SOUND_KEY); return v === null ? true : v === 'true' } catch { return true } }
 function writeSound(v) { try { localStorage.setItem(SOUND_KEY, String(v)) } catch {} }
 
-const TIMEZONES = [
-  'America/New_York',
-  'America/Chicago',
-  'America/Denver',
-  'America/Los_Angeles',
-  'America/Anchorage',
-  'Pacific/Honolulu',
-  'America/Phoenix',
-]
-
 export default function SettingsClient() {
   const { currentUser, profile, logOut, refreshProfile, loading } = useAuth()
   const router = useRouter()
   const supabase = createClient()
 
-  const [name, setName]           = useState('')
-  const [timezone, setTimezone]   = useState('America/Los_Angeles')
   const [sound, setSound]         = useState(true)
   const [saving, setSaving]       = useState(false)
   const [saved, setSaved]         = useState(false)
@@ -41,12 +28,6 @@ export default function SettingsClient() {
   const [linkError, setLinkError]       = useState('')
 
   useEffect(() => {
-    if (!profile) return
-    setName(profile.name ?? '')
-    setTimezone(profile.timezone ?? 'America/Los_Angeles')
-  }, [profile])
-
-  useEffect(() => {
     setSound(readSound())
   }, [])
 
@@ -58,21 +39,9 @@ export default function SettingsClient() {
 
   async function handleSave(e) {
     e.preventDefault()
-    const nameErr = validateDisplayName(name, { maxLen: 20 })
-    if (nameErr) { setSaveError(nameErr); return }
     setSaving(true)
     setSaveError('')
-    const { error } = await supabase.from('profiles').upsert({
-      id: currentUser.id,
-      name: name.trim(),
-    }, { onConflict: 'id' })
     writeSound(sound)
-    if (error) {
-      setSaveError(error.message || 'Could not save — please try again.')
-      setSaving(false)
-      return
-    }
-    await refreshProfile()
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
@@ -113,7 +82,6 @@ export default function SettingsClient() {
       setLinking(false)
       return
     }
-    // Mark account as no longer class-only
     await supabase.from('profiles').update({ is_class_account: false }).eq('id', currentUser.id)
     await refreshProfile()
     setLinking(false)
@@ -133,33 +101,8 @@ export default function SettingsClient() {
       <h1>Settings</h1>
 
       <section className="settings-section">
-        <h2>Profile</h2>
+        <h2>Preferences</h2>
         <form className="settings-form" onSubmit={handleSave}>
-          <div className="settings-field">
-            <label htmlFor="set-name" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              Display name
-              <span style={{ fontWeight: 400, fontSize: 12, color: name.length > 8 ? '#e11d48' : 'var(--muted-foreground, #888)' }}>
-                {name.length}/10
-              </span>
-            </label>
-            <input
-              id="set-name"
-              type="text"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="Your name"
-              maxLength={10}
-              autoComplete="off"
-            />
-          </div>
-          <div className="settings-field">
-            <label htmlFor="set-tz">Timezone</label>
-            <select id="set-tz" value={timezone} onChange={e => setTimezone(e.target.value)}>
-              {TIMEZONES.map(tz => (
-                <option key={tz} value={tz}>{tz.replace('_', ' ')}</option>
-              ))}
-            </select>
-          </div>
           <div className="settings-toggle-row">
             <label htmlFor="set-sound">Sound effects</label>
             <button
