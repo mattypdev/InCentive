@@ -3,7 +3,7 @@
 const BAD_WORDS = [
   'fuck','shit','ass','bitch','cunt','dick','cock','pussy','nigger','nigga',
   'faggot','fag','whore','slut','bastard','damn','retard','kike','spic','chink',
-  'diddy','sus',
+  'diddy','sus','pedo','pedophile',
 ]
 
 const RESERVED = ['admin','teacher','incentive','support','moderator','mod','staff']
