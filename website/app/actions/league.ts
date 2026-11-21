@@ -40,10 +40,14 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
   // Extended columns added by migration — may not exist in production yet
   type ExtendedRow = { id: string; weekly_xp: number; hide_from_leaderboard: boolean; streak_best: number }
   let extended: ExtendedRow[] = []
+  let hasWeeklyXp = false
   try {
     const { data, error } = await admin.from('profiles')
       .select('id, weekly_xp, hide_from_leaderboard, streak_best')
-    if (!error && data) extended = data as ExtendedRow[]
+    if (!error && data) {
+      extended = data as ExtendedRow[]
+      hasWeeklyXp = extended.some(r => (r.weekly_xp ?? 0) > 0)
+    }
   } catch {}
   const extMap = new Map(extended.map(r => [r.id, r]))
 
@@ -89,7 +93,8 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
       first_name: p.first_name,
       last_initial: p.last_initial,
       xp: p.xp ?? 0,
-      weekly_xp: extMap.get(p.id)?.weekly_xp ?? 0,
+      // Fall back to total xp until the migration has run and weekly_xp is populated
+      weekly_xp: hasWeeklyXp ? (extMap.get(p.id)?.weekly_xp ?? 0) : (p.xp ?? 0),
       streak_count: p.streak_count ?? 0,
     }))
 
@@ -102,7 +107,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
       first_name: me.first_name,
       last_initial: me.last_initial,
       xp: me.xp ?? 0,
-      weekly_xp: meExt?.weekly_xp ?? 0,
+      weekly_xp: hasWeeklyXp ? (meExt?.weekly_xp ?? 0) : (me.xp ?? 0),
       streak_count: me.streak_count ?? 0,
       streak_best: meExt?.streak_best ?? me.streak_count ?? 0,
       hide_from_leaderboard: meExt?.hide_from_leaderboard ?? false,

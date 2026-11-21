@@ -44,6 +44,7 @@ export default function LeaderboardClient({ data, userId }) {
   const [pending, startTransition] = useTransition()
 
   const me = data.me
+  const weeklyMode = data.users.some(u => u.weekly_xp > 0)
 
   const sorted = useMemo(() => {
     const pool = tab === 'class'
@@ -86,7 +87,7 @@ export default function LeaderboardClient({ data, userId }) {
             <div className="lb-header">
               <div>
                 <h1 className="lb-title">Leaderboard</h1>
-                <p className="lb-sub">Students on Incentive, ranked by weekly XP.</p>
+                <p className="lb-sub">Students on Incentive, ranked by {weeklyMode ? 'weekly XP' : 'XP'}.</p>
               </div>
             </div>
 
@@ -151,7 +152,7 @@ export default function LeaderboardClient({ data, userId }) {
                           <th className="lb-col-rank">Rank</th>
                           <th>Student</th>
                           <th className="lb-col-streak">Streak</th>
-                          <th className="lb-col-xp">XP this week</th>
+                          <th className="lb-col-xp">{weeklyMode ? 'XP this week' : 'XP'}</th>
                         </tr>
                       </thead>
                       <tbody>
