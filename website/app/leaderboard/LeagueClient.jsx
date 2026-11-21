@@ -15,13 +15,15 @@ function avatarColor(id) {
 }
 
 function displayName(u) {
-  const first = u.first_name ?? 'Unknown'
-  const last = u.last_initial ? ` ${u.last_initial.toUpperCase()}.` : ''
-  return first + last
+  if (u.first_name) {
+    const last = u.last_initial ? ` ${u.last_initial.toUpperCase()}.` : ''
+    return u.first_name + last
+  }
+  return u.name ?? '?'
 }
 
 function Avatar({ user, size = 36 }) {
-  const letter = (user.first_name?.[0] ?? '?').toUpperCase()
+  const letter = (user.first_name?.[0] ?? user.name?.[0] ?? '?').toUpperCase()
   return (
     <div className="lb-avatar" style={{ width: size, height: size, fontSize: size * 0.4, background: avatarColor(user.id) }}>
       {letter}

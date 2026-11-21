@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 export interface LeaderboardEntry {
   id: string
+  name: string | null
   first_name: string | null
   last_initial: string | null
   xp: number
@@ -23,7 +24,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
 
   const [profilesRes, membershipRes] = await Promise.all([
     admin.from('profiles')
-      .select('id, first_name, last_initial, xp, weekly_xp, hide_from_leaderboard, streak_count, streak_best')
+      .select('id, name, first_name, last_initial, xp, weekly_xp, hide_from_leaderboard, streak_count, streak_best')
       .order('xp', { ascending: false }),
     admin.from('group_members')
       .select('group_id')
@@ -72,6 +73,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
     .filter(p => !p.hide_from_leaderboard || p.id === userId)
     .map(p => ({
       id: p.id,
+      name: p.name,
       first_name: p.first_name,
       last_initial: p.last_initial,
       xp: p.xp ?? 0,
@@ -82,6 +84,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
   return {
     me: me ? {
       id: me.id,
+      name: me.name,
       first_name: me.first_name,
       last_initial: me.last_initial,
       xp: me.xp ?? 0,
