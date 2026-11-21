@@ -22,9 +22,10 @@ export interface LeaderboardData {
 export async function getLeaderboardData(userId: string): Promise<LeaderboardData> {
   const admin = createAdminClient()
 
+  // Core query — only columns that exist in every environment
   const [profilesRes, membershipRes] = await Promise.all([
     admin.from('profiles')
-      .select('id, name, first_name, last_initial, xp, weekly_xp, hide_from_leaderboard, streak_count, streak_best')
+      .select('id, name, first_name, last_initial, xp, streak_count')
       .order('xp', { ascending: false }),
     admin.from('group_members')
       .select('group_id')
@@ -35,6 +36,17 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
   ])
 
   const all = profilesRes.data ?? []
+
+  // Extended columns added by migration — may not exist in production yet
+  type ExtendedRow = { id: string; weekly_xp: number; hide_from_leaderboard: boolean; streak_best: number }
+  let extended: ExtendedRow[] = []
+  try {
+    const { data, error } = await admin.from('profiles')
+      .select('id, weekly_xp, hide_from_leaderboard, streak_best')
+    if (!error && data) extended = data as ExtendedRow[]
+  } catch {}
+  const extMap = new Map(extended.map(r => [r.id, r]))
+
   const me = all.find(p => p.id === userId) ?? null
 
   // Fetch classmates if the user is in a class
@@ -70,16 +82,18 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
   } catch {}
 
   const users: LeaderboardEntry[] = all
-    .filter(p => !p.hide_from_leaderboard || p.id === userId)
+    .filter(p => !(extMap.get(p.id)?.hide_from_leaderboard) || p.id === userId)
     .map(p => ({
       id: p.id,
       name: p.name,
       first_name: p.first_name,
       last_initial: p.last_initial,
       xp: p.xp ?? 0,
-      weekly_xp: p.weekly_xp ?? 0,
+      weekly_xp: extMap.get(p.id)?.weekly_xp ?? 0,
       streak_count: p.streak_count ?? 0,
     }))
+
+  const meExt = me ? extMap.get(me.id) : null
 
   return {
     me: me ? {
@@ -88,10 +102,10 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
       first_name: me.first_name,
       last_initial: me.last_initial,
       xp: me.xp ?? 0,
-      weekly_xp: me.weekly_xp ?? 0,
+      weekly_xp: meExt?.weekly_xp ?? 0,
       streak_count: me.streak_count ?? 0,
-      streak_best: me.streak_best ?? me.streak_count ?? 0,
-      hide_from_leaderboard: me.hide_from_leaderboard ?? false,
+      streak_best: meExt?.streak_best ?? me.streak_count ?? 0,
+      hide_from_leaderboard: meExt?.hide_from_leaderboard ?? false,
     } : null,
     users,
     classUserIds,
