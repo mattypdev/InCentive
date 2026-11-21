@@ -44,13 +44,12 @@ export default function LeaderboardClient({ data, userId }) {
   const [pending, startTransition] = useTransition()
 
   const me = data.me
-  const weeklyMode = data.users.some(u => u.weekly_xp > 0)
 
   const sorted = useMemo(() => {
     const pool = tab === 'class'
       ? data.users.filter(u => data.classUserIds.includes(u.id))
       : data.users
-    return [...pool].sort((a, b) => b.weekly_xp - a.weekly_xp)
+    return [...pool].sort((a, b) => b.xp - a.xp)
   }, [data.users, data.classUserIds, tab])
 
   const filtered = search.trim()
@@ -62,12 +61,12 @@ export default function LeaderboardClient({ data, userId }) {
 
   // Sidebar stats (always based on global students list)
   const globalSorted = useMemo(() =>
-    [...data.users].sort((a, b) => b.weekly_xp - a.weekly_xp),
+    [...data.users].sort((a, b) => b.xp - a.xp),
     [data.users]
   )
   const myRank  = me ? globalSorted.findIndex(u => u.id === userId) + 1 : null
-  const rank5XP = globalSorted[4]?.weekly_xp ?? 0
-  const myXP    = me?.weekly_xp ?? 0
+  const rank5XP = globalSorted[4]?.xp ?? 0
+  const myXP    = me?.xp ?? 0
   const xpGap   = Math.max(0, rank5XP - myXP)
   const pct     = rank5XP > 0 ? Math.min(100, Math.round((myXP / rank5XP) * 100)) : 0
 
@@ -87,7 +86,7 @@ export default function LeaderboardClient({ data, userId }) {
             <div className="lb-header">
               <div>
                 <h1 className="lb-title">Leaderboard</h1>
-                <p className="lb-sub">Students on Incentive, ranked by {weeklyMode ? 'weekly XP' : 'XP'}.</p>
+                <p className="lb-sub">Students on Incentive, ranked by XP.</p>
               </div>
             </div>
 
@@ -131,7 +130,7 @@ export default function LeaderboardClient({ data, userId }) {
                         </div>
                         <div className="lb-top-right">
                           <div className="lb-top-xp">
-                            {u.weekly_xp.toLocaleString()}
+                            {u.xp.toLocaleString()}
                             <span className="lb-xp-label">XP</span>
                           </div>
                           {u.streak_count > 0 && (
@@ -152,7 +151,7 @@ export default function LeaderboardClient({ data, userId }) {
                           <th className="lb-col-rank">Rank</th>
                           <th>Student</th>
                           <th className="lb-col-streak">Streak</th>
-                          <th className="lb-col-xp">{weeklyMode ? 'XP this week' : 'XP'}</th>
+                          <th className="lb-col-xp">XP</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -172,7 +171,7 @@ export default function LeaderboardClient({ data, userId }) {
                               <td className="lb-col-streak">
                                 {u.streak_count > 0 && <span className="lb-streak-cell"><Flame size={12} />{u.streak_count}</span>}
                               </td>
-                              <td className="lb-col-xp">{u.weekly_xp.toLocaleString()}</td>
+                              <td className="lb-col-xp">{u.xp.toLocaleString()}</td>
                             </tr>
                           )
                         })}
@@ -187,10 +186,10 @@ export default function LeaderboardClient({ data, userId }) {
           {/* ── Sidebar ── */}
           <div className="lb-side">
 
-            {/* Your week */}
+            {/* Your rank */}
             {me && (
               <div className="lb-card">
-                <h3 className="lb-card-title">Your week</h3>
+                <h3 className="lb-card-title">Your rank</h3>
                 <div className="lb-rank-row">
                   <span className="lb-rank-num">#{myRank ?? '—'}</span>
                   <span className="lb-rank-of">of {data.users.length}</span>
