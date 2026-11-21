@@ -49,7 +49,7 @@ export default function LeaderboardClient({ data, userId }) {
     const pool = tab === 'class'
       ? data.users.filter(u => data.classUserIds.includes(u.id))
       : data.users
-    return [...pool].sort((a, b) => b.xp - a.xp)
+    return [...pool].sort((a, b) => b.xp - a.xp)   // xp stored at half; display doubles it
   }, [data.users, data.classUserIds, tab])
 
   const filtered = search.trim()
@@ -65,8 +65,8 @@ export default function LeaderboardClient({ data, userId }) {
     [data.users]
   )
   const myRank  = me ? globalSorted.findIndex(u => u.id === userId) + 1 : null
-  const rank5XP = globalSorted[4]?.xp ?? 0
-  const myXP    = me?.xp ?? 0
+  const rank5XP = (globalSorted[4]?.xp ?? 0) * 2
+  const myXP    = (me?.xp ?? 0) * 2
   const xpGap   = Math.max(0, rank5XP - myXP)
   const pct     = rank5XP > 0 ? Math.min(100, Math.round((myXP / rank5XP) * 100)) : 0
 
@@ -130,7 +130,7 @@ export default function LeaderboardClient({ data, userId }) {
                         </div>
                         <div className="lb-top-right">
                           <div className="lb-top-xp">
-                            {u.xp.toLocaleString()}
+                            {(u.xp * 2).toLocaleString()}
                             <span className="lb-xp-label">XP</span>
                           </div>
                           {u.streak_count > 0 && (
@@ -171,7 +171,7 @@ export default function LeaderboardClient({ data, userId }) {
                               <td className="lb-col-streak">
                                 {u.streak_count > 0 && <span className="lb-streak-cell"><Flame size={12} />{u.streak_count}</span>}
                               </td>
-                              <td className="lb-col-xp">{u.xp.toLocaleString()}</td>
+                              <td className="lb-col-xp">{(u.xp * 2).toLocaleString()}</td>
                             </tr>
                           )
                         })}
