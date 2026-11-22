@@ -12,11 +12,19 @@ const ITEMS = [
   },
   {
     id: 'eip',
-    name: 'Education Innovators Podcast',
+    name: 'Education Innovators Podcast - Part 1',
     logo: '/eip-podcast.jpeg',
     dark: true,
     type: 'podcast',
     src: 'https://www.youtube.com/embed/515elFbpgBM',
+  },
+  {
+    id: 'eip2',
+    name: 'Education Innovators Podcast - Part 2',
+    logo: '/eip-podcast.jpeg',
+    dark: true,
+    type: 'podcast',
+    src: 'https://www.youtube.com/embed/-V3OUyKgSyw',
   },
 ]
 
