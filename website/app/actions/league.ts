@@ -1,6 +1,29 @@
 'use server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { allUnits } from '@/data/levels'
+
+// Same reward map used by AuthContext / Navbar
+const rewardMap: Record<string, number> = {}
+allUnits.forEach((u: any) => {
+  rewardMap[u.id] = u.centsReward ?? 0
+  if (u.lessons) u.lessons.forEach((l: any) => { rewardMap[l.id] = l.centsReward ?? 0 })
+})
+
+function computeXP(rows: { lesson_id: string; score: number | null }[]): number {
+  let total = 0
+  for (const r of rows) {
+    const pct = (r.score ?? 0) / 100
+    if (rewardMap[r.lesson_id] !== undefined) {
+      total += Math.round(rewardMap[r.lesson_id] * pct)
+    } else if (r.lesson_id === 'capstone') {
+      total += Math.round(400 * pct)
+    } else if (r.lesson_id.endsWith('-test')) {
+      total += Math.round(200 * pct)
+    }
+  }
+  return total
+}
 
 export interface LeaderboardEntry {
   id: string
@@ -21,10 +44,12 @@ export interface LeaderboardData {
 export async function getLeaderboardData(userId: string): Promise<LeaderboardData> {
   const admin = createAdminClient()
 
-  const [profilesRes, membershipRes] = await Promise.all([
+  const [profilesRes, progressRes, membershipRes] = await Promise.all([
     admin.from('profiles')
-      .select('id, name, first_name, last_initial, xp, streak_count')
-      .order('xp', { ascending: false }),
+      .select('id, name, first_name, last_initial, streak_count'),
+    admin.from('lesson_progress')
+      .select('user_id, lesson_id, score')
+      .eq('completed', true),
     admin.from('group_members')
       .select('group_id')
       .eq('user_id', userId)
@@ -33,9 +58,17 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
       .maybeSingle(),
   ])
 
-  const all = profilesRes.data ?? []
+  const profiles = profilesRes.data ?? []
+  const progress = progressRes.data ?? []
 
-  // hide_from_leaderboard and streak_best added by migration — may not exist in production yet
+  // Group lesson_progress rows by user
+  const progressByUser = new Map<string, { lesson_id: string; score: number | null }[]>()
+  for (const row of progress) {
+    if (!progressByUser.has(row.user_id)) progressByUser.set(row.user_id, [])
+    progressByUser.get(row.user_id)!.push({ lesson_id: row.lesson_id, score: row.score })
+  }
+
+  // hide_from_leaderboard and streak_best added by migration — may not exist yet
   type ExtendedRow = { id: string; hide_from_leaderboard: boolean; streak_best: number }
   let extended: ExtendedRow[] = []
   try {
@@ -45,7 +78,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
   } catch {}
   const extMap = new Map(extended.map(r => [r.id, r]))
 
-  const me = all.find(p => p.id === userId) ?? null
+  const me = profiles.find(p => p.id === userId) ?? null
 
   // Fetch classmates if the user is in a class
   let classUserIds: string[] = []
@@ -58,7 +91,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
     classUserIds = (classMembers ?? []).map(m => m.user_id)
   }
 
-  // Weekly active days from lesson_progress (best-effort — skip if column missing)
+  // Weekly active days for the logged-in user
   let weeklyActiveDays: number[] = []
   try {
     const weekStart = new Date()
@@ -79,14 +112,14 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
     weeklyActiveDays = Array.from(daySet).sort()
   } catch {}
 
-  const users: LeaderboardEntry[] = all
+  const users: LeaderboardEntry[] = profiles
     .filter(p => !(extMap.get(p.id)?.hide_from_leaderboard) || p.id === userId)
     .map(p => ({
       id: p.id,
       name: p.name,
       first_name: p.first_name,
       last_initial: p.last_initial,
-      xp: p.xp ?? 0,
+      xp: computeXP(progressByUser.get(p.id) ?? []),
       streak_count: p.streak_count ?? 0,
     }))
 
@@ -98,7 +131,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
       name: me.name,
       first_name: me.first_name,
       last_initial: me.last_initial,
-      xp: me.xp ?? 0,
+      xp: computeXP(progressByUser.get(me.id) ?? []),
       streak_count: me.streak_count ?? 0,
       streak_best: meExt?.streak_best ?? me.streak_count ?? 0,
       hide_from_leaderboard: meExt?.hide_from_leaderboard ?? false,
