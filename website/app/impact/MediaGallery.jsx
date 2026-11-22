@@ -16,7 +16,7 @@ const ITEMS = [
     logo: '/eip-podcast.jpeg',
     dark: true,
     type: 'podcast',
-    src: 'https://www.youtube.com/embed/515elFbpgBM?start=122',
+    src: 'https://www.youtube.com/embed/515elFbpgBM?start=123',
   },
   {
     id: 'eip2',
