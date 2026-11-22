@@ -122,6 +122,7 @@ export async function getLeaderboardData(userId: string): Promise<LeaderboardDat
       xp: computeXP(progressByUser.get(p.id) ?? []),
       streak_count: p.streak_count ?? 0,
     }))
+    .filter(p => p.xp > 0 || p.id === userId)
 
   const meExt = me ? extMap.get(me.id) : null
 
