@@ -24,7 +24,7 @@ const ITEMS = [
     logo: '/eip-podcast.jpeg',
     dark: true,
     type: 'podcast',
-    src: 'https://www.youtube.com/embed/-V3OUyKgSyw',
+    src: 'https://www.youtube.com/embed/-V3OUyKgSyw?start=605',
   },
 ]
 
