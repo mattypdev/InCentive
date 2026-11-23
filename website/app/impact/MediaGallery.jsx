@@ -11,6 +11,22 @@ const ITEMS = [
     src: 'https://cdn.field59.com/KTVN/1792543323-bc31a46bd94eb5fe60c6c9f967c9095c8d699d07_fl9-720p.mp4',
   },
   {
+    id: 'kolo',
+    name: 'KOLO 8 News Now',
+    logo: '/kolo8.png',
+    dark: false,
+    type: 'video',
+    src: '/incentive-financial.mp4',
+  },
+  {
+    id: 'kolo-article',
+    name: 'KOLO 8 — Article',
+    logo: '/kolo8.png',
+    dark: false,
+    type: 'article',
+    src: 'https://www.kolotv.com/2026/11/23/local-teen-create-financial-literacy-course-students/',
+  },
+  {
     id: 'eip',
     name: 'Education Innovators Podcast - Part 1',
     logo: '/eip-podcast.jpeg',
@@ -49,6 +65,19 @@ function MediaViewer({ item }) {
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
       />
+    )
+  }
+
+  if (item.type === 'article') {
+    return (
+      <div key={item.id} className="mg-pending">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={item.logo} alt={item.name} className="mg-link-logo" />
+        <p className="mg-link-label">{item.name}</p>
+        <a href={item.src} target="_blank" rel="noopener noreferrer" className="mg-link-btn">
+          Read the article →
+        </a>
+      </div>
     )
   }
 
