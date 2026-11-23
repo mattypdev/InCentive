@@ -19,14 +19,6 @@ const ITEMS = [
     src: '/incentive-financial.mp4',
   },
   {
-    id: 'kolo-article',
-    name: 'KOLO 8 — Article',
-    logo: '/kolo8.png',
-    dark: false,
-    type: 'article',
-    src: 'https://www.kolotv.com/2026/11/23/local-teen-create-financial-literacy-course-students/',
-  },
-  {
     id: 'eip',
     name: 'Education Innovators Podcast - Part 1',
     logo: '/eip-podcast.jpeg',
