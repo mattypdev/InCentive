@@ -3,6 +3,14 @@ import MediaGallery from './MediaGallery'
 
 const articles = [
   {
+    outlet: 'KOLO 8 News Now',
+    logo: '/kolo8.png',
+    image: '/kolo8-interview.jpg',
+    title: 'Local teen creates financial literacy course for students',
+    date: 'November 23, 2026',
+    href: 'https://www.kolotv.com/2026/11/23/local-teen-create-financial-literacy-course-students/',
+  },
+  {
     outlet: 'North Shore Weekly',
     logo: '/north-shore-weekly.png',
     image: '/northbrook-presentation.jpg',
